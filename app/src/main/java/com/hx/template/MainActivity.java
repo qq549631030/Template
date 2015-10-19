@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.hx.template.demo.BannerActivity;
 import com.hx.template.demo.CreateQrcodeActivity;
+import com.hx.template.demo.PullToRefreshActivity;
 import com.hx.template.zxing.activity.CaptureActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_banner:
                 Intent intent3 = new Intent(MainActivity.this, BannerActivity.class);
                 startActivity(intent3);
+                return true;
+            case R.id.action_ptr:
+                Intent intent4 = new Intent(MainActivity.this, PullToRefreshActivity.class);
+                startActivity(intent4);
                 return true;
         }
         return super.onOptionsItemSelected(item);

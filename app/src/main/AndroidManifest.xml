@@ -40,6 +40,11 @@
             android:label="@string/title_activity_banner"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".demo.PullToRefreshActivity"
+            android:label="@string/title_activity_pull_to_refresh"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>
