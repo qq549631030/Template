@@ -97,9 +97,11 @@ dependencies {
     //Ｂutterknife(依赖注入)
     compile 'com.jakewharton:butterknife:7.0.1'
     //Picasso(图片缓存)
-//    compile 'com.squareup.picasso:picasso:2.5.2'
+    //compile 'com.squareup.picasso:picasso:2.5.2'
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
+    //广告轮播控件
+    compile 'com.bigkoo:convenientbanner:1.0.8'
     //内存泄露检测(debug时候用就好)
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
 }

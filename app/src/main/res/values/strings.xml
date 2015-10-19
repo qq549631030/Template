@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Template</string>
     <string name="title_activity_create_qrcode">CreateQrcodeActivity</string>
+    <string name="title_activity_banner">BannerActivity</string>
 </resources>

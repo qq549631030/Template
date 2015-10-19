@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 
+import com.hx.template.demo.BannerActivity;
 import com.hx.template.demo.CreateQrcodeActivity;
 import com.hx.template.zxing.activity.CaptureActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -70,13 +71,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_scan:
+            case R.id.action_scan_qrcode:
                 Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
                 startActivity(intent);
                 return true;
-            case R.id.action_create:
+            case R.id.action_create_qrcode:
                 Intent intent2 = new Intent(MainActivity.this, CreateQrcodeActivity.class);
                 startActivity(intent2);
+                return true;
+            case R.id.action_banner:
+                Intent intent3 = new Intent(MainActivity.this, BannerActivity.class);
+                startActivity(intent3);
                 return true;
         }
         return super.onOptionsItemSelected(item);
