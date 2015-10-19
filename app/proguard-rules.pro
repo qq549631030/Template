@@ -66,3 +66,6 @@
 ##### LeakCanary
 -keep class org.eclipse.mat.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
+
+##### Picasso
+-dontwarn com.squareup.okhttp.**
