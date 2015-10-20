@@ -1,14 +1,20 @@
 package com.hx.template.entity;
 
+import com.j256.ormlite.field.DatabaseField;
+
 import java.io.Serializable;
 
 /**
  * Created by huangxiang on 15/7/4.
  */
 public class BaseEntity implements Serializable {
+    @DatabaseField(id = true)
     private long id;
+    @DatabaseField
     private long createDate;
+    @DatabaseField
     private long modifyDate;
+    @DatabaseField
     private int delFlag;
 
     public BaseEntity() {
