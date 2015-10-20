@@ -1,5 +1,6 @@
 package com.hx.template.http.impl;
 
+import com.hx.template.entity.User;
 import com.hx.template.entity.enums.ErrorCode;
 
 /**
@@ -21,7 +22,7 @@ public class HttpReturn {
         public BaseReturn() {
         }
 
-        public boolean isStatus() {
+        public boolean getStatus() {
             return status;
         }
 
@@ -47,5 +48,22 @@ public class HttpReturn {
 
     }
 
+    /**
+     * 登录返回
+     */
+    public class LoginReturn extends BaseReturn {
+        private User data;
 
+        public LoginReturn() {
+            super();
+        }
+
+        public User getData() {
+            return data;
+        }
+
+        public void setData(User data) {
+            this.data = data;
+        }
+    }
 }

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.utils.ImageUtils;
@@ -30,7 +31,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CropperDemoActivity extends AppCompatActivity {
+public class CropperDemoActivity extends BaseActivity {
 
     private static final int REQUEST_GALLERY = 1;
     private static final int REQUEST_CAMERA = 2;

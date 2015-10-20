@@ -1,16 +1,16 @@
 package com.hx.template;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
-//import com.squareup.leakcanary.LeakCanary;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.hx.template.entity.User;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -20,11 +20,13 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.L;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
+
+//import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by huangxiang on 15/10/14.
@@ -39,6 +41,8 @@ public class CustomApplication extends Application {
      */
     public static final String VOLLEY_TAG = "VolleyPatterns";
 
+    public static ArrayList<Activity> activityList;
+
     public static String sessionId = "";
 
     private static RequestQueue mRequestQueue;
@@ -48,10 +52,16 @@ public class CustomApplication extends Application {
     public static DisplayImageOptions defaultOptions;//默认图片配置
     public static DisplayImageOptions avatarOptions;//头像图片配置
 
+
+    public static long currentLoginId;
+
+    public static User currentUser;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
+        activityList = new ArrayList<Activity>();
         initImageLoader(instance);
         enabledStrictMode();
         //内存泄露检测(debug时候用就好)
@@ -60,6 +70,24 @@ public class CustomApplication extends Application {
 
     public static CustomApplication getInstance() {
         return instance;
+    }
+
+
+    public static void addActivity(Activity activity) {
+        activityList.add(activity);
+    }
+
+    public static void removeActivity(Activity activity) {
+        if (activityList.contains(activity)) {
+            activityList.remove(activity);
+        }
+    }
+
+    public static void finishAllActivity() {
+        for (Activity a : activityList) {
+            a.finish();
+        }
+        activityList.clear();
     }
 
     private void enabledStrictMode() {

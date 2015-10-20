@@ -6,6 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!--默认竖屏方向-->
+        <item name="android:screenOrientation">portrait</item>
+        <!--默认窗口背景-->
+        <!--<item name="android:windowBackground">@drawable/window_background_transparent</item>-->
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

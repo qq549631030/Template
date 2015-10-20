@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.hx.template.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.adapter.NetworkImageHolderView;
 
@@ -17,7 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class BannerActivity extends AppCompatActivity {
+public class BannerActivity extends BaseActivity {
 
     @Bind(R.id.banner)
     ConvenientBanner banner;

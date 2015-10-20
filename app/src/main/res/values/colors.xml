@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!-- 基本色-->
+    <color name="app_base_black">@android:color/black</color>
+    <color name="app_base_white">@android:color/white</color>
+
+    <!-- 文字色-->
+
+    <!-- 线条色-->
+
+    <!-- 填充色-->
+
+    <!-- 窗口背景-->
+    <drawable name="window_background_transparent">@android:color/transparent</drawable>
 </resources>

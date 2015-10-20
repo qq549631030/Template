@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
+import com.hx.template.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.utils.TimeUtils;
 import com.hx.template.views.PullToRefreshView;
@@ -16,7 +17,7 @@ import java.util.Calendar;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PullToRefreshActivity extends AppCompatActivity {
+public class PullToRefreshActivity extends BaseActivity {
     private static final String TAG = "PullToRefreshActivity";
     @Bind(R.id.listView)
     ListView listView;

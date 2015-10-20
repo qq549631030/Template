@@ -15,6 +15,7 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+import com.hx.template.BaseActivity;
 import com.hx.template.R;
 
 import java.util.Hashtable;
@@ -22,7 +23,7 @@ import java.util.Hashtable;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class CreateQrcodeActivity extends AppCompatActivity {
+public class CreateQrcodeActivity extends BaseActivity {
 
     private static final int QR_WIDTH = 300;
     private static final int QR_HEIGHT = 300;

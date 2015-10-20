@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.edmodo.cropper.CropImageView;
+import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.utils.ClickUtils;
@@ -25,7 +26,7 @@ import java.io.FileOutputStream;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class CropperActivity extends AppCompatActivity {
+public class CropperActivity extends BaseActivity {
 
     @Bind(R.id.cropImageView)
     CropImageView cropImageView;
