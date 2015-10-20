@@ -63,7 +63,7 @@ public class CustomApplication extends Application {
         instance = this;
         activityList = new ArrayList<Activity>();
         initImageLoader(instance);
-        enabledStrictMode();
+//        enabledStrictMode();
         //内存泄露检测(debug时候用就好)
 //        LeakCanary.install(this);
     }

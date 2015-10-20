@@ -35,10 +35,11 @@
 
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }
-#-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
-#TODO
+-keep class com.hx.template.entity.** { *; }
+-keep class com.hx.template.http.impl.** { *; }
 
 ##### Butterknife
 -keep class butterknife.** { *; }
