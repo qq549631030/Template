@@ -98,12 +98,10 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     //Ｂutterknife(依赖注入)
     compile 'com.jakewharton:butterknife:7.0.1'
-    //Picasso(图片缓存)
-    //compile 'com.squareup.picasso:picasso:2.5.2'
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
     //广告轮播控件
     compile 'com.bigkoo:convenientbanner:1.0.8'
-    //下拉刷新，上拉加载更多组件
-    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    //图片裁剪
+    compile 'com.edmodo:cropper:1.0.1'
 }

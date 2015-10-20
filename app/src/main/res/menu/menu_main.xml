@@ -16,9 +16,13 @@
         android:title="广告轮播"
         app:showAsAction="never" />
 
-
     <item
         android:id="@+id/action_ptr"
         android:title="下拉刷新"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_cropper"
+        android:title="图片裁剪"
         app:showAsAction="never" />
 </menu>

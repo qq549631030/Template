@@ -26,6 +26,7 @@ public class CreateQrcodeActivity extends AppCompatActivity {
 
     private static final int QR_WIDTH = 300;
     private static final int QR_HEIGHT = 300;
+
     @Bind(R.id.editText)
     EditText editText;
     @Bind(R.id.image)
@@ -40,6 +41,7 @@ public class CreateQrcodeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

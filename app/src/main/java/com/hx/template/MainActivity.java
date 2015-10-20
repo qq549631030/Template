@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import com.hx.template.demo.BannerActivity;
 import com.hx.template.demo.CreateQrcodeActivity;
+import com.hx.template.demo.CropperActivity;
+import com.hx.template.demo.CropperDemoActivity;
 import com.hx.template.demo.PullToRefreshActivity;
 import com.hx.template.zxing.activity.CaptureActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate() called with: " + "savedInstanceState = [" + savedInstanceState + "]");
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-//        Picasso.with(this).load("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg").into(image);
         ImageLoader.getInstance().displayImage("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg", image, CustomApplication.defaultOptions, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {
@@ -88,8 +89,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent4 = new Intent(MainActivity.this, PullToRefreshActivity.class);
                 startActivity(intent4);
                 return true;
+            case R.id.action_cropper:
+                Intent intent5 = new Intent(MainActivity.this, CropperDemoActivity.class);
+                startActivity(intent5);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
 }
