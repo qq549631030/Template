@@ -19,6 +19,7 @@ import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.utils.ImageUtils;
 import com.hx.template.utils.ToastUtils;
+import com.hx.template.views.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
@@ -41,7 +42,7 @@ public class CropperDemoActivity extends AppCompatActivity {
     private static final int ITEM3 = Menu.FIRST + 2;
 
     @Bind(R.id.image)
-    ImageView image;
+    CircleImageView image;
 
 
     private File cameraFile;
