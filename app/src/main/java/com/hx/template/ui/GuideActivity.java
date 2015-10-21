@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
-import com.hx.template.MainActivity;
+import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.views.PageIndicator;
@@ -71,7 +71,7 @@ public class GuideActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.start:
                 SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_isFirst, false);
-                Intent intentHome = new Intent(GuideActivity.this, MainActivity.class);
+                Intent intentHome = new Intent(GuideActivity.this, DemoMainActivity.class);
                 startActivity(intentHome);
                 GuideActivity.this.finish();
                 break;

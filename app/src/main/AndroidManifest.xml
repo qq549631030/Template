@@ -27,38 +27,42 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity
+            android:name=".demo.DemoMainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".zxing.activity.CaptureActivity" />
         <activity android:name=".zxing.activity.ResultActivity" />
         <activity
             android:name=".demo.CreateQrcodeActivity"
             android:label="@string/title_activity_create_qrcode"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".demo.BannerActivity"
             android:label="@string/title_activity_banner"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".demo.PullToRefreshActivity"
             android:label="@string/title_activity_pull_to_refresh"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".demo.CropperActivity"
             android:label="@string/title_activity_cropper"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".demo.CropperDemoActivity"
             android:label="@string/title_activity_cropper_demo"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.GuideActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-
     </application>
 
 </manifest>

@@ -12,7 +12,7 @@ import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.CustomApplication;
 import com.hx.template.HttpConfig;
-import com.hx.template.MainActivity;
+import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.ErrorCode;
@@ -56,12 +56,12 @@ public class SplashActivity extends BaseActivity {
                     break;
 
                 case GO_TO_LOGIN:
-                    Intent intentLogin = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intentLogin = new Intent(SplashActivity.this, DemoMainActivity.class);
                     startActivity(intentLogin);
                     SplashActivity.this.finish();
                     break;
                 case GO_TO_HOME:
-                    Intent intentHome = new Intent(SplashActivity.this, MainActivity.class);
+                    Intent intentHome = new Intent(SplashActivity.this, DemoMainActivity.class);
                     startActivity(intentHome);
                     SplashActivity.this.finish();
                     break;
