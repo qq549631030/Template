@@ -11,6 +11,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.hx.template.entity.User;
+import com.hx.template.http.OkHttpStack;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -131,7 +132,7 @@ public class CustomApplication extends Application {
         if (mRequestQueue == null) {
             synchronized (CustomApplication.class) {
                 if (mRequestQueue == null) {
-                    mRequestQueue = Volley.newRequestQueue(instance);
+                    mRequestQueue = Volley.newRequestQueue(instance, new OkHttpStack());
                 }
             }
         }

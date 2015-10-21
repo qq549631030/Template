@@ -93,25 +93,37 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
+
     //内存泄露检测(debug时候用就好)
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+
     //Gson(JSON)
     compile 'com.google.code.gson:gson:2.2.4'
-    //volley(网络请求)
+    //网络请求
+    //volley
     compile 'com.mcxiaoke.volley:library:1.0.19'
+    //Okhttp
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
+
     //EventBus(事件总线)
     compile 'de.greenrobot:eventbus:2.4.0'
-    //Ｂutterknife(依赖注入)
+
+    //Butterknife(依赖注入)
     compile 'com.jakewharton:butterknife:7.0.1'
-    //GreenDao(数据库)
+    //数据库
+    //GreenDao
     compile 'de.greenrobot:greendao:2.0.0'
     //OrmLite
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
+
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
+
     //广告轮播控件
     compile 'com.bigkoo:convenientbanner:1.0.8'
+
     //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
