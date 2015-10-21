@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 public class CustomDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-	private static final String DATABASE_NAME = "clothing.db";
+	private static final String DATABASE_NAME = "template.db";
 
 	private static final int DATABASE_VERSION = 1;
 

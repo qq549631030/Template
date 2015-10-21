@@ -74,6 +74,7 @@ public class DemoMainActivity extends BaseActivity {
                 Log.d(TAG, "onProgressUpdate() called with: " + "s = [" + s + "], view = [" + view + "], i = [" + i + "], i1 = [" + i1 + "]");
             }
         });
+
     }
 
     @Override

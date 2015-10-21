@@ -6,10 +6,15 @@
     <!-- 基本色-->
     <color name="app_base_black">@android:color/black</color>
     <color name="app_base_white">@android:color/white</color>
+    <color name="app_base_red">#e92220</color>
+    <color name="app_base_orange">#f5a83d</color>
+    <color name="app_base_white_gray">#dddddd</color>
 
     <!-- 文字色-->
+    <color name="app_base_text_color_orange">@color/app_base_orange</color>
 
     <!-- 线条色-->
+    <color name="app_base_line_color_gray">@color/app_base_white_gray</color>
 
     <!-- 填充色-->
 

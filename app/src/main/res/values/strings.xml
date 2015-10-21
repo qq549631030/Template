@@ -6,4 +6,5 @@
     <string name="title_activity_cropper">CropperActivity</string>
     <string name="title_activity_cropper_demo">CropperDemoActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

@@ -9,9 +9,13 @@ import android.text.TextUtils;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.hx.template.entity.User;
 import com.hx.template.http.OkHttpStack;
+import com.hx.template.http.StethoOkHttpStack;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -20,6 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.L;
+import com.squareup.okhttp.OkHttpClient;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -67,6 +72,11 @@ public class CustomApplication extends Application {
 //        enabledStrictMode();
         //内存泄露检测(debug时候用就好)
 //        LeakCanary.install(this);
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build());
     }
 
     public static CustomApplication getInstance() {
@@ -132,11 +142,25 @@ public class CustomApplication extends Application {
         if (mRequestQueue == null) {
             synchronized (CustomApplication.class) {
                 if (mRequestQueue == null) {
-                    mRequestQueue = Volley.newRequestQueue(instance, new OkHttpStack());
+                    HttpStack stack = initDebugHttpStack();
+//                    HttpStack stack = initReleaseHttpStack();
+                    mRequestQueue = Volley.newRequestQueue(instance, stack);
                 }
             }
         }
         return mRequestQueue;
+    }
+
+    public static HttpStack initDebugHttpStack() {
+        OkHttpClient client = new OkHttpClient();
+        client.networkInterceptors().add(new StethoInterceptor());
+        StethoOkHttpStack stack = new StethoOkHttpStack(client);
+        return stack;
+    }
+
+    public static HttpStack initReleaseHttpStack() {
+        OkHttpStack stack = new OkHttpStack();
+        return stack;
     }
 
     /**

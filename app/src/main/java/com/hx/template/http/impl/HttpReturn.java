@@ -14,7 +14,7 @@ public class HttpReturn {
         /**
          * 状态
          */
-        private boolean status;
+        private int status;
 
         private ErrorCode code;
         private String msg;
@@ -22,11 +22,11 @@ public class HttpReturn {
         public BaseReturn() {
         }
 
-        public boolean getStatus() {
+        public int getStatus() {
             return status;
         }
 
-        public void setStatus(boolean status) {
+        public void setStatus(int status) {
             this.status = status;
         }
 
