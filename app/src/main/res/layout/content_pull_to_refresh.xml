@@ -14,6 +14,7 @@
 
     <com.hx.template.views.PullToRefreshView
         android:id="@+id/pullToRefreshView"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -24,8 +25,7 @@
             android:layout_marginTop="10dp"
             android:cacheColorHint="#00000000"
             android:dividerHeight="10dp"
-            android:listSelector="#00000000">
+            android:listSelector="#00000000" />
 
-        </ListView>
     </com.hx.template.views.PullToRefreshView>
 </RelativeLayout>

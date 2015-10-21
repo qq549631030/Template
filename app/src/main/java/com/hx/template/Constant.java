@@ -17,7 +17,7 @@ public class Constant {
 
     public static String phoneFormat = "^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$";// 手机号码正则表达式
 
-    public static String SECRET_KEY = "freekey";// 密码加密密钥
+    public static String SECRET_KEY = "templatekey";// 密码加密密钥
 
     /**
      * SharedPreference存储字段名

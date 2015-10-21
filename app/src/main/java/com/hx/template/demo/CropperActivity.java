@@ -3,14 +3,10 @@ package com.hx.template.demo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.edmodo.cropper.CropImageView;
 import com.hx.template.BaseActivity;
@@ -44,15 +40,6 @@ public class CropperActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         srcUri = getIntent().getData();
         File defaultFile = new File(getExternalCacheDir(), Constant.crop_image_name);
         String path = getIntent().getStringExtra("cropedFilePath");
@@ -65,6 +52,8 @@ public class CropperActivity extends BaseActivity {
     }
 
     private void initViews() {
+        cropImageView.setAspectRatio(300,300);
+        cropImageView.setFixedAspectRatio(true);
         Bitmap bitmap = ImageUtils.getImage(this, srcUri);
         cropImageView.setImageBitmap(bitmap);
     }

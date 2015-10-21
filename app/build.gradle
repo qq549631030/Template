@@ -114,4 +114,5 @@ dependencies {
     compile 'com.bigkoo:convenientbanner:1.0.8'
     //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
+    compile 'com.soundcloud.android:android-crop:1.0.1@aar'
 }

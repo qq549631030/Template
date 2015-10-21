@@ -1,28 +1,24 @@
 package com.hx.template.demo;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.utils.ImageUtils;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.views.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.io.IOException;
@@ -102,16 +98,23 @@ public class CropperDemoActivity extends BaseActivity {
                 case REQUEST_GALLERY:
                     if (data != null) {
                         Uri mUri = data.getData();
-                        doCropPhoto(mUri);
+//                        doCropPhoto(mUri);
+                        doCropPhoto2(mUri);
                     }
                     break;
                 case REQUEST_CAMERA:
                     Uri uri = Uri.fromFile(cameraFile);
-                    doCropPhoto(uri);
+//                    doCropPhoto(uri);
+                    doCropPhoto2(uri);
                     break;
                 case REQUEST_CROP:
                     updateAvatar(cropedFile);
                     break;
+
+                case Crop.REQUEST_CROP:
+                    updateAvatar(cropedFile);
+                    break;
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -152,7 +155,7 @@ public class CropperDemoActivity extends BaseActivity {
         }
     }
 
-    // 启动自定义剪辑器
+    // 启动Cropper剪辑器
     private void doCropPhoto(Uri uri) {
         try {
             initCropFile();
@@ -162,6 +165,12 @@ public class CropperDemoActivity extends BaseActivity {
             startActivityForResult(cropIntent, REQUEST_CROP);
         } catch (Exception e) {
         }
+    }
+    // 启动android-crop剪辑器
+    private void doCropPhoto2(Uri inputUri) {
+        initCropFile();
+        Uri outputUri = Uri.fromFile(cropedFile);
+        Crop.of(inputUri, outputUri).asSquare().start(this);
     }
 
     private void initCropFile() {

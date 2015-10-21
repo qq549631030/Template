@@ -93,9 +93,4 @@ public class MainActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-    }
 }

@@ -63,6 +63,13 @@ public class SecretUtils {
 		return result;
 	}
 
+	/**
+	 * 加密
+	 * @param seed
+	 * @param cleartext
+	 * @return
+	 * @throws Exception
+	 */
 	public static String encrypt(String seed, String cleartext)
 			throws Exception {
 		byte[] rawKey = getRawKey(seed.getBytes());
@@ -70,6 +77,13 @@ public class SecretUtils {
 		return toHex(result);
 	}
 
+	/**
+	 * 解密
+	 * @param seed
+	 * @param encrypted
+	 * @return
+	 * @throws Exception
+	 */
 	public static String decrypt(String seed, String encrypted)
 			throws Exception {
 		byte[] rawKey = getRawKey(seed.getBytes());

@@ -1,10 +1,8 @@
 package com.hx.template.demo;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.hx.template.BaseActivity;
@@ -12,7 +10,9 @@ import com.hx.template.R;
 import com.hx.template.utils.TimeUtils;
 import com.hx.template.views.PullToRefreshView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,8 +23,8 @@ public class PullToRefreshActivity extends BaseActivity {
     ListView listView;
     @Bind(R.id.pullToRefreshView)
     PullToRefreshView pullToRefreshView;
-
-
+    ArrayAdapter adapter;
+    List<String> datas = new ArrayList<String>();
     /**
      * 是否加载过数据
      */
@@ -43,7 +43,7 @@ public class PullToRefreshActivity extends BaseActivity {
         public void onHeaderRefresh(PullToRefreshView view) {
             isReload = true;
             pageNo = 1;
-//            getMessageList();
+            getDataList();
         }
     };
 
@@ -51,7 +51,7 @@ public class PullToRefreshActivity extends BaseActivity {
         @Override
         public void onFooterRefresh(PullToRefreshView view) {
             isReload = false;
-//            getMessageList();
+            getDataList();
         }
     };
 
@@ -69,7 +69,7 @@ public class PullToRefreshActivity extends BaseActivity {
         } else {
             onFooterRefreshComplete();
         }
-//        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -77,18 +77,28 @@ public class PullToRefreshActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pull_to_refresh);
         ButterKnife.bind(this);
+        pullToRefreshView.setOnHeaderRefreshListener(headerRefreshListener);
+        pullToRefreshView.setOnFooterRefreshListener(footerRefreshListener);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        for (int i = 0; i < 10; i++) {
+            datas.add("item " + i);
+        }
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, android.R.id.text1, datas);
+        listView.setAdapter(adapter);
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
-
+    private void getDataList() {
+        if (isReload) {
+            datas.clear();
+        }
+        for (int i = 0; i < 10; i++) {
+            datas.add("item " + i);
+        }
+        pageNo++;
+        onRefreshComplete();
     }
 
 }
