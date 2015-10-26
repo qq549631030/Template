@@ -32,8 +32,6 @@ import java.util.Map;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
 
-//import com.squareup.leakcanary.LeakCanary;
-
 /**
  * Created by huangxiang on 15/10/14.
  */
@@ -69,9 +67,12 @@ public class CustomApplication extends Application {
         instance = this;
         activityList = new ArrayList<Activity>();
         initImageLoader(instance);
-//        enabledStrictMode();
-        //内存泄露检测(debug时候用就好)
-//        LeakCanary.install(this);
+        enabledStrictMode();
+        //内存泄露检测
+        if (Constant.DEBUG) {
+//            LeakCanary.install(this);
+        }
+        //Stetho
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
@@ -142,8 +143,12 @@ public class CustomApplication extends Application {
         if (mRequestQueue == null) {
             synchronized (CustomApplication.class) {
                 if (mRequestQueue == null) {
-                    HttpStack stack = initDebugHttpStack();
-//                    HttpStack stack = initReleaseHttpStack();
+                    HttpStack stack = null;
+                    if (Constant.DEBUG) {
+                        stack = initDebugHttpStack();
+                    } else {
+                        stack = initReleaseHttpStack();
+                    }
                     mRequestQueue = Volley.newRequestQueue(instance, stack);
                 }
             }

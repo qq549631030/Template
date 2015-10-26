@@ -71,5 +71,5 @@
 ##### Picasso
 -dontwarn com.squareup.okhttp.**
 
-##### Okio
+##### Stetho Okio
 -dontwarn okio.**

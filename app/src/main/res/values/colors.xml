@@ -7,13 +7,17 @@
     <color name="app_base_black">@android:color/black</color>
     <color name="app_base_white">@android:color/white</color>
     <color name="app_base_red">#e92220</color>
+    <color name="app_base_blue">#0f56ad</color>
     <color name="app_base_orange">#f5a83d</color>
+    <color name="app_base_gray">#999999</color>
     <color name="app_base_white_gray">#dddddd</color>
 
     <!-- 文字色-->
     <color name="app_base_text_color_orange">@color/app_base_orange</color>
+    <color name="app_base_text_color_gray">@color/app_base_gray</color>
 
     <!-- 线条色-->
+    <color name="app_base_text_color_red">@color/app_base_red</color>
     <color name="app_base_line_color_gray">@color/app_base_white_gray</color>
 
     <!-- 填充色-->

@@ -2,13 +2,15 @@ package com.hx.template.utils;
 
 import android.util.Log;
 
+import com.hx.template.Constant;
+
 /**
  * 
  * @author Huang Xiang
  * 
  */
 public class LogUtils {
-	private static boolean DEBUG = true;
+	private static boolean DEBUG = Constant.DEBUG;
 
 	public static void e(String TAG, String message) {
 		if (DEBUG) {

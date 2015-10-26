@@ -49,12 +49,53 @@ public class HttpReturn {
     }
 
     /**
+     * 注册返回
+     *
+     * @author huangxiang
+     */
+    public class RegisterReturn extends BaseReturn {
+        private User data;
+
+        public RegisterReturn() {
+        }
+
+        public User getData() {
+            return data;
+        }
+
+        public void setData(User data) {
+            this.data = data;
+        }
+    }
+
+    /**
      * 登录返回
      */
     public class LoginReturn extends BaseReturn {
         private User data;
 
         public LoginReturn() {
+            super();
+        }
+
+        public User getData() {
+            return data;
+        }
+
+        public void setData(User data) {
+            this.data = data;
+        }
+    }
+
+    /**
+     * 修改密码返回
+     *
+     * @author huangxiang
+     */
+    public class ModifyPwdReturn extends BaseReturn {
+        private User data;
+
+        public ModifyPwdReturn() {
             super();
         }
 

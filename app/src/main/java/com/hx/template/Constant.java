@@ -12,6 +12,9 @@ package com.hx.template;
  * @date 2015-3-17 下午2:37:01
  */
 public class Constant {
+
+    public static boolean DEBUG = true;
+
     public static String PROJECT_NAME = "template";// 密码加密密钥
 
     public static String emailFormat = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
