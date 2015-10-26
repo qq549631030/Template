@@ -2,18 +2,23 @@ package com.hx.template.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.graphics.Palette;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
-import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
+import com.hx.template.demo.DemoMainActivity;
+import com.hx.template.utils.ColorUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.views.PageIndicator;
 
@@ -50,10 +55,11 @@ public class GuideActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                changeColor(position);
                 if (position == bitmapsFull.length - 1) {
                     start.setVisibility(View.VISIBLE);
                 } else {
-                    start.setVisibility(View.GONE);
+                    start.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -110,5 +116,25 @@ public class GuideActivity extends BaseActivity {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+    }
+
+
+    private void changeColor(int position){
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),bitmapsFull[position]);
+        // Asynchronous
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                Palette.Swatch vibrant = palette.getVibrantSwatch();
+                // 其中状态栏、游标、底部导航栏的颜色需要加深一下，也可以不加，具体情况在代码之后说明
+                start.setBackgroundColor(ColorUtils.colorBurn(vibrant.getRgb()));
+                start.setTextColor(vibrant.getBodyTextColor());
+                if (android.os.Build.VERSION.SDK_INT >= 21) {
+                    Window window = getWindow();
+                    // 很明显，这两货是新API才有的。
+                    window.setStatusBarColor(ColorUtils.colorBurn(vibrant.getRgb()));
+                    window.setNavigationBarColor(ColorUtils.colorBurn(vibrant.getRgb()));
+                }
+            }
+        });
     }
 }
