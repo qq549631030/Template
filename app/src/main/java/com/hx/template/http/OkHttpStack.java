@@ -9,7 +9,6 @@
 package com.hx.template.http;
 
 import com.android.volley.toolbox.HurlStack;
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.OkUrlFactory;
 
@@ -32,8 +31,6 @@ public class OkHttpStack extends HurlStack {
             throw new NullPointerException("Client must not be null.");
         }
         this.client = client;
-        //for stetho
-        this.client.networkInterceptors().add(new StethoInterceptor());
     }
 
     @Override
