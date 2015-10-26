@@ -59,7 +59,7 @@ public class GuideActivity extends BaseActivity {
                 if (position == bitmapsFull.length - 1) {
                     start.setVisibility(View.VISIBLE);
                 } else {
-                    start.setVisibility(View.VISIBLE);
+                    start.setVisibility(View.GONE);
                 }
             }
 
@@ -69,6 +69,7 @@ public class GuideActivity extends BaseActivity {
             }
         });
         indicator.setViewPager(viewpager);
+        changeColor(0);
     }
 
 
