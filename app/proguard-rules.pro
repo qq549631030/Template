@@ -70,3 +70,6 @@
 
 ##### Picasso
 -dontwarn com.squareup.okhttp.**
+
+##### Okio
+-dontwarn okio.**
