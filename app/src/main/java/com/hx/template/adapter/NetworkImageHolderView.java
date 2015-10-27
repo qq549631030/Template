@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.CBPageAdapter;
 import com.hx.template.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by Sai on 15/8/4.
@@ -26,7 +26,8 @@ public class NetworkImageHolderView implements CBPageAdapter.Holder<String>{
     @Override
     public void UpdateUI(Context context, final int position, String data) {
         imageView.setImageResource(R.drawable.default_image);
-        ImageLoader.getInstance().displayImage(data,imageView);
+//        ImageLoader.getInstance().displayImage(data,imageView);
+        Picasso.with(context).load(data).into(imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
