@@ -72,6 +72,10 @@ public class GuideActivity extends BaseActivity {
         changeColor(0);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @OnClick({R.id.start})
     public void onClick(View view) {

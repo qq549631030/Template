@@ -1,10 +1,8 @@
 package com.hx.template.demo;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -13,13 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.hx.template.BaseActivity;
-import com.hx.template.CustomApplication;
 import com.hx.template.R;
+import com.hx.template.ui.SettingActivity;
 import com.hx.template.zxing.activity.CaptureActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,38 +38,38 @@ public class DemoMainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(DemoMainActivity.this, SettingActivity.class);
+                startActivity(intent);
             }
         });
 
-        ImageLoader.getInstance().displayImage("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg", image, CustomApplication.defaultOptions, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
-                Log.d(TAG, "onLoadingStarted() called with: " + "s = [" + s + "], view = [" + view + "]");
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                Log.d(TAG, "onLoadingFailed() called with: " + "s = [" + s + "], view = [" + view + "], failReason = [" + failReason + "]");
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                Log.d(TAG, "onLoadingComplete() called with: " + "s = [" + s + "], view = [" + view + "], bitmap = [" + bitmap + "]");
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-                Log.d(TAG, "onLoadingCancelled() called with: " + "s = [" + s + "], view = [" + view + "]");
-            }
-        }, new ImageLoadingProgressListener() {
-            @Override
-            public void onProgressUpdate(String s, View view, int i, int i1) {
-                Log.d(TAG, "onProgressUpdate() called with: " + "s = [" + s + "], view = [" + view + "], i = [" + i + "], i1 = [" + i1 + "]");
-            }
-        });
-
+//        ImageLoader.getInstance().displayImage("http://imgt6.bdstatic.com/it/u=2,3222226309&fm=25&gp=0.jpg", image, CustomApplication.defaultOptions, new ImageLoadingListener() {
+//            @Override
+//            public void onLoadingStarted(String s, View view) {
+//                Log.d(TAG, "onLoadingStarted() called with: " + "s = [" + s + "], view = [" + view + "]");
+//            }
+//
+//            @Override
+//            public void onLoadingFailed(String s, View view, FailReason failReason) {
+//                Log.d(TAG, "onLoadingFailed() called with: " + "s = [" + s + "], view = [" + view + "], failReason = [" + failReason + "]");
+//            }
+//
+//            @Override
+//            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+//                Log.d(TAG, "onLoadingComplete() called with: " + "s = [" + s + "], view = [" + view + "], bitmap = [" + bitmap + "]");
+//            }
+//
+//            @Override
+//            public void onLoadingCancelled(String s, View view) {
+//                Log.d(TAG, "onLoadingCancelled() called with: " + "s = [" + s + "], view = [" + view + "]");
+//            }
+//        }, new ImageLoadingProgressListener() {
+//            @Override
+//            public void onProgressUpdate(String s, View view, int i, int i1) {
+//                Log.d(TAG, "onProgressUpdate() called with: " + "s = [" + s + "], view = [" + view + "], i = [" + i + "], i1 = [" + i1 + "]");
+//            }
+//        });
+        Picasso.with(DemoMainActivity.this).load("http://d.hiphotos.baidu.com/image/pic/item/d058ccbf6c81800aaa274a03b33533fa838b47f9.jpg").placeholder(R.drawable.default_image).into(image);
     }
 
     @Override
