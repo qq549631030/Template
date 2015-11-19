@@ -141,4 +141,6 @@ dependencies {
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'com.android.support:palette-v7:23.1.0'
+    //java js 交互
+    compile 'com.github.lzyzsd:jsbridge:1.0.2'
 }
