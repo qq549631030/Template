@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 //用于获取当前时间
 def releaseTime() {
-    return new Date().format("yyyy-MM-dd-HH-mm", TimeZone.getTimeZone("UTC"))
+    return new Date().format("yyyy-MM-dd", TimeZone.getDefault())
 }
 
 //获取local.properties的内容
@@ -47,6 +47,8 @@ android {
         multiDexEnabled true
         // 默认是umeng的渠道
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -140,7 +142,12 @@ dependencies {
     //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    compile 'com.android.support:palette-v7:23.1.0'
+    compile 'com.android.support:palette-v7:23.0.1'
     //java js 交互
     compile 'com.github.lzyzsd:jsbridge:1.0.2'
+
+
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
 }
