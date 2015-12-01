@@ -2,9 +2,9 @@ package com.hx.template.demo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.webkit.WebView;
 
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -56,6 +56,8 @@ public class BannerActivity extends BaseActivity {
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                         //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(ConvenientBanner.Transformer.DefaultTransformer);
+
+        WebView webView = new WebView(this);
     }
 
     @Override

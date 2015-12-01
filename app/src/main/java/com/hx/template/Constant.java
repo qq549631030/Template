@@ -49,11 +49,11 @@ public class Constant {
     /**
      * 商户PID
      */
-    public static final String PARTNER = "2088811486464185";
+    public static final String PARTNER = "2088502836518781";
     /**
      * 商户收款账号
      */
-    public static final String SELLER = "zhuweijie@chinasilex.com";
+    public static final String SELLER = "15870679047";
     /**
      * 服务器异步通知地址
      */
@@ -62,11 +62,11 @@ public class Constant {
     /**
      * 应用RSA私钥
      */
-    public static final String APP_RSA_PRIVATE = "MIICeQIBADANBgkqhkiG9w0BAQEFAASCAmMwggJfAgEAAoGBAL3fSc3TYVme/TnJDiPh31G8f1qBTus2YjhN4JXsE3DgNGW3v74d4lMRSqqgSZqwlGoldql70qaFXK6ExRtWM4dj0FrgZrcRiGI5fs8+e8QsCxcEE/7dwwPpS0A6RGTgImAQAm44RF5JMu6OPeEQDTL6kgFIzxFxpHAdSS3n4NxxAgMBAAECgYEAl1k1a2vjXZzuHPG248NYT78BhRMt5TAket0Y+GiF1qPhIHOn09PeZHiUHA5InZXDuBjEzbR15WbIyhPrSi8cQp7dGn0H5ZrNleyO7LWunrc5zkjbnDsBX2x7LhY7mpso9vqkF6BMrrRtRLp9w+M0zqHQrlQuRbFhxcjZ6RhjPwECQQDxAO1NuVeNqO5+XhRp+Etz6c12bAOtdiNgh21RB15cs/HSZFu65FfUMHcnIkqHROl8iHbJSgblFkvObjXVRWY9AkEAya/cyIgJzXtSg9OwOPnsa3v6RTzaEX96JQ6mrrLyLDmS1tl+b2XA+5ONtfks1iC4uEwbr0lTJ+wJ6T2sojBmRQJBALhgNywRMXRE20B+BSwVMtRY+EEy3ZVlHieJNA6bjotpdwW4lZzjeHXzJhUgXNgj1mTZmdbg9Wlpp1Eka7bfwxkCQQCpVW4ZL56LVy9AX0tlivBkjgLifuTYLB9xXYu0walyWCRhHtp4zQXqM0iXsE1kurRciAn2canPqu3nVlDLG7fBAkEA2ic9baFuRkHs7fCCONJeDtRVgjthTc9w0LQ9wt0RakFBJEii+W5auQx5HakamSew+D/2F8IpGLQGfImXyMC1LA==";
+    public static final String APP_RSA_PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOC60vpDioHlQu4SRSNMhMDzeHbb25O/2PkePPCMyTF9fjiacX0SUJnWx5/d2zb1/CBVbCZtxPW6aKD7+UHje8iYMcAgJOyGHqPV8IQ1NCIkOubvfvT2seR7Y5Mf/JzqLYP1BKr2S5TS6TswoI+gdeYJgFOW1wO7sfpWtFsNpz0bAgMBAAECgYAFWk3WKi+tYmGSvBqreZIb6nCvHBOB1Gr9nAvFiwTrydpszLjxSrNixqvgke87wuYrev1leO3dEICXfQj12c5D8HUcQ9jj45UWqvHvcHVDZ6YezSknoXaE+THAKOv5Rr/bZ/F/wu9KkJaq2tAW/L00x60Yoy/ZK1NCTT++VLUf0QJBAPiRg7r6RIGPrkxmxNjJ5KL8DOOi3IuBt4N3PsEMYmkl9B32Cgq/BqqJB2vVtzsXU/y3eaifmtEaHbUyjvLqtakCQQDnctqo30LA/sOtMMxAlY7cq4IY/JngF/8YmpnLpZPDlzK45a16Dd4LT2bbbuAhxU/QdC1b2d91Q8rV+pF7v48jAkAWMggtPgO3/fh2YgbZxM1hsFgGS5id7GtSledIna577SOrOTkUVJJnz+yVuHOwFxksy8VVRUsxuL9GWslg74xhAkEAl2/2FGKoqeDIJcz1CBkTdd2ebTzybccluXKGyNHZAjQvEv3s6RyjuaDFezRr4Iza8VjiyOOgq3ilAidGA8NOIwJBAJ9t3IefSbQ08CybfOEZEGvPEghKpV0CSAfX6/EBiLKwe5Jc+qYRdFQdZsa3F2pwSkoP69gZKz2pomybgUe92hg=";
     /**
      * 应用RSA公钥
      */
-    public static final String APP_RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC930nN02FZnv05yQ4j4d9RvH9agU7rNmI4TeCV7BNw4DRlt7++HeJTEUqqoEmasJRqJXape9KmhVyuhMUbVjOHY9Ba4Ga3EYhiOX7PPnvELAsXBBP+3cMD6UtAOkRk4CJgEAJuOEReSTLujj3hEA0y+pIBSM8RcaRwHUkt5+DccQIDAQAB";
+    public static final String APP_RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDgutL6Q4qB5ULuEkUjTITA83h229uTv9j5HjzwjMkxfX44mnF9ElCZ1sef3ds29fwgVWwmbcT1umig+/lB43vImDHAICTshh6j1fCENTQiJDrm73709rHke2OTH/yc6i2D9QSq9kuU0uk7MKCPoHXmCYBTltcDu7H6VrRbDac9GwIDAQAB";
 
     /**
      * 支付宝RSA公钥
