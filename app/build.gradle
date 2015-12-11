@@ -138,7 +138,7 @@ dependencies {
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
     //广告轮播控件
-    compile 'com.bigkoo:convenientbanner:1.0.8'
+    compile 'com.bigkoo:convenientbanner:1.1.4'
     //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'

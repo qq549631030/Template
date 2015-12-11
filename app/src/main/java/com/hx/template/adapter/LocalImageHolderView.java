@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.CBPageAdapter;
 
+
 /**
  * Created by Sai on 15/8/4.
  * 本地图片Holder例子
