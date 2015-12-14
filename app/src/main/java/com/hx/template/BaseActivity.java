@@ -56,6 +56,9 @@ public class BaseActivity extends AppCompatActivity {
         //取消当前Activity记录
         CustomApplication.removeActivity(this);
         unregisterReceiver(netReceiver);
+        mProgressDialog = null;
+        netReceiver = null;
+        mConnectivityManager = null;
     }
 
 
