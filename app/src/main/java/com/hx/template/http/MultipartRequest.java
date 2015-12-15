@@ -11,7 +11,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.hx.template.CustomApplication;
 import com.hx.template.utils.LogUtils;
 
-import org.apache.http.HttpEntity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +33,7 @@ public class MultipartRequest extends Request<JSONObject> {
 
 	private Listener<JSONObject> mListener;
 	private MultipartRequestParams params = null;
-	private HttpEntity httpEntity = null;
+	private MultipartEntity httpEntity = null;
 
 	public MultipartRequest(String url, Listener<JSONObject> listener,
 			ErrorListener errorListener, MultipartRequestParams params) {
@@ -93,7 +92,7 @@ public class MultipartRequest extends Request<JSONObject> {
 	@Override
 	public String getBodyContentType() {
 		// String str = httpEntity.getContentType().getValue();
-		return httpEntity.getContentType().getValue();
+		return httpEntity.getContentType();
 	}
 
 	@Override

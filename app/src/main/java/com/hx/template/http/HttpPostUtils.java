@@ -2,6 +2,7 @@ package com.hx.template.http;
 
 import android.content.Context;
 
+import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
@@ -16,6 +17,7 @@ import com.hx.template.utils.ToastUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class HttpPostUtils {
@@ -29,6 +31,8 @@ public class HttpPostUtils {
      * @return void
      */
     public static void doRequest(Request<JSONObject> request) {
+
+        request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f)); //超时5s,超时后重连0次
         CustomApplication.getInstance().addToRequestQueue(request);
     }
 
@@ -47,8 +51,20 @@ public class HttpPostUtils {
         LogUtils.i(TAG, url);
         LogUtils.i(TAG, params.toString());
         FormPostRequest mRequest = new FormPostRequest(url, listener,
-                errorListener, params);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f)); //超时5s,超时后重连0次
+                errorListener);
+        mRequest.setAdditionalParams(params);//设置请求参数
+
+        Map<String, String> addHeaders = Collections.emptyMap();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        mRequest.setAdditionalHeaders(addHeaders);//设置请求头
+
+        mRequest.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
         doRequest(mRequest);
     }
 
@@ -64,9 +80,20 @@ public class HttpPostUtils {
                                          Listener<JSONObject> listener, ErrorListener errorListener) {
         LogUtils.i(TAG, url);
         LogUtils.i(TAG, params.toString());
-        JsonPostRequest mRequest = new JsonPostRequest(url, params, listener,
+        BaseJsonObjectRequest mRequest = new BaseJsonObjectRequest(url, params, listener,
                 errorListener);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
+
+        Map<String, String> addHeaders = Collections.emptyMap();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        mRequest.setAdditionalHeaders(addHeaders);//设置请求头
+
+        mRequest.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
         doRequest(mRequest);
     }
 

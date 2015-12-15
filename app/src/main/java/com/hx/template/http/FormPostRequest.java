@@ -1,6 +1,6 @@
 package com.hx.template.http;
 
-import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -8,8 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.hx.template.CustomApplication;
-import com.hx.template.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,9 +17,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -29,67 +24,34 @@ import java.util.zip.GZIPInputStream;
  *
  * @author huangxiang
  */
-public class FormPostRequest extends Request<JSONObject> {
+public class FormPostRequest extends BaseRequest<JSONObject> {
 
     private final String TAG = FormPostRequest.class.getSimpleName();
 
-    private Map<String, String> mMap;
-    private Listener<JSONObject> mListener;
 
     public FormPostRequest(String url, Listener<JSONObject> listener,
-                           ErrorListener errorListener, Map<String, String> map) {
-        super(Request.Method.POST, url, errorListener);
-        mListener = listener;
-        mMap = map;
-    }
-
-    @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
-        Map<String, String> headers = super.getHeaders();
-        if (null == headers || headers.equals(Collections.emptyMap())) {
-            headers = new HashMap<String, String>();
-        }
-        headers.put("Charset", "UTF-8");
-        headers.put("Accept-Encoding", "gzip,deflate");
-        // 加上sessionId
-        CustomApplication.getInstance().addSessionCookie(headers);
-        LogUtils.i(TAG, "send headers = " + headers.toString());
-        return headers;
-    }
-
-    @Override
-    protected Map<String, String> getParams() throws AuthFailureError {
-        return mMap;
-    }
-
-    @Override
-    public byte[] getBody() throws AuthFailureError {
-        return super.getBody();
-    }
-
-    @Override
-    protected void deliverResponse(JSONObject response) {
-        mListener.onResponse(response);
+                           ErrorListener errorListener) {
+        super(Request.Method.POST, url, listener, errorListener);
     }
 
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
-            LogUtils.i(TAG, "receive headers = " + response.headers.toString());
-            // 保存sessionId
-            CustomApplication.getInstance()
-                    .checkSessionCookie(response.headers);
-            String jsonString = new String(response.data,
-                    HttpHeaderParser.parseCharset(response.headers));
-            // 解析gzip传输
+            String result = null;
             if (response.headers.containsKey("Content-Encoding")) {
                 String encoding = response.headers.get("Content-Encoding");
                 if (encoding != null && encoding.equalsIgnoreCase("gzip")) {
-                    jsonString = decodeGZip(response.data);
+                    // 解析gzip传输
+                    result = decodeGZip(response.data);
+                } else {
+                    result = new String(response.data,
+                            HttpHeaderParser.parseCharset(response.headers));
                 }
             }
-            LogUtils.i(TAG, "response = " + jsonString);
-            return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
+            Cache.Entry cache = HttpHeaderParser.parseCacheHeaders(response);
+            //通知监听器
+            notifyResponseCache(cache);
+            return Response.success(new JSONObject(result), cache);
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
@@ -114,14 +76,4 @@ public class FormPostRequest extends Request<JSONObject> {
         }
         return sb.toString();
     }
-
-    @Override
-    public String toString() {
-        return "JsonObjectPostRequest [mMap=" + mMap + ", getMethod()="
-                + getMethod() + ", getTag()=" + getTag()
-                + ", getTrafficStatsTag()=" + getTrafficStatsTag()
-                + ", getUrl()=" + getUrl() + ", isCanceled()=" + isCanceled()
-                + "]";
-    }
-
 }

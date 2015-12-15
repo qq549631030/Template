@@ -1,7 +1,5 @@
 package com.hx.template.http;
 
-import org.apache.http.HttpEntity;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -85,8 +83,8 @@ public class MultipartRequestParams {
 		}
 	}
 
-	public HttpEntity getEntity() {
-		HttpEntity entity = null;
+	public MultipartEntity getEntity() {
+		MultipartEntity entity = null;
 		if (true) {
 			MultipartEntity multipartEntity = new MultipartEntity();
 
