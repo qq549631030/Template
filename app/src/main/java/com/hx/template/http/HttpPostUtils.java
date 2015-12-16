@@ -2,6 +2,7 @@ package com.hx.template.http;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -10,19 +11,16 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
-import com.hx.template.utils.LogUtils;
 import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class HttpPostUtils {
-
-    private final static String TAG = HttpPostUtils.class.getSimpleName();
 
     /**
      * 执行HTTP请求
@@ -44,7 +42,7 @@ public class HttpPostUtils {
      */
     public static <T> void doBaseFormRequest(BaseFormRequest<T> request) {
         //通用请求头设置
-        Map<String, String> addHeaders = Collections.emptyMap();
+        Map<String, String> addHeaders = new HashMap<String, String>();
         CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
         request.setAdditionalHeaders(addHeaders);//设置请求头
 
@@ -55,6 +53,15 @@ public class HttpPostUtils {
                 CustomApplication.checkSessionCookie(cache.responseHeaders);
             }
         });
+        //for debug
+        HXLog.i("request url = " + request.getOriginUrl());
+        try {
+            HXLog.i("request headers = " + request.getHeaders().toString());
+            HXLog.i("request params = " + request.getParams().toString());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+        //debug end
         doRequest(request);
     }
 
@@ -71,8 +78,6 @@ public class HttpPostUtils {
     public static void doFormPostRequest(String url,
                                          Map<String, String> params, Listener<JSONObject> listener,
                                          ErrorListener errorListener) {
-        LogUtils.i(TAG, url);
-        LogUtils.i(TAG, params.toString());
         FormPostRequest mRequest = new FormPostRequest(url, listener,
                 errorListener);
         mRequest.setAdditionalParams(params);//设置请求参数
@@ -89,23 +94,29 @@ public class HttpPostUtils {
      */
     public static void doJsonPostRequest(String url, JSONObject params,
                                          Listener<JSONObject> listener, ErrorListener errorListener) {
-        LogUtils.i(TAG, url);
-        LogUtils.i(TAG, params.toString());
-        BaseJsonObjectRequest mRequest = new BaseJsonObjectRequest(url, params, listener,
+
+        BaseJsonObjectRequest request = new BaseJsonObjectRequest(url, params, listener,
                 errorListener);
-
-        Map<String, String> addHeaders = Collections.emptyMap();
+        Map<String, String> addHeaders = new HashMap<String, String>();
         CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
-        mRequest.setAdditionalHeaders(addHeaders);//设置请求头
-
-        mRequest.setResponseCacheListener(new ResponseCacheListener() {
+        request.setAdditionalHeaders(addHeaders);//设置请求头
+        request.setResponseCacheListener(new ResponseCacheListener() {
             @Override
             public void onResponse(Cache.Entry cache) {
                 //保存jsession ID
                 CustomApplication.checkSessionCookie(cache.responseHeaders);
             }
         });
-        doRequest(mRequest);
+        //for debug
+        HXLog.i("request url = " + request.getOriginUrl());
+        try {
+            HXLog.i("request headers = " + request.getHeaders().toString());
+            HXLog.i("request params = " + params.toString());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+        //debug end
+        doRequest(request);
     }
 
     /**
@@ -120,12 +131,11 @@ public class HttpPostUtils {
     public static void doUploadRequest(String url,
                                        MultipartRequestParams params, Listener<JSONObject> listener,
                                        ErrorListener errorListener) {
-        LogUtils.i(TAG, url);
-        LogUtils.i(TAG, params.urlParams.toString());
-        LogUtils.i(TAG, params.fileParams.toString());
         MultipartRequest mRequest = new MultipartRequest(url, params, listener,
                 errorListener);
-        doRequest(mRequest);
+        HXLog.i("request urlParams = " + params.urlParams.toString());
+        HXLog.i("request fileParams = " + params.fileParams.toString());
+        doBaseFormRequest(mRequest);
     }
 
     /**

@@ -90,10 +90,18 @@ public abstract class BaseFormRequest<T> extends Request<T> {
                     result = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers));
                 }
+            } else {
+                result = new String(response.data,
+                        HttpHeaderParser.parseCharset(response.headers));
             }
+
             Cache.Entry cache = HttpHeaderParser.parseCacheHeaders(response);
             //通知监听器
             notifyResponseCache(cache);
+
+            HXLog.i("response headers = " + cache.responseHeaders.toString());
+            HXLog.i("response body = " + result);
+
             T rep = converResult(result);
             if (rep != null) {
                 return Response.success(rep, cache);

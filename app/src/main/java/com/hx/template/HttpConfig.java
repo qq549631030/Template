@@ -10,7 +10,8 @@ package com.hx.template;
  */
 public class HttpConfig {
 
-    public static String HOME = "http://120.24.153.133";
+//    public static String HOME = "http://120.24.153.133";
+    public static String HOME = "http://www.mianfei88.com";
 //    public static String HOME = "http://wo510751575.vicp.net:56619";
 
     public static String PATH = "/admin/api/";
