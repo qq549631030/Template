@@ -101,6 +101,11 @@ public class DemoMainActivity extends BaseActivity {
                 Intent intent5 = new Intent(DemoMainActivity.this, CropperDemoActivity.class);
                 startActivity(intent5);
                 return true;
+            case R.id.action_activity:
+                Intent intent6 = new Intent(DemoMainActivity.this, ActivityDemoActivity.class);
+                startActivity(intent6);
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
