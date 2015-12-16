@@ -10,12 +10,9 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -30,16 +27,18 @@ import java.util.zip.GZIPInputStream;
 /**
  * Created by huangxiang on 15/12/15.
  */
-public class BaseJsonObjectRequest extends JsonObjectRequest {
+public abstract class BaseFormRequest<T> extends Request<T> {
 
     private ResponseCacheListener responseCacheListener;
 
+    private Response.Listener<T> mListener;
     private Map<String, String> additionalHeaders;
+    private Map<String, String> additionalParams;
 
-    public BaseJsonObjectRequest(String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
-        super(url, jsonRequest, listener, errorListener);
+    public BaseFormRequest(int method, String url, Response.Listener listener, Response.ErrorListener errorListener) {
+        super(method, url, errorListener);
+        mListener = listener;
     }
-
 
     public void setResponseCacheListener(ResponseCacheListener responseCacheListener) {
         this.responseCacheListener = responseCacheListener;
@@ -47,6 +46,10 @@ public class BaseJsonObjectRequest extends JsonObjectRequest {
 
     public void setAdditionalHeaders(Map<String, String> additionalHeaders) {
         this.additionalHeaders = additionalHeaders;
+    }
+
+    public void setAdditionalParams(Map<String, String> additionalParams) {
+        this.additionalParams = additionalParams;
     }
 
     @Override
@@ -61,7 +64,21 @@ public class BaseJsonObjectRequest extends JsonObjectRequest {
         return headers;
     }
 
-    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+    @Override
+    protected Map<String, String> getParams() throws AuthFailureError {
+        Map<String, String> params = super.getParams();
+        if (additionalParams != null) {
+            if (null == params || params.equals(Collections.emptyMap())) {
+                params = new HashMap<String, String>();
+            }
+            params.putAll(additionalParams);
+        }
+        return params;
+    }
+
+
+    @Override
+    protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String result = null;
             if (response.headers.containsKey("Content-Encoding")) {
@@ -77,11 +94,22 @@ public class BaseJsonObjectRequest extends JsonObjectRequest {
             Cache.Entry cache = HttpHeaderParser.parseCacheHeaders(response);
             //通知监听器
             notifyResponseCache(cache);
-            return Response.success(new JSONObject(result), cache);
+            T rep = converResult(result);
+            if (rep != null) {
+                return Response.success(rep, cache);
+            } else {
+                return Response.error(new ParseError(new NullPointerException()));
+            }
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
-        } catch (JSONException je) {
-            return Response.error(new ParseError(je));
+        }
+    }
+
+
+    @Override
+    protected void deliverResponse(T response) {
+        if (mListener != null) {
+            mListener.onResponse(response);
         }
     }
 
@@ -94,10 +122,15 @@ public class BaseJsonObjectRequest extends JsonObjectRequest {
     @Override
     protected void onFinish() {
         super.onFinish();
+        mListener = null;
         responseCacheListener = null;
     }
 
-    private String decodeGZip(byte[] data) {
+
+    protected abstract T converResult(String result);
+
+
+    protected String decodeGZip(byte[] data) {
         InputStream in;
         StringBuilder sb = new StringBuilder();
         try {

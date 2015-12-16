@@ -30,11 +30,34 @@ public class HttpPostUtils {
      * @param request HTTP请求
      * @return void
      */
-    public static void doRequest(Request<JSONObject> request) {
-
+    public static <T> void doRequest(Request<T> request) {
+        //设置重连策略
         request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f)); //超时5s,超时后重连0次
         CustomApplication.getInstance().addToRequestQueue(request);
     }
+
+    /**
+     * 以表单形式执行HTTP请求
+     *
+     * @param request
+     * @param <T>
+     */
+    public static <T> void doBaseFormRequest(BaseFormRequest<T> request) {
+        //通用请求头设置
+        Map<String, String> addHeaders = Collections.emptyMap();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        request.setAdditionalHeaders(addHeaders);//设置请求头
+
+        request.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
+        doRequest(request);
+    }
+
 
     /**
      * 以表单形式执行POST请求
@@ -53,19 +76,7 @@ public class HttpPostUtils {
         FormPostRequest mRequest = new FormPostRequest(url, listener,
                 errorListener);
         mRequest.setAdditionalParams(params);//设置请求参数
-
-        Map<String, String> addHeaders = Collections.emptyMap();
-        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
-        mRequest.setAdditionalHeaders(addHeaders);//设置请求头
-
-        mRequest.setResponseCacheListener(new ResponseCacheListener() {
-            @Override
-            public void onResponse(Cache.Entry cache) {
-                //保存jsession ID
-                CustomApplication.checkSessionCookie(cache.responseHeaders);
-            }
-        });
-        doRequest(mRequest);
+        doBaseFormRequest(mRequest);
     }
 
     /**
@@ -112,9 +123,8 @@ public class HttpPostUtils {
         LogUtils.i(TAG, url);
         LogUtils.i(TAG, params.urlParams.toString());
         LogUtils.i(TAG, params.fileParams.toString());
-        MultipartRequest mRequest = new MultipartRequest(url, listener,
-                errorListener, params);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, 1.0f));//超时20s,超时后重连0次
+        MultipartRequest mRequest = new MultipartRequest(url, params, listener,
+                errorListener);
         doRequest(mRequest);
     }
 
