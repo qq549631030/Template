@@ -2,6 +2,8 @@ package com.hx.template.http;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
@@ -9,18 +11,16 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
-import com.hx.template.utils.LogUtils;
 import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.ToastUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class HttpPostUtils {
-
-    private final static String TAG = HttpPostUtils.class.getSimpleName();
 
     /**
      * 执行HTTP请求
@@ -28,9 +28,43 @@ public class HttpPostUtils {
      * @param request HTTP请求
      * @return void
      */
-    public static void doRequest(Request<JSONObject> request) {
+    public static <T> void doRequest(Request<T> request) {
+        //设置重连策略
+        request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f)); //超时5s,超时后重连0次
         CustomApplication.getInstance().addToRequestQueue(request);
     }
+
+    /**
+     * 以表单形式执行HTTP请求
+     *
+     * @param request
+     * @param <T>
+     */
+    public static <T> void doBaseFormRequest(BaseFormRequest<T> request) {
+        //通用请求头设置
+        Map<String, String> addHeaders = new HashMap<String, String>();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        request.setAdditionalHeaders(addHeaders);//设置请求头
+
+        request.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
+        //for debug
+        HXLog.i("request url = " + request.getOriginUrl());
+        try {
+            HXLog.i("request headers = " + request.getHeaders().toString());
+            HXLog.i("request params = " + request.getParams().toString());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+        //debug end
+        doRequest(request);
+    }
+
 
     /**
      * 以表单形式执行POST请求
@@ -44,12 +78,10 @@ public class HttpPostUtils {
     public static void doFormPostRequest(String url,
                                          Map<String, String> params, Listener<JSONObject> listener,
                                          ErrorListener errorListener) {
-        LogUtils.i(TAG, url);
-        LogUtils.i(TAG, params.toString());
         FormPostRequest mRequest = new FormPostRequest(url, listener,
-                errorListener, params);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f)); //超时5s,超时后重连0次
-        doRequest(mRequest);
+                errorListener);
+        mRequest.setAdditionalParams(params);//设置请求参数
+        doBaseFormRequest(mRequest);
     }
 
     /**
@@ -62,12 +94,29 @@ public class HttpPostUtils {
      */
     public static void doJsonPostRequest(String url, JSONObject params,
                                          Listener<JSONObject> listener, ErrorListener errorListener) {
-        LogUtils.i(TAG, url);
-        LogUtils.i(TAG, params.toString());
-        JsonPostRequest mRequest = new JsonPostRequest(url, params, listener,
+
+        BaseJsonObjectRequest request = new BaseJsonObjectRequest(url, params, listener,
                 errorListener);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
-        doRequest(mRequest);
+        Map<String, String> addHeaders = new HashMap<String, String>();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        request.setAdditionalHeaders(addHeaders);//设置请求头
+        request.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
+        //for debug
+        HXLog.i("request url = " + request.getOriginUrl());
+        try {
+            HXLog.i("request headers = " + request.getHeaders().toString());
+            HXLog.i("request params = " + params.toString());
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+        //debug end
+        doRequest(request);
     }
 
     /**
@@ -82,13 +131,11 @@ public class HttpPostUtils {
     public static void doUploadRequest(String url,
                                        MultipartRequestParams params, Listener<JSONObject> listener,
                                        ErrorListener errorListener) {
-        LogUtils.i(TAG, url);
-        LogUtils.i(TAG, params.urlParams.toString());
-        LogUtils.i(TAG, params.fileParams.toString());
-        MultipartRequest mRequest = new MultipartRequest(url, listener,
-                errorListener, params);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(20 * 1000, 0, 1.0f));//超时20s,超时后重连0次
-        doRequest(mRequest);
+        MultipartRequest mRequest = new MultipartRequest(url, params, listener,
+                errorListener);
+        HXLog.i("request urlParams = " + params.urlParams.toString());
+        HXLog.i("request fileParams = " + params.fileParams.toString());
+        doBaseFormRequest(mRequest);
     }
 
     /**

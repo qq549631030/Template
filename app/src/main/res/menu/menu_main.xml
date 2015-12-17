@@ -25,4 +25,9 @@
         android:id="@+id/action_cropper"
         android:title="图片裁剪"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_activity"
+        android:title="Activity生命周期"
+        app:showAsAction="never" />
 </menu>

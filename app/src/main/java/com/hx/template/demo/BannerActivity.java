@@ -2,9 +2,10 @@ package com.hx.template.demo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebView;
+import android.widget.Button;
 
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class BannerActivity extends BaseActivity {
 
@@ -26,6 +28,8 @@ public class BannerActivity extends BaseActivity {
     FloatingActionButton fab;
 
     List<String> urls = new ArrayList<String>();
+    @Bind(R.id.button)
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +60,6 @@ public class BannerActivity extends BaseActivity {
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
                         //设置翻页的效果，不需要翻页效果可用不设
                 .setPageTransformer(ConvenientBanner.Transformer.DefaultTransformer);
-
-        WebView webView = new WebView(this);
     }
 
     @Override
@@ -70,5 +72,19 @@ public class BannerActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         banner.stopTurning();
+    }
+
+    @OnClick({R.id.button})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button:
+
+                urls.add("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg");
+                urls.add("http://c.hiphotos.baidu.com/image/pic/item/34fae6cd7b899e51c54e161740a7d933c9950df4.jpg");
+                urls.add("http://a.hiphotos.baidu.com/image/pic/item/b17eca8065380cd739c928e0a344ad34588281ec.jpg");
+
+                banner.notifyDataSetChanged();
+                break;
+        }
     }
 }

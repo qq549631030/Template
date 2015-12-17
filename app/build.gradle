@@ -2,8 +2,12 @@ apply plugin: 'com.android.application'
 
 //用于获取当前时间
 def releaseTime() {
-    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+    return new Date().format("yyyy-MM-dd", TimeZone.getDefault())
 }
+
+//获取local.properties的内容
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     compileSdkVersion 23
@@ -15,14 +19,22 @@ android {
     }
     signingConfigs {
         release {
-            try {
-                storeFile file("template.jks")
-                storePassword KEYSTORE_PASSWORD
-                keyAlias "template"
-                keyPassword KEY_PASSWORD
-            } catch (ex) {
-                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
-            }
+//            try {
+//                storeFile file("template.jks")
+//                storePassword KEYSTORE_PASSWORD
+//                keyAlias "template"
+//                keyPassword KEY_PASSWORD
+//            } catch (ex) {
+//                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+//            }
+
+            // relase签名
+            //在local.properties 文件里面配置
+            storeFile file(properties.getProperty("keystroe_storeFile"))
+            storePassword properties.getProperty("keystroe_storePassword")
+            keyAlias properties.getProperty("keystroe_keyAlias")
+            keyPassword properties.getProperty("keystroe_keyPassword")
+
         }
     }
     defaultConfig {
@@ -35,11 +47,13 @@ android {
         multiDexEnabled true
         // 默认是umeng的渠道
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             // zip压缩
-//            zipAlignEnabled true
+            zipAlignEnabled true
             // 移除无用的resource文件
             shrinkResources true
             // 混淆代码开启
@@ -107,8 +121,10 @@ dependencies {
     //Okhttp
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
+
     //图片缓存
     compile 'com.squareup.picasso:picasso:2.5.2'
+
     //EventBus(事件总线)
     compile 'de.greenrobot:eventbus:2.4.0'
     //Butterknife(依赖注入)
@@ -122,10 +138,20 @@ dependencies {
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
     //广告轮播控件
-    compile 'com.bigkoo:convenientbanner:1.0.8'
+    compile 'com.bigkoo:convenientbanner:1.1.4'
     //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    compile 'com.android.support:palette-v7:23.1.0'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:palette-v7:23.0.1'
+    //java js 交互
+    compile 'com.github.lzyzsd:jsbridge:1.0.2'
+
+
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    //smack
+    compile "org.igniterealtime.smack:smack-android:4.1.0"
+    compile "org.igniterealtime.smack:smack-tcp:4.1.0"
+    compile "org.igniterealtime.smack:smack-android-extensions:4.1.0"
 }

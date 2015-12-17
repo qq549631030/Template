@@ -18,4 +18,12 @@
         android:layout_height="200dp">
 
     </com.bigkoo.convenientbanner.ConvenientBanner>
+
+
+    <Button
+        android:id="@+id/button"
+        android:text="button"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>

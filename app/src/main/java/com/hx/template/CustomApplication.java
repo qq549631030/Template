@@ -218,7 +218,7 @@ public class CustomApplication extends Application {
      *
      * @param headers
      */
-    public void checkSessionCookie(Map<String, String> headers) {
+    public static void checkSessionCookie(Map<String, String> headers) {
         if (headers.containsKey(SET_COOKIE_KEY) && headers.get(SET_COOKIE_KEY).startsWith(SESSION_COOKIE)) {
             String cookie = headers.get(SET_COOKIE_KEY);
             if (cookie.length() > 0) {
@@ -238,7 +238,7 @@ public class CustomApplication extends Application {
      *
      * @param headers
      */
-    public void addSessionCookie(Map<String, String> headers) {
+    public static void addSessionCookie(Map<String, String> headers) {
         if (sessionId.length() > 0) {
             StringBuilder builder = new StringBuilder();
             builder.append(SESSION_COOKIE);

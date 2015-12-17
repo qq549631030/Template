@@ -2,6 +2,7 @@ package com.hx.template.http;
 
 import android.content.Context;
 
+import com.android.volley.Cache;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response.ErrorListener;
@@ -16,6 +17,7 @@ import com.hx.template.utils.ToastUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.Map;
 
 public class HttpGetUtils {
@@ -28,6 +30,7 @@ public class HttpGetUtils {
      * @return void
      */
     public static void doRequest(Request<JSONObject> request) {
+        request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
         CustomApplication.getInstance().addToRequestQueue(request);
     }
 
@@ -53,7 +56,18 @@ public class HttpGetUtils {
         LogUtils.i(TAG, url);
         FormGetRequest mRequest = new FormGetRequest(url, listener,
                 errorListener);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
+
+        Map<String, String> addHeaders = Collections.emptyMap();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        mRequest.setAdditionalHeaders(addHeaders);//设置请求头
+
+        mRequest.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
         doRequest(mRequest);
     }
 
@@ -67,10 +81,31 @@ public class HttpGetUtils {
      */
     public static void doJsonGetRequest(String url, JSONObject params,
                                         Listener<JSONObject> listener, ErrorListener errorListener) {
+        if (params != null) {
+            url = url + "?";
+            while (params.keys().hasNext()) {
+                String key = params.keys().next();
+                url = url + key + "=" + params.optString(key) + "&";
+            }
+            if (url.endsWith("&")) {
+                url = url.substring(0, url.length() - 1);
+            }
+        }
         LogUtils.i(TAG, url);
-        JsonGetRequest mRequest = new JsonGetRequest(url, params, listener,
+        BaseJsonObjectRequest mRequest = new BaseJsonObjectRequest(url, params, listener,
                 errorListener);
-        mRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
+
+        Map<String, String> addHeaders = Collections.emptyMap();
+        CustomApplication.addSessionCookie(addHeaders); //请求头加上jsession ID
+        mRequest.setAdditionalHeaders(addHeaders);//设置请求头
+
+        mRequest.setResponseCacheListener(new ResponseCacheListener() {
+            @Override
+            public void onResponse(Cache.Entry cache) {
+                //保存jsession ID
+                CustomApplication.checkSessionCookie(cache.responseHeaders);
+            }
+        });
         doRequest(mRequest);
     }
 
