@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bigkoo.convenientbanner.CBPageAdapter;
+import com.bigkoo.convenientbanner.holder.Holder;
 import com.hx.template.R;
 import com.squareup.picasso.Picasso;
 
@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso;
  * Created by Sai on 15/8/4.
  * 网络图片加载例子
  */
-public class NetworkImageHolderView implements CBPageAdapter.Holder<String>{
+public class NetworkImageHolderView implements Holder<String> {
     private ImageView imageView;
     @Override
     public View createView(Context context) {
