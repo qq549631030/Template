@@ -82,6 +82,11 @@
         </activity>
         <activity android:name=".demo.ActivityDemoActivity">
         </activity>
+        <activity
+            android:name=".demo.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

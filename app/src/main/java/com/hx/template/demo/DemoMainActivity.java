@@ -105,7 +105,10 @@ public class DemoMainActivity extends BaseActivity {
                 Intent intent6 = new Intent(DemoMainActivity.this, ActivityDemoActivity.class);
                 startActivity(intent6);
                 return true;
-
+            case R.id.action_scrolling:
+                Intent intent7 = new Intent(DemoMainActivity.this, ScrollingActivity.class);
+                startActivity(intent7);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

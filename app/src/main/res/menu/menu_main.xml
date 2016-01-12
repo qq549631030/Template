@@ -30,4 +30,9 @@
         android:id="@+id/action_activity"
         android:title="Activity生命周期"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_scrolling"
+        android:title="SCROLLING"
+        app:showAsAction="never" />
 </menu>

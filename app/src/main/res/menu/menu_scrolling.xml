@@ -1,0 +1,16 @@
+<!--
+  ~  Copyright &amp;copy; 2014-2016  All rights reserved.
+  ~  Licensed under the 深圳中盟燧石科技 License, Version 1.0 (the "License");
+  ~
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.hx.template.demo.ScrollingActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+</menu>
