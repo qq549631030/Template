@@ -16,7 +16,7 @@ import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.utils.ToastUtils;
-import com.hx.template.views.CircleImageView;
+import com.hx.template.components.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.soundcloud.android.crop.Crop;
 

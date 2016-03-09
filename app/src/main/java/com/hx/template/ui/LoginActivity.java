@@ -31,11 +31,14 @@ import com.hx.template.http.HttpPostUtils;
 import com.hx.template.http.impl.HttpParams;
 import com.hx.template.http.impl.HttpParseUtils;
 import com.hx.template.http.impl.HttpReturn;
+import com.hx.template.model.OnLoginListener;
+import com.hx.template.model.impl.Login;
 import com.hx.template.utils.ClickUtils;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
+import com.hx.template.view.IloginView;
 
 import org.json.JSONObject;
 
@@ -48,7 +51,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements IloginView, OnLoginListener {
 
     @Bind(R.id.username)
     EditText username;
@@ -59,6 +62,8 @@ public class LoginActivity extends BaseActivity {
     @Bind(R.id.forget_password)
     TextView forgetPassword;
 
+    Login loginModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,7 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        loginModel = new Login();
     }
 
     @Override
@@ -96,7 +102,7 @@ public class LoginActivity extends BaseActivity {
             case R.id.login:
                 if (checkInput()) {
                     if (ClickUtils.notFastClick()) {
-                        login(username.getText().toString().trim(), password.getText().toString().trim());
+                        loginModel.login(getUserName(), getPassword(), this);
                     }
                 }
                 break;
@@ -104,70 +110,31 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean checkInput() {
-        if (!(Pattern.matches(Constant.phoneFormat, username.getText().toString().trim())) && (!Pattern.matches(Constant.emailFormat, username.getText().toString().trim()))) {
+        if (!(Pattern.matches(Constant.phoneFormat, getUserName())) && (!Pattern.matches(Constant.emailFormat, getPassword()))) {
             username.setError("用户名必须为手机号码或邮箱");
             return false;
         }
         return true;
     }
 
-    private void login(String userName, String password) {
-        mProgressDialog.setMessage("登录中...");
-        mProgressDialog.show();
-        final Map<String, String> params = new HashMap<String, String>();
-        if (!TextUtils.isEmpty(userName)) {
-            params.put(HttpParams.Login.userName, userName);
-        }
-        if (!TextUtils.isEmpty(password)) {
-            params.put(HttpParams.Login.password, password);
-        }
-
-        HttpPostUtils.doLazyFromPostRequest(LoginActivity.this, HttpConfig.LOGIN_URL, params, new HttpListener() {
-
-            @Override
-            public void onPass(JSONObject jsonObject) {
-                Type type = new TypeToken<HttpReturn.LoginReturn>() {
-                }.getType();
-                HttpReturn.LoginReturn mReturn = HttpParseUtils.parseReturn(jsonObject, type);
-                if (mReturn != null) {
-                    if (mReturn.getStatus() == 1) {
-                        User user = mReturn.getData();
-                        mProgressDialog.dismiss();
-                        loginSuccess(params, user);
-                    } else {
-                        ErrorCode code = mReturn.getCode();
-                        if (code != null) {
-                            ToastUtils.showToast(getApplicationContext(), getResources().getString(mReturn.getCode().getRes()));
-                        } else {
-                            String msg = mReturn.getMsg();
-                            if (TextUtils.isEmpty(msg)) {
-                                ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                            } else {
-                                ToastUtils.showToast(getApplicationContext(), msg);
-                            }
-                        }
-                        mProgressDialog.dismiss();
-                    }
-                } else {
-                    ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                    mProgressDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onError(String ErrorMsg, int errorCode) {
-                mProgressDialog.dismiss();
-            }
-        }, true);
+    @Override
+    public String getUserName() {
+        return username.getText().toString().trim();
     }
 
-    private void loginSuccess(Map<String, String> params, User user) {
+    @Override
+    public String getPassword() {
+        return password.getText().toString().trim();
+    }
+
+    @Override
+    public void loginSuccess(User user) {
         if (user != null) {
             CustomApplication.currentLoginId = user.getId();
             CustomApplication.currentUser = user;
             try {
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_userName, params.get(HttpParams.Login.userName));
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_password, SecretUtils.encrypt(Constant.SECRET_KEY, params.get(HttpParams.Login.password)));
+                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_userName, getUserName());
+                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_password, SecretUtils.encrypt(Constant.SECRET_KEY, getPassword()));
                 SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_current_user, SerializeUtil.serialize(user));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -177,5 +144,10 @@ public class LoginActivity extends BaseActivity {
         Intent intent = new Intent(LoginActivity.this, DemoMainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void loginFailed(String reason) {
+        ToastUtils.showToast(getApplicationContext(), "登录失败：" + reason);
     }
 }

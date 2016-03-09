@@ -8,7 +8,7 @@ import android.widget.ListView;
 import com.hx.template.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.utils.TimeUtils;
-import com.hx.template.views.PullToRefreshView;
+import com.hx.template.components.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.Calendar;

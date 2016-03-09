@@ -17,7 +17,9 @@ import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.hx.template.entity.User;
 import com.hx.template.http.OkHttpStack;
 import com.hx.template.http.StethoOkHttpStack;
+import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
+import com.hx.template.utils.ToastUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -250,5 +252,20 @@ public class CustomApplication extends Application {
             }
             headers.put(COOKIE_KEY, builder.toString());
         }
+    }
+
+    /**
+     * 检查网络是否连接
+     *
+     * @param showToast 是否显示提示
+     * @return
+     */
+    public static boolean isNetworkConnected(boolean showToast) {
+        boolean connect = NetWorkUtils.isNetWorkConnect(getInstance());
+        if (!connect && showToast) {
+            ToastUtils.showToast(getInstance(), getInstance().getResources()
+                    .getString(R.string.error_network_available));
+        }
+        return connect;
     }
 }

@@ -4,7 +4,7 @@
  *
  */
 
-package com.hx.template.views;
+package com.hx.template.components;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

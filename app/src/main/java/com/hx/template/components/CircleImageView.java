@@ -1,4 +1,4 @@
-package com.hx.template.views;
+package com.hx.template.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;

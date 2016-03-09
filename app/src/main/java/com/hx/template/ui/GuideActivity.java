@@ -20,7 +20,7 @@ import com.hx.template.R;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.utils.ColorUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
-import com.hx.template.views.PageIndicator;
+import com.hx.template.components.PageIndicator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

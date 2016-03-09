@@ -22,7 +22,7 @@
         android:textColor="@android:color/white"
         android:visibility="gone" />
 
-    <com.hx.template.views.PageIndicator
+    <com.hx.template.components.PageIndicator
         android:id="@+id/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

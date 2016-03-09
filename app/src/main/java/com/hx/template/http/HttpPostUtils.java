@@ -181,6 +181,31 @@ public class HttpPostUtils {
         }
     }
 
+    public static void doLazyFromPostRequest(String url,
+                                             Map<String, String> params, final HttpListener listener,
+                                             final boolean showCommanErrorMsg) {
+        doFormPostRequest(url, params, new Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject arg0) {
+                listener.onPass(arg0);
+            }
+        }, new ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError arg0) {
+                if (showCommanErrorMsg) {
+                    ToastUtils.showToast(
+                            CustomApplication.getInstance(),
+                            CustomApplication.getInstance().getResources().getString(
+                                    R.string.error_network_abnormal));
+                }
+                listener.onError(
+                        CustomApplication.getInstance().getResources().getString(
+                                R.string.error_network_abnormal), 2);
+            }
+        });
+    }
+
     /**
      * Form懒调用(可设置是否显示默认错误提示语)
      *
