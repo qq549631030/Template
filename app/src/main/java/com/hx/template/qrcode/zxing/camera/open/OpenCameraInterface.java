@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.zxing.camera.open;
+package com.hx.template.qrcode.zxing.camera.open;
 
 import android.hardware.Camera;
 import android.util.Log;

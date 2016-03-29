@@ -36,8 +36,8 @@
         <activity
             android:name=".demo.DemoMainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".zxing.activity.CaptureActivity"/>
-        <activity android:name=".zxing.activity.ResultActivity"/>
+        <activity android:name=".qrcode.zxing.activity.CaptureActivity"/>
+        <activity android:name=".qrcode.zxing.activity.ResultActivity"/>
         <activity
             android:name=".demo.CreateQrcodeActivity"
             android:label="@string/title_activity_create_qrcode"

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.zxing.utils;
+package com.hx.template.qrcode.zxing.utils;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,9 +24,9 @@ import android.os.Message;
 
 import com.google.zxing.Result;
 import com.hx.template.R;
-import com.hx.template.zxing.activity.CaptureActivity;
-import com.hx.template.zxing.camera.CameraManager;
-import com.hx.template.zxing.decode.DecodeThread;
+import com.hx.template.qrcode.zxing.activity.CaptureActivity;
+import com.hx.template.qrcode.zxing.camera.CameraManager;
+import com.hx.template.qrcode.zxing.decode.DecodeThread;
 
 /**
  * This class handles all the messaging which comprises the state machine for

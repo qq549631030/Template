@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.zxing.utils;
+package com.hx.template.qrcode.zxing.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

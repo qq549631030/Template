@@ -15,25 +15,26 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen']
+            jniLibs.srcDirs = ['libs']
         }
     }
     signingConfigs {
         release {
-//            try {
-//                storeFile file("template.jks")
-//                storePassword KEYSTORE_PASSWORD
-//                keyAlias "template"
-//                keyPassword KEY_PASSWORD
-//            } catch (ex) {
-//                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
-//            }
+            try {
+                storeFile file("template.jks")
+                storePassword "template"
+                keyAlias "template"
+                keyPassword "template"
+            } catch (ex) {
+                throw new InvalidUserDataException("You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
 
             // relase签名
             //在local.properties 文件里面配置
-            storeFile file(properties.getProperty("keystroe_storeFile"))
-            storePassword properties.getProperty("keystroe_storePassword")
-            keyAlias properties.getProperty("keystroe_keyAlias")
-            keyPassword properties.getProperty("keystroe_keyPassword")
+//            storeFile file(properties.getProperty("keystroe_storeFile"))
+//            storePassword properties.getProperty("keystroe_storePassword")
+//            keyAlias properties.getProperty("keystroe_keyAlias")
+//            keyPassword properties.getProperty("keystroe_keyPassword")
 
         }
     }

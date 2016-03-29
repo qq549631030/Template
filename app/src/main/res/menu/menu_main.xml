@@ -10,7 +10,10 @@
         android:id="@+id/action_create_qrcode"
         android:title="生成二维码"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/action_scan_qrcode_from_image"
+        android:title="图片中识别二维码"
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_banner"
         android:title="广告轮播"

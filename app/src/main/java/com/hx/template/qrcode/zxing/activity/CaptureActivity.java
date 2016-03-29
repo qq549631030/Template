@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hx.template.zxing.activity;
+package com.hx.template.qrcode.zxing.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,11 +34,11 @@ import android.widget.RelativeLayout;
 
 import com.google.zxing.Result;
 import com.hx.template.R;
-import com.hx.template.zxing.camera.CameraManager;
-import com.hx.template.zxing.decode.DecodeThread;
-import com.hx.template.zxing.utils.BeepManager;
-import com.hx.template.zxing.utils.CaptureActivityHandler;
-import com.hx.template.zxing.utils.InactivityTimer;
+import com.hx.template.qrcode.zxing.camera.CameraManager;
+import com.hx.template.qrcode.zxing.decode.DecodeThread;
+import com.hx.template.qrcode.zxing.utils.BeepManager;
+import com.hx.template.qrcode.zxing.utils.CaptureActivityHandler;
+import com.hx.template.qrcode.zxing.utils.InactivityTimer;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

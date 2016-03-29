@@ -42,21 +42,8 @@ public class ImageUtils {
         //开始读入图片，此时把options.inJustDecodeBounds 设回true了
         newOpts.inJustDecodeBounds = true;
         Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);//此时返回bm为空
-
         newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
-        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0) {
-            be = 1;
-        }
-        newOpts.inSampleSize = be;//设置缩放比例
+        newOpts.inSampleSize = calculateInSampleSize(newOpts, (int) ww, (int) hh);//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
         return bitmap;
@@ -68,24 +55,28 @@ public class ImageUtils {
         newOpts.inJustDecodeBounds = true;
         Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(url), null, newOpts);//此时返回bm为空
         newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;//be=1表示不缩放
-        if (w > h && w > ww) {//如果宽度大的话根据宽度固定大小缩放
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {//如果高度高的话根据宽度固定大小缩放
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0) {
-            be = 1;
-        }
-        newOpts.inSampleSize = be;//设置缩放比例
+        newOpts.inSampleSize = calculateInSampleSize(newOpts, (int) ww, (int) hh);//设置缩放比例
         //重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
         bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(url), null, newOpts);
         return bitmap;
     }
 
+
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        int w = options.outWidth;
+        int h = options.outHeight;
+        //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+        int inSampleSize = 1;//be=1表示不缩放
+        if (w > h && w > reqWidth) {//如果宽度大的话根据宽度固定大小缩放
+            inSampleSize = (int) (options.outWidth / reqWidth);
+        } else if (w < h && h > reqHeight) {//如果高度高的话根据宽度固定大小缩放
+            inSampleSize = (int) (options.outHeight / reqHeight);
+        }
+        if (inSampleSize <= 0) {
+            inSampleSize = 1;
+        }
+        return inSampleSize;
+    }
 
     public static InputStream imageToSteam(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

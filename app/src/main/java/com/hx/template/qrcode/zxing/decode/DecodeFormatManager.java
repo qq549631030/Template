@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.zxing.decode;
+package com.hx.template.qrcode.zxing.decode;
 
 import com.google.zxing.BarcodeFormat;
 

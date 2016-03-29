@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.zxing.decode;
+package com.hx.template.qrcode.zxing.decode;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -32,7 +32,7 @@ import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.hx.template.R;
-import com.hx.template.zxing.activity.CaptureActivity;
+import com.hx.template.qrcode.zxing.activity.CaptureActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;

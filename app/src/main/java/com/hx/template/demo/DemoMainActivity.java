@@ -1,6 +1,8 @@
 package com.hx.template.demo;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
@@ -13,7 +15,9 @@ import android.widget.ImageView;
 import com.hx.template.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.ui.SettingActivity;
-import com.hx.template.zxing.activity.CaptureActivity;
+import com.hx.template.utils.ImageUtils;
+import com.hx.template.qrcode.zxing.activity.CaptureActivity;
+import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -89,6 +93,13 @@ public class DemoMainActivity extends BaseActivity {
                 Intent intent2 = new Intent(DemoMainActivity.this, CreateQrcodeActivity.class);
                 startActivity(intent2);
                 return true;
+            case R.id.action_scan_qrcode_from_image:
+                Intent targetIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                );
+                targetIntent.setType("image/*");
+                this.startActivityForResult(targetIntent, 1);
+                return true;
             case R.id.action_banner:
                 Intent intent3 = new Intent(DemoMainActivity.this, BannerActivity.class);
                 startActivity(intent3);
@@ -111,5 +122,20 @@ public class DemoMainActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (1 == requestCode && resultCode == RESULT_OK) {
+            if (data == null) {
+                return;
+            }
+            Uri uri = data.getData();
+            Bitmap bitmap = ImageUtils.getImage(this, uri);
+            String result = ImageScanUtil.decodeByZbar(bitmap);
+//            String result = ImageScanUtil.decodeByZXing(bitmap);
+            Log.e("huangxiang", "result = " + result);
+        }
     }
 }

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.hx.template.zxing.decode;
+package com.hx.template.qrcode.zxing.decode;
 
 import android.os.Handler;
 import android.os.Looper;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.DecodeHintType;
-import com.hx.template.zxing.activity.CaptureActivity;
+import com.hx.template.qrcode.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;
