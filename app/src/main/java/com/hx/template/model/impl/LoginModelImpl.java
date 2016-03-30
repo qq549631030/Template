@@ -13,9 +13,7 @@ import com.hx.template.http.HttpPostUtils;
 import com.hx.template.http.impl.HttpParams;
 import com.hx.template.http.impl.HttpParseUtils;
 import com.hx.template.http.impl.HttpReturn;
-import com.hx.template.model.ILogin;
-import com.hx.template.model.OnLoginListener;
-import com.hx.template.utils.ToastUtils;
+import com.hx.template.model.LoginModel;
 
 import org.json.JSONObject;
 
@@ -26,9 +24,9 @@ import java.util.Map;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public class Login implements ILogin {
+public class LoginModelImpl implements LoginModel.Model {
     @Override
-    public void login(String userName, String password, final OnLoginListener listener) {
+    public void login(String userName, String password, final LoginModel.OnLoginListener listener) {
         final Map<String, String> params = new HashMap<String, String>();
         if (!TextUtils.isEmpty(userName)) {
             params.put(HttpParams.Login.userName, userName);
@@ -70,6 +68,6 @@ public class Login implements ILogin {
             public void onError(String ErrorMsg, int errorCode) {
                 listener.loginFailed(ErrorMsg);
             }
-        }, true);
+        }, false);
     }
 }
