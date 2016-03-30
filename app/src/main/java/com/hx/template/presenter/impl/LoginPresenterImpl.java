@@ -10,16 +10,16 @@ import com.hx.template.view.ILoginView;
  * Created by huangxiang on 16/3/30.
  */
 public class LoginPresenterImpl implements LoginPresenter {
-    private LoginModelImpl login;
+    private LoginModel.Model loginModel;
     private ILoginView loginView;
 
     public LoginPresenterImpl(ILoginView loginView) {
         this.loginView = loginView;
-        login = new LoginModelImpl();
+        loginModel = new LoginModelImpl();
     }
 
     public void login() {
-        login.login(loginView.getUserName(), loginView.getPassword(), new LoginModel.OnLoginListener() {
+        loginModel.login(loginView.getUserName(), loginView.getPassword(), new LoginModel.OnLoginListener() {
             @Override
             public void loginSuccess(User user) {
                 loginView.toMainActivity(user);
