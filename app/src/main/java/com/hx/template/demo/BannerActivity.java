@@ -1,8 +1,10 @@
 package com.hx.template.demo;
 
+import android.content.ContentProvider;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -13,14 +15,19 @@ import com.hx.template.R;
 import com.hx.template.adapter.NetworkImageHolderView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dalvik.system.BaseDexClassLoader;
+import dalvik.system.DexClassLoader;
 
 public class BannerActivity extends BaseActivity {
-
+    private static final String TAG = "BannerActivity";
     @Bind(R.id.banner)
     ConvenientBanner banner;
     @Bind(R.id.fab)
@@ -32,6 +39,7 @@ public class BannerActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() called with: " + "savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner);
         ButterKnife.bind(this);
@@ -60,15 +68,35 @@ public class BannerActivity extends BaseActivity {
     }
 
     @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart() called with: " + "");
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
+        Log.d(TAG, "onResume() called with: " + "");
         super.onResume();
         banner.startTurning(2000);
     }
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause() called with: " + "");
         super.onPause();
         banner.stopTurning();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop() called with: " + "");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy() called with: " + "");
+        super.onDestroy();
     }
 
     @OnClick({R.id.button})

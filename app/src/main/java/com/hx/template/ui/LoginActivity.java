@@ -9,7 +9,6 @@ package com.hx.template.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,41 +16,28 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
 import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.CustomApplication;
-import com.hx.template.HttpConfig;
 import com.hx.template.R;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
-import com.hx.template.entity.enums.ErrorCode;
-import com.hx.template.http.HttpListener;
-import com.hx.template.http.HttpPostUtils;
-import com.hx.template.http.impl.HttpParams;
-import com.hx.template.http.impl.HttpParseUtils;
-import com.hx.template.http.impl.HttpReturn;
-import com.hx.template.model.OnLoginListener;
-import com.hx.template.model.impl.Login;
+import com.hx.template.presenter.LoginPresenter;
+import com.hx.template.presenter.impl.LoginPresenterImpl;
 import com.hx.template.utils.ClickUtils;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
-import com.hx.template.view.IloginView;
+import com.hx.template.view.ILoginView;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements IloginView, OnLoginListener {
+public class LoginActivity extends BaseActivity implements ILoginView {
 
     @Bind(R.id.username)
     EditText username;
@@ -62,7 +48,7 @@ public class LoginActivity extends BaseActivity implements IloginView, OnLoginLi
     @Bind(R.id.forget_password)
     TextView forgetPassword;
 
-    Login loginModel;
+    LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +57,7 @@ public class LoginActivity extends BaseActivity implements IloginView, OnLoginLi
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        loginModel = new Login();
+        presenter = new LoginPresenterImpl(this);
     }
 
     @Override
@@ -102,7 +88,7 @@ public class LoginActivity extends BaseActivity implements IloginView, OnLoginLi
             case R.id.login:
                 if (checkInput()) {
                     if (ClickUtils.notFastClick()) {
-                        loginModel.login(getUserName(), getPassword(), this);
+                        presenter.login();
                     }
                 }
                 break;
@@ -128,7 +114,7 @@ public class LoginActivity extends BaseActivity implements IloginView, OnLoginLi
     }
 
     @Override
-    public void loginSuccess(User user) {
+    public void toMainActivity(User user) {
         if (user != null) {
             CustomApplication.currentLoginId = user.getId();
             CustomApplication.currentUser = user;
@@ -140,14 +126,13 @@ public class LoginActivity extends BaseActivity implements IloginView, OnLoginLi
                 e.printStackTrace();
             }
         }
-        SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_autoLogin, true);
         Intent intent = new Intent(LoginActivity.this, DemoMainActivity.class);
         startActivity(intent);
         finish();
     }
 
     @Override
-    public void loginFailed(String reason) {
+    public void showFailedError(String reason) {
         ToastUtils.showToast(getApplicationContext(), "登录失败：" + reason);
     }
 }
