@@ -4,72 +4,71 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.hx.template.entity.User;
-import com.hx.template.utils.LogUtils;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.sql.SQLException;
 
 public class CustomDatabaseHelper extends OrmLiteSqliteOpenHelper {
 
-	private static final String DATABASE_NAME = "template.db";
+    private static final String DATABASE_NAME = "template.db";
 
-	private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
-	private Context mContext;
+    public CustomDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
 
-	public CustomDatabaseHelper(Context context) {
-		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		mContext = context;
-	}
+    public CustomDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion) {
+        super(context, databaseName, factory, databaseVersion);
+    }
 
-	@Override
-	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
-		try {
-			TableUtils.createTableIfNotExists(arg1, User.class);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+    public CustomDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion, int configFileId) {
+        super(context, databaseName, factory, databaseVersion, configFileId);
+    }
 
-	@Override
-	public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int arg2,
-			int arg3) {
-		try {
-			TableUtils.dropTable(arg1, User.class, true);
-			onCreate(arg0, arg1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+    public CustomDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion, File configFile) {
+        super(context, databaseName, factory, databaseVersion, configFile);
+    }
 
-	public void deleteDB() {
-		if (mContext != null) {
-			File f = mContext.getDatabasePath(DATABASE_NAME);
-			if (f.exists()) {
-				mContext.deleteDatabase(DATABASE_NAME);
-				LogUtils.e("DB", "---delete SDCard DB---");
-				f.delete();
-			} else {
-				LogUtils.e("DB", "---delete App DB---");
-				mContext.deleteDatabase(DATABASE_NAME);
-			}
-		}
-	}
+    public CustomDatabaseHelper(Context context, String databaseName, SQLiteDatabase.CursorFactory factory, int databaseVersion, InputStream stream) {
+        super(context, databaseName, factory, databaseVersion, stream);
+    }
 
-	/**
-	 * Close the database connections and clear any cached DAOs.
-	 */
-	@Override
-	public void close() {
-		super.close();
-	}
+    @Override
+    public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
+        try {
+            TableUtils.createTableIfNotExists(arg1, User.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public Dao<User, Integer> getUserDao() throws SQLException {
-		return getDao(User.class);
-	}
+    @Override
+    public void onUpgrade(SQLiteDatabase arg0, ConnectionSource arg1, int arg2,
+                          int arg3) {
+        try {
+            TableUtils.dropTable(arg1, User.class, true);
+            onCreate(arg0, arg1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Close the database connections and clear any cached DAOs.
+     */
+    @Override
+    public void close() {
+        super.close();
+    }
+
+    public Dao<User, Integer> getUserDao() throws SQLException {
+        return getDao(User.class);
+    }
 
 }

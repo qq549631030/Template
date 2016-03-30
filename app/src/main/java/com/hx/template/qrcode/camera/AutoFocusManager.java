@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.qrcode.zxing.camera;
+package com.hx.template.qrcode.camera;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

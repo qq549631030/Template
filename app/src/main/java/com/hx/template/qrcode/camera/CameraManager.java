@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hx.template.qrcode.zxing.camera;
+package com.hx.template.qrcode.camera;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -25,7 +25,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 
-import com.hx.template.qrcode.zxing.camera.open.OpenCameraInterface;
+import com.hx.template.qrcode.camera.open.OpenCameraInterface;
 
 import java.io.IOException;
 

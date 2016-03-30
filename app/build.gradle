@@ -136,6 +136,9 @@ dependencies {
     //OrmLite
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
+
+    compile 'net.zetetic:android-database-sqlcipher:3.3.1-2'
+
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
     //广告轮播控件

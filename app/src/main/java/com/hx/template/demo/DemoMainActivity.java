@@ -16,8 +16,9 @@ import com.hx.template.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.ui.SettingActivity;
 import com.hx.template.utils.ImageUtils;
-import com.hx.template.qrcode.zxing.activity.CaptureActivity;
+import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.qrcode.utils.ImageScanUtil;
+import com.hx.template.utils.ToastUtils;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -84,41 +85,55 @@ public class DemoMainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = null;
         switch (item.getItemId()) {
-            case R.id.action_scan_qrcode:
-                Intent intent = new Intent(DemoMainActivity.this, CaptureActivity.class);
+            case R.id.action_zxing_scan_qrcode:
+                intent = new Intent(DemoMainActivity.this, CaptureActivity.class);
+                intent.putExtra("mode", CaptureActivity.SCAN_BY_ZXING);
+                startActivity(intent);
+                return true;
+            case R.id.action_zbar_scan_qrcode:
+                intent = new Intent(DemoMainActivity.this, CaptureActivity.class);
+                intent.putExtra("mode", CaptureActivity.SCAN_BY_ZBAR);
                 startActivity(intent);
                 return true;
             case R.id.action_create_qrcode:
-                Intent intent2 = new Intent(DemoMainActivity.this, CreateQrcodeActivity.class);
-                startActivity(intent2);
+                intent = new Intent(DemoMainActivity.this, CreateQrcodeActivity.class);
+                startActivity(intent);
                 return true;
-            case R.id.action_scan_qrcode_from_image:
-                Intent targetIntent = new Intent(Intent.ACTION_PICK,
+            case R.id.action_zxing_scan_qrcode_from_image:
+                intent = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                 );
-                targetIntent.setType("image/*");
-                this.startActivityForResult(targetIntent, 1);
+                intent.setType("image/*");
+                this.startActivityForResult(intent, 1);
+                return true;
+            case R.id.action_zbar_scan_qrcode_from_image:
+                intent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                );
+                intent.setType("image/*");
+                this.startActivityForResult(intent, 2);
                 return true;
             case R.id.action_banner:
-                Intent intent3 = new Intent(DemoMainActivity.this, BannerActivity.class);
-                startActivity(intent3);
+                intent = new Intent(DemoMainActivity.this, BannerActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_ptr:
-                Intent intent4 = new Intent(DemoMainActivity.this, PullToRefreshActivity.class);
-                startActivity(intent4);
+                intent = new Intent(DemoMainActivity.this, PullToRefreshActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_cropper:
-                Intent intent5 = new Intent(DemoMainActivity.this, CropperDemoActivity.class);
-                startActivity(intent5);
+                intent = new Intent(DemoMainActivity.this, CropperDemoActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_activity:
-                Intent intent6 = new Intent(DemoMainActivity.this, ActivityDemoActivity.class);
-                startActivity(intent6);
+                intent = new Intent(DemoMainActivity.this, ActivityDemoActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.action_scrolling:
-                Intent intent7 = new Intent(DemoMainActivity.this, ScrollingActivity.class);
-                startActivity(intent7);
+                intent = new Intent(DemoMainActivity.this, ScrollingActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -127,15 +142,19 @@ public class DemoMainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (1 == requestCode && resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             if (data == null) {
                 return;
             }
             Uri uri = data.getData();
             Bitmap bitmap = ImageUtils.getImage(this, uri);
-            String result = ImageScanUtil.decodeByZbar(bitmap);
-//            String result = ImageScanUtil.decodeByZXing(bitmap);
-            Log.e("huangxiang", "result = " + result);
+            String result = null;
+            if (requestCode == 1) {
+                result = ImageScanUtil.decodeByZXing(bitmap);
+            } else if (requestCode == 2) {
+                result = ImageScanUtil.decodeByZbar(bitmap);
+            }
+            ToastUtils.showToast(getApplicationContext(), result);
         }
     }
 }

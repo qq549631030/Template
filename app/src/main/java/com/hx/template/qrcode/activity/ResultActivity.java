@@ -1,4 +1,4 @@
-package com.hx.template.qrcode.zxing.activity;
+package com.hx.template.qrcode.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -10,7 +10,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.hx.template.R;
-import com.hx.template.qrcode.zxing.decode.DecodeThread;
+import com.hx.template.qrcode.decode.zxing.ZxingDecodeThread;
 
 
 public class ResultActivity extends Activity {
@@ -43,7 +43,7 @@ public class ResultActivity extends Activity {
             mResultText.setText(result);
 
             Bitmap barcode = null;
-            byte[] compressedBitmap = extras.getByteArray(DecodeThread.BARCODE_BITMAP);
+            byte[] compressedBitmap = extras.getByteArray(ZxingDecodeThread.BARCODE_BITMAP);
             if (compressedBitmap != null) {
                 barcode = BitmapFactory.decodeByteArray(compressedBitmap, 0, compressedBitmap.length, null);
                 // Mutable copy:
