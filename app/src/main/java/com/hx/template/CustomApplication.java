@@ -29,6 +29,8 @@ import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.L;
 import com.squareup.okhttp.OkHttpClient;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -73,6 +75,8 @@ public class CustomApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化加密ormlite数据库
+        SQLiteDatabase.loadLibs(this);
         instance = this;
         activityList = new ArrayList<Activity>();
         initImageLoader(instance);

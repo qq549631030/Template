@@ -104,7 +104,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:design:23.0.1'
@@ -122,10 +122,8 @@ dependencies {
     //Okhttp
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.5.0'
-
     //图片缓存
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     //EventBus(事件总线)
     compile 'de.greenrobot:eventbus:2.4.0'
     //Butterknife(依赖注入)
@@ -136,9 +134,7 @@ dependencies {
     //OrmLite
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-
     compile 'net.zetetic:android-database-sqlcipher:3.3.1-2'
-
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
     //广告轮播控件
@@ -149,14 +145,13 @@ dependencies {
     compile 'com.android.support:palette-v7:23.0.1'
     //java js 交互
     compile 'com.github.lzyzsd:jsbridge:1.0.2'
-
-
     androidTestCompile 'com.android.support.test:runner:0.4'
     androidTestCompile 'com.android.support.test:rules:0.4'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     //smack
-    compile "org.igniterealtime.smack:smack-android:4.1.0"
-    compile "org.igniterealtime.smack:smack-tcp:4.1.0"
-    compile "org.igniterealtime.smack:smack-android-extensions:4.1.0"
+    compile 'org.igniterealtime.smack:smack-android:4.1.0'
+    compile 'org.igniterealtime.smack:smack-tcp:4.1.0'
+    compile 'org.igniterealtime.smack:smack-android-extensions:4.1.0'
+    compile project(':ormlite-sqlcipher')
 }
 
