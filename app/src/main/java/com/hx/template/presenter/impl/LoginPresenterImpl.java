@@ -4,16 +4,16 @@ import com.hx.template.entity.User;
 import com.hx.template.model.LoginModel;
 import com.hx.template.model.impl.LoginModelImpl;
 import com.hx.template.presenter.LoginPresenter;
-import com.hx.template.view.ILoginView;
+import com.hx.template.view.IloginView;
 
 /**
  * Created by huangxiang on 16/3/30.
  */
 public class LoginPresenterImpl implements LoginPresenter {
     private LoginModel.Model loginModel;
-    private ILoginView loginView;
+    private IloginView loginView;
 
-    public LoginPresenterImpl(ILoginView loginView) {
+    public LoginPresenterImpl(IloginView loginView) {
         this.loginView = loginView;
         loginModel = new LoginModelImpl();
     }

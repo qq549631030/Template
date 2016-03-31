@@ -29,7 +29,7 @@ import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
-import com.hx.template.view.ILoginView;
+import com.hx.template.view.IloginView;
 
 import java.util.regex.Pattern;
 
@@ -37,7 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements ILoginView {
+public class LoginActivity extends BaseActivity implements IloginView {
 
     @Bind(R.id.username)
     EditText username;
