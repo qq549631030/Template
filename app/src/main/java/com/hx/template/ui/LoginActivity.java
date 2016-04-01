@@ -43,10 +43,6 @@ public class LoginActivity extends BaseActivity implements IloginView {
     EditText username;
     @Bind(R.id.password)
     EditText password;
-    @Bind(R.id.login)
-    Button login;
-    @Bind(R.id.forget_password)
-    TextView forgetPassword;
 
     LoginPresenter presenter;
 
@@ -97,7 +93,7 @@ public class LoginActivity extends BaseActivity implements IloginView {
 
     private boolean checkInput() {
         if (!(Pattern.matches(Constant.phoneFormat, getUserName())) && (!Pattern.matches(Constant.emailFormat, getPassword()))) {
-            username.setError("用户名必须为手机号码或邮箱");
+            ToastUtils.showToast(getApplicationContext(), "用户名必须为手机号码或邮箱");
             return false;
         }
         return true;

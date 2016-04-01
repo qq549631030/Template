@@ -46,4 +46,9 @@
         android:id="@+id/action_scrolling"
         android:title="SCROLLING"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_rxjava"
+        android:title="RxJava"
+        app:showAsAction="never" />
 </menu>

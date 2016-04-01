@@ -153,5 +153,12 @@ dependencies {
     compile 'org.igniterealtime.smack:smack-tcp:4.1.0'
     compile 'org.igniterealtime.smack:smack-android-extensions:4.1.0'
     compile project(':ormlite-sqlcipher')
+    //Rxjava
+    compile 'io.reactivex:rxjava:1.1.2'
+    compile 'io.reactivex:rxandroid:1.1.0'
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.0.1'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
 }
 

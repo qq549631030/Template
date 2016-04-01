@@ -5,5 +5,5 @@ package com.hx.template.presenter;
  */
 public interface LoginPresenter {
 
-    public void login();
+    public void login(); //登录
 }

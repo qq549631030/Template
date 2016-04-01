@@ -3,7 +3,9 @@ package com.hx.template.presenter.impl;
 import com.hx.template.entity.User;
 import com.hx.template.model.LoginModel;
 import com.hx.template.model.impl.LoginModelImpl;
+import com.hx.template.model.impl.RetrofitLoginImpl;
 import com.hx.template.presenter.LoginPresenter;
+import com.hx.template.utils.LogUtils;
 import com.hx.template.view.IloginView;
 
 /**
@@ -15,7 +17,8 @@ public class LoginPresenterImpl implements LoginPresenter {
 
     public LoginPresenterImpl(IloginView loginView) {
         this.loginView = loginView;
-        loginModel = new LoginModelImpl();
+//        loginModel = new LoginModelImpl();
+        loginModel = new RetrofitLoginImpl();
     }
 
     public void login() {
