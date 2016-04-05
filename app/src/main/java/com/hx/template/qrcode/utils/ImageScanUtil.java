@@ -105,7 +105,7 @@ public class ImageScanUtil {
             Arrays.fill(yuvs, (byte) 0);
         }
         encodeYUV420SP(yuvs, argb, inputWidth, inputHeight);
-        scaled.recycle();
+//        scaled.recycle();
         return yuvs;
     }
 

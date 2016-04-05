@@ -3,6 +3,7 @@ package com.hx.template.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -15,6 +16,7 @@ import com.hx.template.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.hx.template.utils.ImageUtils;
+import com.hx.template.utils.LogUtils;
 import com.hx.template.utils.ToastUtils;
 
 import butterknife.Bind;
@@ -74,11 +76,17 @@ public class RxJavaActivity extends BaseActivity {
                 return;
             }
             Uri uri = data.getData();
+
+
+
             Observable.just(uri)
                     .map(new Func1<Uri, Bitmap>() { //加载图片
                         @Override
                         public Bitmap call(Uri uri) {
-                            return ImageUtils.getImage(getApplicationContext(), uri);
+                            Bitmap bitmap = ImageUtils.getImage(getApplicationContext(), uri);
+                            String result = ImageScanUtil.decodeByZXing(bitmap);
+                            LogUtils.e("huangxiang","result = "+result);
+                            return bitmap;
                         }
                     })
                     .subscribeOn(Schedulers.io())//加载图片放到io线程中

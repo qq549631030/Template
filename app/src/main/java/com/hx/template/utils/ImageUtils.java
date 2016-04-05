@@ -17,11 +17,23 @@ import java.io.InputStream;
  */
 public class ImageUtils {
 
-
+    /**
+     * 取出按默认比例(800x480)压缩的图片
+     *
+     * @param srcPath
+     * @return
+     */
     public static Bitmap getImage(String srcPath) {
         return getImage(srcPath, 800f, 480f);
     }
 
+    /**
+     * 取出按默认比例(800x480)压缩的图片
+     *
+     * @param context
+     * @param uri
+     * @return
+     */
     public static Bitmap getImage(Context context, Uri uri) {
         try {
             return getImage(context, uri, 800f, 480f);
@@ -49,6 +61,16 @@ public class ImageUtils {
         return bitmap;
     }
 
+    /**
+     * 取出按比例压缩的图片
+     *
+     * @param context
+     * @param url
+     * @param hh
+     * @param ww
+     * @return
+     * @throws FileNotFoundException
+     */
     public static Bitmap getImage(Context context, Uri url, float hh, float ww) throws FileNotFoundException {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         //开始读入图片，此时把options.inJustDecodeBounds 设回true了
@@ -61,7 +83,14 @@ public class ImageUtils {
         return bitmap;
     }
 
-
+    /**
+     * 计算图片压缩采样率
+     *
+     * @param options
+     * @param reqWidth
+     * @param reqHeight
+     * @return
+     */
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         int w = options.outWidth;
         int h = options.outHeight;
@@ -78,6 +107,12 @@ public class ImageUtils {
         return inSampleSize;
     }
 
+    /**
+     * 将Bitmap转化为流
+     *
+     * @param bitmap
+     * @return
+     */
     public static InputStream imageToSteam(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
@@ -85,6 +120,13 @@ public class ImageUtils {
         return isBm;
     }
 
+    /**
+     * 将Uri所指的图片转化为流
+     *
+     * @param context
+     * @param uri
+     * @return
+     */
     public static InputStream imageUriCompressToSteam(Context context, Uri uri) {
         Bitmap bitmap = getImage(context, uri);
         if (bitmap != null) {
@@ -93,6 +135,13 @@ public class ImageUtils {
         return null;
     }
 
+    /**
+     * 将Bitmap保存到指定文件
+     *
+     * @param bitmap
+     * @param file
+     * @return
+     */
     public static boolean saveImage(Bitmap bitmap, File file) {
         try {
             FileOutputStream outputStream = new FileOutputStream(
