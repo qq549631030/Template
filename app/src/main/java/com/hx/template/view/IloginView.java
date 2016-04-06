@@ -6,11 +6,31 @@ import com.hx.template.entity.User;
  * Created by huangxiang on 16/3/9.
  */
 public interface IloginView {
-    String getUserName();//获取用户名
+    /**
+     * 获取用户名
+     *
+     * @return
+     */
+    String getUserName();
 
-    String getPassword();//获取密码
+    /**
+     * 获取密码
+     *
+     * @return
+     */
+    String getPassword();
 
-    void toMainActivity(User user);//跳转到主页
+    /**
+     * 跳转到主页
+     *
+     * @param user
+     */
+    void toMainActivity(User user);
 
-    void showFailedError(String reason);//显示错误信息
+    /**
+     * 显示错误信息
+     *
+     * @param reason
+     */
+    void showFailedError(String reason);
 }

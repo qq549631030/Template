@@ -29,7 +29,6 @@ public class RetrofitLoginImpl implements LoginModel.Model {
                 .subscribe(new Subscriber<HttpReturn.LoginReturn>() {
                     @Override
                     public void onNext(HttpReturn.LoginReturn loginReturn) {
-                        LogUtils.d("huangxiang", "在前线程2是：" + Thread.currentThread());
                         if (loginReturn != null) {
                             if (loginReturn.getStatus() == 1) {
                                 User user = loginReturn.getData();

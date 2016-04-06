@@ -21,6 +21,8 @@ import com.hx.template.http.HttpPostUtils;
 import com.hx.template.http.impl.HttpParams;
 import com.hx.template.http.impl.HttpParseUtils;
 import com.hx.template.http.impl.HttpReturn;
+import com.hx.template.model.LoginModel;
+import com.hx.template.model.impl.RetrofitLoginImpl;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
@@ -33,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SplashActivity extends BaseActivity {
-    private static final String TAG = "SplashActivity";
     private static final int GO_TO_GUIDE = 1;
     private static final int GO_TO_LOGIN = 2;
     private static final int GO_TO_HOME = 3;
@@ -42,6 +43,7 @@ public class SplashActivity extends BaseActivity {
     private boolean autoLogin;
     private String userName;
     private String password;
+   private LoginModel.Model loginModel;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -76,6 +78,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        loginModel = new RetrofitLoginImpl();
         initData();
         if (isFirst) {
             mHandler.sendEmptyMessageDelayed(GO_TO_GUIDE, 1500);
@@ -115,66 +118,18 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    private void login(String userName, String password) {
-        final Map<String, String> params = new HashMap<String, String>();
-        if (!TextUtils.isEmpty(userName)) {
-            params.put(HttpParams.Login.userName, userName);
-        }
-        if (!TextUtils.isEmpty(password)) {
-            params.put(HttpParams.Login.password, password);
-        }
-
-        HttpPostUtils.doLazyFromPostRequest(SplashActivity.this, HttpConfig.LOGIN_URL, params, new HttpListener() {
-
+    private void login(String userName, final String password) {
+        loginModel.login(userName, password, new LoginModel.OnLoginListener() {
             @Override
-            public void onPass(JSONObject jsonObject) {
-                Type type = new TypeToken<HttpReturn.LoginReturn>() {
-                }.getType();
-                HttpReturn.LoginReturn mReturn = HttpParseUtils.parseReturn(jsonObject, type);
-                if (mReturn != null) {
-                    if (mReturn.getStatus() == 1) {
-                        User user = mReturn.getData();
-                        loginSuccess(params, user);
-                    } else {
-                        mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
-                        ErrorCode code = mReturn.getCode();
-                        if (code != null) {
-                            ToastUtils.showToast(getApplicationContext(), getResources().getString(mReturn.getCode().getRes()));
-                        } else {
-                            String msg = mReturn.getMsg();
-                            if (TextUtils.isEmpty(msg)) {
-                                ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                            } else {
-                                ToastUtils.showToast(getApplicationContext(), msg);
-                            }
-                        }
-                    }
-                } else {
-                    ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                    mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
-                }
+            public void loginSuccess(User user) {
+                CustomApplication.saveLoginInfo(user,password);
+                mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
             }
 
             @Override
-            public void onError(String ErrorMsg, int errorCode) {
-                mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
+            public void loginFailed(String reason) {
+                ToastUtils.showToast(getApplicationContext(), reason);
             }
-        }, false);
-    }
-
-    private void loginSuccess(Map<String, String> params, User user) {
-        if (user != null) {
-            CustomApplication.currentLoginId = user.getId();
-            CustomApplication.currentUser = user;
-            try {
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_userName, params.get(HttpParams.Login.userName));
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_password, SecretUtils.encrypt(Constant.SECRET_KEY, params.get(HttpParams.Login.password)));
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_current_user, SerializeUtil.serialize(user));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_autoLogin, true);
-        mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
+        });
     }
 }

@@ -111,17 +111,7 @@ public class LoginActivity extends BaseActivity implements IloginView {
 
     @Override
     public void toMainActivity(User user) {
-        if (user != null) {
-            CustomApplication.currentLoginId = user.getId();
-            CustomApplication.currentUser = user;
-            try {
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_userName, getUserName());
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_password, SecretUtils.encrypt(Constant.SECRET_KEY, getPassword()));
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_current_user, SerializeUtil.serialize(user));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        CustomApplication.saveLoginInfo(user, getPassword());
         Intent intent = new Intent(LoginActivity.this, DemoMainActivity.class);
         startActivity(intent);
         finish();

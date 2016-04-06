@@ -18,6 +18,8 @@ import com.hx.template.entity.User;
 import com.hx.template.http.OkHttpStack;
 import com.hx.template.http.StethoOkHttpStack;
 import com.hx.template.utils.NetWorkUtils;
+import com.hx.template.utils.SecretUtils;
+import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -271,5 +273,22 @@ public class CustomApplication extends Application {
                     .getString(R.string.error_network_available));
         }
         return connect;
+    }
+
+
+    public static boolean saveLoginInfo(User user, String password) {
+        if (user != null) {
+            CustomApplication.currentLoginId = user.getId();
+            CustomApplication.currentUser = user;
+            try {
+                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_userName, user.getUsername());
+                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_password, SecretUtils.encrypt(Constant.SECRET_KEY, password));
+                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_current_user, SerializeUtil.serialize(user));
+                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_autoLogin, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 }
