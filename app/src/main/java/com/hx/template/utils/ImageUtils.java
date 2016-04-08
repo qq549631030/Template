@@ -97,9 +97,9 @@ public class ImageUtils {
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
         int inSampleSize = 1;//be=1表示不缩放
         if (w > h && w > reqWidth) {//如果宽度大的话根据宽度固定大小缩放
-            inSampleSize = (int) (options.outWidth / reqWidth);
+            inSampleSize = options.outWidth / reqWidth;
         } else if (w < h && h > reqHeight) {//如果高度高的话根据宽度固定大小缩放
-            inSampleSize = (int) (options.outHeight / reqHeight);
+            inSampleSize = options.outHeight / reqHeight;
         }
         if (inSampleSize <= 0) {
             inSampleSize = 1;

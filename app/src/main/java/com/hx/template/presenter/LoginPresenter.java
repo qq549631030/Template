@@ -7,5 +7,5 @@ public interface LoginPresenter {
     /**
      * 登录
      */
-    public void login();
+    void login();
 }

@@ -19,7 +19,7 @@ public enum ErrorCode {
     ErrorCode() {
     }
 
-    private ErrorCode(String id, int res) {
+    ErrorCode(String id, int res) {
         this.id = id;
         this.res = res;
     }

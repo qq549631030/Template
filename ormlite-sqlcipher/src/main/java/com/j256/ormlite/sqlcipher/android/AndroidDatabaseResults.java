@@ -136,11 +136,7 @@ public class AndroidDatabaseResults implements DatabaseResults {
 	}
 
 	public boolean getBoolean(int columnIndex) {
-		if (cursor.isNull(columnIndex) || cursor.getShort(columnIndex) == 0) {
-			return false;
-		} else {
-			return true;
-		}
+		return !(cursor.isNull(columnIndex) || cursor.getShort(columnIndex) == 0);
 	}
 
 	public char getChar(int columnIndex) throws SQLException {

@@ -117,14 +117,14 @@ public class GuideActivity extends BaseActivity {
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setImageResource(bitmapsFull[position]);
-            ((ViewPager) container).addView(imageView, 0);
+            container.addView(imageView, 0);
             mViews[position] = imageView;
             return imageView;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewPager) container).removeView(mViews[position]);
+            container.removeView(mViews[position]);
             mViews[position] = null;
         }
 

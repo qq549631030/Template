@@ -280,11 +280,7 @@ public class AndroidDatabaseConnection implements DatabaseConnection {
 				db.rawQuery("SELECT DISTINCT tbl_name FROM sqlite_master WHERE tbl_name = '" + tableName + "'", null);
 		try {
 			boolean result;
-			if (cursor.getCount() > 0) {
-				result = true;
-			} else {
-				result = false;
-			}
+			result = cursor.getCount() > 0;
 			logger.trace("{}: isTableExists '{}' returned {}", this, tableName, result);
 			return result;
 		} finally {

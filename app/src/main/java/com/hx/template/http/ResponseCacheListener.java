@@ -12,5 +12,5 @@ import com.android.volley.Cache;
  * Created by huangxiang on 15/12/15.
  */
 public interface ResponseCacheListener {
-    public void onResponse(Cache.Entry cache);
+    void onResponse(Cache.Entry cache);
 }

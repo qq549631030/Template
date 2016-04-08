@@ -12,5 +12,5 @@ import rx.Observable;
  */
 public interface ApiService {
     @POST("member/login")
-    public Observable<HttpReturn.LoginReturn> login(@Query("userName") String username, @Query("password") String password);
+    Observable<HttpReturn.LoginReturn> login(@Query("userName") String username, @Query("password") String password);
 }
