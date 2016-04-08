@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,17 +24,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class DemoMainActivity extends BaseActivity {
-    private static final String TAG = "DemoMainActivity";
     @Bind(R.id.image)
-    ImageView image;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate() called with: " + "savedInstanceState = [" + savedInstanceState + "]");
         setContentView(R.layout.activity_demo_main);
         ButterKnife.bind(this);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,6 +39,7 @@ public class DemoMainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                Common.testLog(" click here");
                 Intent intent = new Intent(DemoMainActivity.this, SettingActivity.class);
                 startActivity(intent);
             }
@@ -85,7 +82,7 @@ public class DemoMainActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = null;
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.action_zxing_scan_qrcode:
                 intent = new Intent(DemoMainActivity.this, CaptureActivity.class);

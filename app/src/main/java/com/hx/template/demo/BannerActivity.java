@@ -39,7 +39,6 @@ public class BannerActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate() called with: " + "savedInstanceState = [" + savedInstanceState + "]");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner);
         ButterKnife.bind(this);
@@ -69,33 +68,28 @@ public class BannerActivity extends BaseActivity {
 
     @Override
     protected void onStart() {
-        Log.d(TAG, "onStart() called with: " + "");
         super.onStart();
     }
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume() called with: " + "");
         super.onResume();
         banner.startTurning(2000);
     }
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "onPause() called with: " + "");
         super.onPause();
         banner.stopTurning();
     }
 
     @Override
     protected void onStop() {
-        Log.d(TAG, "onStop() called with: " + "");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d(TAG, "onDestroy() called with: " + "");
         super.onDestroy();
     }
 

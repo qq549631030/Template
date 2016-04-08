@@ -275,7 +275,12 @@ public class CustomApplication extends Application {
         return connect;
     }
 
-
+    /**
+     * 保存登录信息
+     * @param user
+     * @param password
+     * @return
+     */
     public static boolean saveLoginInfo(User user, String password) {
         if (user != null) {
             CustomApplication.currentLoginId = user.getId();
