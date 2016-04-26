@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 
 public class DemoMainActivity extends BaseActivity {
     @Bind(R.id.image)
-    private ImageView image;
+    ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

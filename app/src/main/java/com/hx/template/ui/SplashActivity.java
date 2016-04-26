@@ -27,6 +27,7 @@ import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
+import com.networkbench.agent.impl.NBSAppAgent;
 
 import org.json.JSONObject;
 
@@ -77,6 +78,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        NBSAppAgent.setLicenseKey("5bdc5627a996487392abdc6349523f48").withLocationServiceEnabled(true).start(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
         loginModel = new RetrofitLoginImpl();
         initData();
