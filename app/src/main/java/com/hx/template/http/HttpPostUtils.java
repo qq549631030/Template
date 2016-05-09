@@ -78,7 +78,7 @@ public class HttpPostUtils {
     public static void doFormPostRequest(String url,
                                          Map<String, String> params, Listener<JSONObject> listener,
                                          ErrorListener errorListener) {
-        FormPostRequest mRequest = new FormPostRequest(url, listener,
+        FormPostBackJsonRequest mRequest = new FormPostBackJsonRequest(url, listener,
                 errorListener);
         mRequest.setAdditionalParams(params);//设置请求参数
         doBaseFormRequest(mRequest);

@@ -8,17 +8,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * 以表单形式提交POST请求
+ * 以表单形式提交POST请求返回JSON格式数据结构
  *
  * @author huangxiang
  */
-public class FormPostRequest extends BaseFormRequest<JSONObject> {
-
-    private final String TAG = FormPostRequest.class.getSimpleName();
+public class FormPostBackJsonRequest extends BaseFormRequest<JSONObject> {
 
 
-    public FormPostRequest(String url, Listener<JSONObject> listener,
-                           ErrorListener errorListener) {
+    public FormPostBackJsonRequest(String url, Listener<JSONObject> listener,
+                                   ErrorListener errorListener) {
         super(Request.Method.POST, url, listener, errorListener);
     }
 

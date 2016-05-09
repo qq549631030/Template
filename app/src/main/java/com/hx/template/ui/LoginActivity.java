@@ -12,9 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.hx.template.BaseActivity;
 import com.hx.template.Constant;
@@ -22,14 +20,11 @@ import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
-import com.hx.template.presenter.LoginPresenter;
-import com.hx.template.presenter.impl.LoginPresenterImpl;
+import com.hx.template.presenter.ILogin;
+import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.ClickUtils;
-import com.hx.template.utils.SecretUtils;
-import com.hx.template.utils.SerializeUtil;
-import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
-import com.hx.template.view.IloginView;
+import com.hx.template.mvpview.LoginMvpView;
 
 import java.util.regex.Pattern;
 
@@ -37,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements IloginView {
+public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Bind(R.id.username)
     EditText username;
@@ -53,7 +48,8 @@ public class LoginActivity extends BaseActivity implements IloginView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        presenter = new LoginPresenterImpl(this);
+        presenter = new LoginPresenter();
+        presenter.attachView(this);
     }
 
     @Override
@@ -120,5 +116,11 @@ public class LoginActivity extends BaseActivity implements IloginView {
     @Override
     public void showFailedError(String reason) {
         ToastUtils.showToast(getApplicationContext(), "登录失败：" + reason);
+    }
+
+    @Override
+    protected void onDestroy() {
+        presenter.detachView();
+        super.onDestroy();
     }
 }

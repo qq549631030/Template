@@ -1,11 +1,11 @@
-package com.hx.template.view;
+package com.hx.template.mvpview;
 
 import com.hx.template.entity.User;
 
 /**
  * Created by huangxiang on 16/3/9.
  */
-public interface IloginView {
+public interface LoginMvpView extends MvpView{
     /**
      * 获取用户名
      *

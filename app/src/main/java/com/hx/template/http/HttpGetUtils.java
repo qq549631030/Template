@@ -29,7 +29,7 @@ public class HttpGetUtils {
      * @param request HTTP请求
      * @return void
      */
-    public static void doRequest(Request<JSONObject> request) {
+    public static <T> void doRequest(Request<T> request) {
         request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
         CustomApplication.getInstance().addToRequestQueue(request);
     }
@@ -54,7 +54,7 @@ public class HttpGetUtils {
             }
         }
         LogUtils.i(TAG, url);
-        FormGetRequest mRequest = new FormGetRequest(url, listener,
+        FormGetBackJsonRequest mRequest = new FormGetBackJsonRequest(url, listener,
                 errorListener);
 
         Map<String, String> addHeaders = Collections.emptyMap();
@@ -71,6 +71,11 @@ public class HttpGetUtils {
         doRequest(mRequest);
     }
 
+    
+    public static void doFormGetRequest(){
+        
+    }
+    
     /**
      * 以json形式执行GET请求
      *

@@ -27,6 +27,9 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
 import com.nostra13.universalimageloader.utils.L;
 import com.squareup.okhttp.OkHttpClient;
@@ -128,15 +131,36 @@ public class CustomApplication extends Application {
     }
 
     public static void initImageLoader(Context context) {
-        defaultOptions = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_image).showImageOnFail(R.drawable.default_image).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).displayer(new SimpleBitmapDisplayer()).bitmapConfig(Bitmap.Config.RGB_565).build();
-        avatarOptions = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.default_avatar).showImageOnFail(R.drawable.default_avatar).cacheInMemory(true).cacheOnDisk(true).considerExifParams(true).displayer(new SimpleBitmapDisplayer()).bitmapConfig(Bitmap.Config.RGB_565).build();
+        defaultOptions = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.drawable.default_image)
+                .showImageOnFail(R.drawable.default_image)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .displayer(new SimpleBitmapDisplayer())
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
+        avatarOptions = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.drawable.default_avatar)
+                .showImageOnFail(R.drawable.default_avatar)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .displayer(new SimpleBitmapDisplayer())
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .build();
 
         try {// 缓存目录
             ImageLoaderConfiguration config;
-            config = new ImageLoaderConfiguration.Builder(context).threadPriority(Thread
-                    .NORM_PRIORITY - 2).denyCacheImageMultipleSizesInMemory()
+            config = new ImageLoaderConfiguration.Builder(context)
+                    .threadPriority(Thread.NORM_PRIORITY - 2)
+                    .denyCacheImageMultipleSizesInMemory()
                     // 使用1/8 (13%)APP内存
-                    .memoryCacheSizePercentage(13).diskCacheFileNameGenerator(new ImageNameGenerator()).tasksProcessingOrder(QueueProcessingType.LIFO).build();
+                    .memoryCacheSizePercentage(13)
+                    .diskCacheFileNameGenerator(new ImageNameGenerator())
+                    .tasksProcessingOrder(QueueProcessingType.LIFO)
+                    .defaultDisplayImageOptions(defaultOptions)
+                    .build();
             ImageLoader.getInstance().init(config);
         } catch (Exception e) {
             e.printStackTrace();
@@ -203,8 +227,9 @@ public class CustomApplication extends Application {
      */
     public <T> void addToRequestQueue(Request<T> req) {
         // set the default tag if tag is empty
-        req.setTag(VOLLEY_TAG);
-
+        if (req.getTag() == null) {
+            req.setTag(VOLLEY_TAG);
+        }
         getRequestQueue().add(req);
     }
 
@@ -277,6 +302,7 @@ public class CustomApplication extends Application {
 
     /**
      * 保存登录信息
+     *
      * @param user
      * @param password
      * @return

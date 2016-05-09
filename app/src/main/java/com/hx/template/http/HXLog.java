@@ -14,7 +14,7 @@ import android.util.Log;
 public class HXLog {
     private static String TAG = "HXLog";
 
-    public static boolean DEBUG = Log.isLoggable(TAG, Log.VERBOSE);
+    public static boolean DEBUG = Log.isLoggable(TAG, Log.VERBOSE)||true;
 
     public static void setTag(String tag) {
         HXLog.TAG = tag;

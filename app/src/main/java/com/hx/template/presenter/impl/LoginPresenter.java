@@ -2,35 +2,35 @@ package com.hx.template.presenter.impl;
 
 import com.hx.template.entity.User;
 import com.hx.template.model.LoginModel;
-import com.hx.template.model.impl.LoginModelImpl;
 import com.hx.template.model.impl.RetrofitLoginImpl;
-import com.hx.template.presenter.LoginPresenter;
-import com.hx.template.utils.LogUtils;
-import com.hx.template.view.IloginView;
+import com.hx.template.presenter.BasePresenter;
+import com.hx.template.presenter.ILogin;
+import com.hx.template.mvpview.LoginMvpView;
 
 /**
  * Created by huangxiang on 16/3/30.
  */
-public class LoginPresenterImpl implements LoginPresenter {
+public class LoginPresenter extends BasePresenter<LoginMvpView> implements ILogin {
     private LoginModel.Model loginModel;
-    private IloginView loginView;
 
-    public LoginPresenterImpl(IloginView loginView) {
-        this.loginView = loginView;
+    public LoginPresenter() {
 //        loginModel = new LoginModelImpl();
         loginModel = new RetrofitLoginImpl();
     }
 
     public void login() {
-        loginModel.login(loginView.getUserName(), loginView.getPassword(), new LoginModel.OnLoginListener() {
+        if (!isViewAttached()) {
+            return;
+        }
+        loginModel.login(getMvpView().getUserName(), getMvpView().getPassword(), new LoginModel.OnLoginListener() {
             @Override
             public void loginSuccess(User user) {
-                loginView.toMainActivity(user);
+                getMvpView().toMainActivity(user);
             }
 
             @Override
             public void loginFailed(String reason) {
-                loginView.showFailedError(reason);
+                getMvpView().showFailedError(reason);
             }
         });
     }
