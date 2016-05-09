@@ -5,7 +5,7 @@ import com.hx.template.entity.User;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public interface LoginMvpView extends MvpView{
+public interface LoginMvpView extends LoadingView, MvpView {
     /**
      * 获取用户名
      *

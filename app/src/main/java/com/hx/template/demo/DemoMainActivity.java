@@ -51,32 +51,7 @@ public class DemoMainActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        ImageLoader.getInstance().displayImage("http://imgt6.bdstatic.com/it/u=2,3222226309&fm=25&gp=0.jpg", image, null, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
-                Log.d(TAG, "onLoadingStarted() called with: " + "s = [" + s + "], view = [" + view + "]");
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                Log.d(TAG, "onLoadingFailed() called with: " + "s = [" + s + "], view = [" + view + "], failReason = [" + failReason + "]");
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                Log.d(TAG, "onLoadingComplete() called with: " + "s = [" + s + "], view = [" + view + "], bitmap = [" + bitmap + "]");
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-                Log.d(TAG, "onLoadingCancelled() called with: " + "s = [" + s + "], view = [" + view + "]");
-            }
-        }, new ImageLoadingProgressListener() {
-            @Override
-            public void onProgressUpdate(String s, View view, int i, int i1) {
-                Log.d(TAG, "onProgressUpdate() called with: " + "s = [" + s + "], view = [" + view + "], i = [" + i + "], i1 = [" + i1 + "]");
-            }
-        });
+        ImageLoader.getInstance().displayImage("http://imgt6.bdstatic.com/it/u=2,3222226309&fm=25&gp=0.jpg", image);
 //        Picasso.with(DemoMainActivity.this).load("http://d.hiphotos.baidu.com/image/pic/item/d058ccbf6c81800aaa274a03b33533fa838b47f9.jpg").placeholder(R.drawable.default_image).into(image);
     }
 

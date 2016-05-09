@@ -6,6 +6,7 @@
 
 package com.hx.template.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +39,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     EditText username;
     @Bind(R.id.password)
     EditText password;
-
+    ProgressDialog progressDialog;
     LoginPresenter presenter;
 
     @Override
@@ -48,6 +49,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        progressDialog = new ProgressDialog(this);
         presenter = new LoginPresenter();
         presenter.attachView(this);
     }
@@ -120,7 +122,23 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     protected void onDestroy() {
+        progressDialog = null;
         presenter.detachView();
         super.onDestroy();
+    }
+
+    @Override
+    public void showLoadingProgress(String msg) {
+        if (progressDialog != null) {
+            progressDialog.setMessage(msg);
+            progressDialog.show();
+        }
+    }
+
+    @Override
+    public void hideLoadingProgress() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 }

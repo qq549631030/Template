@@ -8,17 +8,18 @@ package com.hx.template.http;
 
 import android.util.Log;
 
+import com.hx.template.BuildConfig;
+
 /**
  * Created by huangxiang on 15/12/16.
  */
 public class HXLog {
     private static String TAG = "HXLog";
 
-    public static boolean DEBUG = Log.isLoggable(TAG, Log.VERBOSE)||true;
+    public static boolean DEBUG = BuildConfig.DEBUG;
 
     public static void setTag(String tag) {
         HXLog.TAG = tag;
-        DEBUG = Log.isLoggable(TAG, Log.VERBOSE);
     }
 
     public static void v(String message) {

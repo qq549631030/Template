@@ -22,6 +22,7 @@ import com.hx.template.http.impl.HttpParams;
 import com.hx.template.http.impl.HttpParseUtils;
 import com.hx.template.http.impl.HttpReturn;
 import com.hx.template.model.LoginModel;
+import com.hx.template.model.impl.LoginModelImpl;
 import com.hx.template.model.impl.RetrofitLoginImpl;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
@@ -80,7 +81,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         NBSAppAgent.setLicenseKey("5bdc5627a996487392abdc6349523f48").withLocationServiceEnabled(true).start(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
-        loginModel = new RetrofitLoginImpl();
+        loginModel = new LoginModelImpl();
         initData();
         if (isFirst) {
             mHandler.sendEmptyMessageDelayed(GO_TO_GUIDE, 1500);
@@ -100,9 +101,7 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mHandler.removeMessages(GO_TO_GUIDE);
-        mHandler.removeMessages(GO_TO_LOGIN);
-        mHandler.removeMessages(GO_TO_HOME);
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     protected void initData() {
@@ -131,6 +130,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void loginFailed(String reason) {
                 ToastUtils.showToast(getApplicationContext(), reason);
+                mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
             }
         });
     }
