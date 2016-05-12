@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--颜色值-->
+    <color name="base_color_0000">#0000</color>
+    <color name="base_color_2084d3">#2084d3</color>
+    <color name="base_color_333333">#333333</color>
+    <color name="base_color_4d4d4d">#4d4d4d</color>
+    <color name="base_color_808080">#808080</color>
+    <color name="base_color_bcbcbc">#bcbcbc</color>
+    <color name="base_color_e6e6e6">#e6e6e6</color>
+    <color name="base_color_f2f2f2">#f2f2f2</color>
+    <color name="base_color_f55c54">#f55c54</color>
+    <color name="base_color_ffffff">#ffffff</color>
+    <color name="base_color_d83d3d">#d83d3d</color>
+    <color name="base_color_fafafa">#fafafa</color>
+    <color name="base_color_166ba5">#166ba5</color>
+    <color name="base_color_f7f7f7">#f7f7f7</color>
+    <color name="base_color_df4549">#df4549</color>
+    <color name="base_color_f47056">#f47056</color>
+    <color name="base_color_3b3d4d">#3b3d4d</color>
+    <color name="base_color_ff9c00">#ff9c00</color>
+    <color name="base_color_22b573">#22b573</color>
+    <color name="base_color_d5d8db">#d5d8db</color>
+    
+    <!--UI规范颜色-->
+    <color name="base_color_c1">@color/base_color_2084d3</color>
+    <color name="base_color_c2">@color/base_color_333333</color>
+    <color name="base_color_c3">@color/base_color_4d4d4d</color>
+    <color name="base_color_c4">@color/base_color_808080</color>
+    <color name="base_color_c5">@color/base_color_bcbcbc</color>
+    <color name="base_color_c6">@color/base_color_e6e6e6</color>
+    <color name="base_color_c7">@color/base_color_f2f2f2</color>
+    <color name="base_color_c8">@color/base_color_ffffff</color>
+    <color name="base_color_c9">@color/base_color_f55c54</color>
+    <color name="base_color_c10">@color/base_color_22b573</color>
+    <color name="base_color_c11">@color/base_color_ff9c00</color>
+    <color name="base_color_c12">@color/base_color_fafafa</color>
+</resources>

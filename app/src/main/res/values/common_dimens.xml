@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--文字大小-->
+    <dimen name="base_text_size_t1">18sp</dimen>
+    <dimen name="base_text_size_t2">17sp</dimen>
+    <dimen name="base_text_size_t3">16sp</dimen>
+    <dimen name="base_text_size_t4">15sp</dimen>
+    <dimen name="base_text_size_t5">13sp</dimen>
+    <dimen name="base_text_size_t6">12sp</dimen>
+
+    <!-- 尺寸大小 -->
+    <dimen name="base_size_3dp">3dp</dimen>
+    <dimen name="base_size_5dp">5dp</dimen>
+    <dimen name="base_size_10dp">10dp</dimen>
+    <dimen name="base_size_11dp">11dp</dimen>
+    <dimen name="base_size_12dp">12dp</dimen>
+    <dimen name="base_size_15dp">15dp</dimen>
+    <dimen name="base_size_17dp">17dp</dimen>
+    <dimen name="base_size_18dp">18dp</dimen>
+    <dimen name="base_size_19dp">19dp</dimen>
+    <dimen name="base_size_20dp">20dp</dimen>
+
+    <!--一般分隔线尺寸-->
+    <dimen name="base_divider_size">2px</dimen>
+
+    <!-- 一般边距尺寸 -->
+    <dimen name="base_padding_size">12dp</dimen>
+    <!-- 较小边距尺寸 -->
+    <dimen name="base_padding_size_small">8dp</dimen>
+    <!--较大边距尺寸-->
+    <dimen name="base_padding_size_large">16dp</dimen>
+
+
+</resources>
