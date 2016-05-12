@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.edmodo.cropper.CropImageView;
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.utils.ClickUtils;

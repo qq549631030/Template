@@ -15,13 +15,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
-import com.hx.template.presenter.ILogin;
 import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.ClickUtils;
 import com.hx.template.utils.ToastUtils;

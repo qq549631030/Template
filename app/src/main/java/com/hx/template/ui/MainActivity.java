@@ -14,7 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
 
 public class MainActivity extends BaseActivity {

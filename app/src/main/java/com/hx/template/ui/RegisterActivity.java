@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.reflect.TypeToken;
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.HttpConfig;
 import com.hx.template.R;

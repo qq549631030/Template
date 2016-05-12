@@ -6,14 +6,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.hx.template.BaseActivity;
-import com.hx.template.CustomApplication;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.ui.SettingActivity;
 import com.hx.template.utils.ImageUtils;
@@ -21,10 +19,6 @@ import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.hx.template.utils.ToastUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingProgressListener;
-import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

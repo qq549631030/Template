@@ -1,30 +1,23 @@
 package com.hx.template.demo;
 
-import android.content.ContentProvider;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.adapter.NetworkImageHolderView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dalvik.system.BaseDexClassLoader;
-import dalvik.system.DexClassLoader;
 
 public class BannerActivity extends BaseActivity {
     private static final String TAG = "BannerActivity";

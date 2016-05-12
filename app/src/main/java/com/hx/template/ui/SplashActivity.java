@@ -7,34 +7,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.google.gson.reflect.TypeToken;
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.CustomApplication;
-import com.hx.template.HttpConfig;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.entity.User;
-import com.hx.template.entity.enums.ErrorCode;
-import com.hx.template.http.HttpListener;
-import com.hx.template.http.HttpPostUtils;
-import com.hx.template.http.impl.HttpParams;
-import com.hx.template.http.impl.HttpParseUtils;
-import com.hx.template.http.impl.HttpReturn;
 import com.hx.template.model.LoginModel;
 import com.hx.template.model.impl.LoginModelImpl;
-import com.hx.template.model.impl.RetrofitLoginImpl;
 import com.hx.template.utils.SecretUtils;
-import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
 import com.networkbench.agent.impl.NBSAppAgent;
-
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SplashActivity extends BaseActivity {
     private static final int GO_TO_GUIDE = 1;

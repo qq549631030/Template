@@ -1,14 +1,11 @@
 package com.hx.template.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.HandlerThread;
-import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
@@ -18,18 +15,13 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.utils.ColorUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.components.PageIndicator;
-
-import java.lang.ref.PhantomReference;
-import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

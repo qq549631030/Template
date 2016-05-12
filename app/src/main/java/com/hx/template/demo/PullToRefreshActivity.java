@@ -5,7 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.hx.template.BaseActivity;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.utils.TimeUtils;
 import com.hx.template.components.PullToRefreshView;

@@ -1,4 +1,4 @@
-package com.hx.template;
+package com.hx.template.base;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -10,6 +10,8 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import com.hx.template.CustomApplication;
 
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
