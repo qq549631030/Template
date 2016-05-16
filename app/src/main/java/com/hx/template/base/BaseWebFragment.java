@@ -17,12 +17,14 @@ import com.hx.template.R;
 /**
  * Created by huangx on 2016/5/12.
  */
-public class BaseWebFragment extends BaseFragment {
+public abstract class BaseWebFragment extends BaseFragment {
     private WebView mWebView;
-
+    
     protected int getLayoutId() {
         return R.layout.fragment_base_web;
     }
+    
+    public abstract String initUrl();
 
     @Nullable
     @Override
@@ -49,6 +51,7 @@ public class BaseWebFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mWebView.loadUrl(initUrl());
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -63,5 +66,5 @@ public class BaseWebFragment extends BaseFragment {
         webSettings.setUseWideViewPort(true);// 全屏
         webSettings.setDomStorageEnabled(true);
     }
-    
+
 }
