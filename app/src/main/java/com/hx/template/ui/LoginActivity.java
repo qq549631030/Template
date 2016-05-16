@@ -21,6 +21,7 @@ import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
+import com.hx.template.model.impl.volley.LoginModelImpl;
 import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.ClickUtils;
 import com.hx.template.utils.ToastUtils;
@@ -49,7 +50,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         progressDialog = new ProgressDialog(this);
-        presenter = new LoginPresenter();
+        presenter = new LoginPresenter(new LoginModelImpl());
         presenter.attachView(this);
     }
 

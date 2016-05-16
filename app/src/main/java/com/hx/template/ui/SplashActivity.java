@@ -14,7 +14,7 @@ import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.entity.User;
 import com.hx.template.model.LoginModel;
-import com.hx.template.model.impl.LoginModelImpl;
+import com.hx.template.model.impl.volley.LoginModelImpl;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;

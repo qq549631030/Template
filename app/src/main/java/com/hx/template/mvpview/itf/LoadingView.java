@@ -1,4 +1,4 @@
-package com.hx.template.mvpview;
+package com.hx.template.mvpview.itf;
 
 /**
  * 显示加载进度的页面

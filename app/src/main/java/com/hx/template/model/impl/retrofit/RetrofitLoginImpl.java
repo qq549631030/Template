@@ -1,4 +1,4 @@
-package com.hx.template.model.impl;
+package com.hx.template.model.impl.retrofit;
 
 import android.text.TextUtils;
 

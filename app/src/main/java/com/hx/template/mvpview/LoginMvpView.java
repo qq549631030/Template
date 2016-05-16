@@ -1,6 +1,7 @@
 package com.hx.template.mvpview;
 
 import com.hx.template.entity.User;
+import com.hx.template.mvpview.itf.LoadingView;
 
 /**
  * Created by huangxiang on 16/3/9.

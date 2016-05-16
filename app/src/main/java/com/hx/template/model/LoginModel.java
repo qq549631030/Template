@@ -5,7 +5,7 @@ import com.hx.template.entity.User;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public class LoginModel {
+public interface LoginModel {
     public interface Model {
         void login(String username, String password, OnLoginListener listener);
     }

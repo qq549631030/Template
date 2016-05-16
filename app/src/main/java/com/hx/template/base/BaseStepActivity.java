@@ -39,6 +39,9 @@ public class BaseStepActivity<T extends BaseStepFragment> extends BaseActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(getContentLayout());
+        if (findViewById(R.id.content_area) == null) {
+            throw new IllegalArgumentException("布局文件中必须有一个ID为R.id.content_area的layout");
+        }
         if (preInitStepActivity()) {
             initStepActivity(getIntent().getBundleExtra(EXTRA_INIT_ARGUMENTS));
         }

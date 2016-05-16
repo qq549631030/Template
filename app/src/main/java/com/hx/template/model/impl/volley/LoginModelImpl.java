@@ -1,4 +1,4 @@
-package com.hx.template.model.impl;
+package com.hx.template.model.impl.volley;
 
 import android.text.TextUtils;
 
