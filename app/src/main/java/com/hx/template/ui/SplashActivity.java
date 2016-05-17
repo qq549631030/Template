@@ -14,6 +14,7 @@ import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.entity.User;
 import com.hx.template.model.LoginModel;
+import com.hx.template.model.impl.retrofit.RetrofitLoginImpl;
 import com.hx.template.model.impl.volley.LoginModelImpl;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
@@ -65,7 +66,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 //        NBSAppAgent.setLicenseKey("5bdc5627a996487392abdc6349523f48").withLocationServiceEnabled(true).start(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
-        loginModel = new LoginModelImpl();
+        loginModel = new RetrofitLoginImpl();
         initData();
         if (isFirst) {
             mHandler.sendEmptyMessageDelayed(GO_TO_GUIDE, 1500);

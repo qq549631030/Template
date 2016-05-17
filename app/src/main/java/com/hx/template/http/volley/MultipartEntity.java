@@ -1,4 +1,4 @@
-package com.hx.template.http;
+package com.hx.template.http.volley;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -4,7 +4,7 @@
  *
  */
 
-package com.hx.template.http;
+package com.hx.template.http.volley;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;

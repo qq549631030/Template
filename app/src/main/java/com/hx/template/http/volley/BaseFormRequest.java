@@ -4,7 +4,7 @@
  *
  */
 
-package com.hx.template.http;
+package com.hx.template.http.volley;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -13,6 +13,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.hx.template.global.HXLog;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

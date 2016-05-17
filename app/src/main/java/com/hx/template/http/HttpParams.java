@@ -1,4 +1,4 @@
-package com.hx.template.http.impl;
+package com.hx.template.http;
 
 /**
  * Created by huangxiang on 15/10/20.

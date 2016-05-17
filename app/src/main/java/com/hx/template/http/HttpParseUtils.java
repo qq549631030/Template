@@ -3,7 +3,7 @@
  * <p/>
  * Licensed under the 深圳中盟燧石科技 License, Version 1.0 (the "License");
  */
-package com.hx.template.http.impl;
+package com.hx.template.http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

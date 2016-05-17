@@ -19,7 +19,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitUtils {
     private static Retrofit retrofit;
 
-    public static <T> T createApi(Class<T> clazz) {
+    public static Retrofit getRetrofit() {
         if (retrofit == null) {
             synchronized (RetrofitUtils.class) {
                 if (retrofit == null) {
@@ -35,6 +35,10 @@ public class RetrofitUtils {
                 }
             }
         }
-        return retrofit.create(clazz);
+        return retrofit;
+    }
+
+    public static <T> T createApi(Class<T> clazz) {
+        return getRetrofit().create(clazz);
     }
 }

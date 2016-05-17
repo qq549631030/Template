@@ -1,4 +1,4 @@
-package com.hx.template.http;
+package com.hx.template.http.volley;
 
 import android.content.Context;
 
@@ -11,6 +11,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
+import com.hx.template.global.HXLog;
 import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.ToastUtils;
 

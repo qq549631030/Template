@@ -4,7 +4,7 @@
  *
  */
 
-package com.hx.template.http;
+package com.hx.template.global;
 
 import android.util.Log;
 

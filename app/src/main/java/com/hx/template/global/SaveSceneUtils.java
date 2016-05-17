@@ -14,7 +14,6 @@ import com.hx.template.annotation.InstanceType;
 import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseFragment;
-import com.hx.template.http.HXLog;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;

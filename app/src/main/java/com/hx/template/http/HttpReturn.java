@@ -1,4 +1,4 @@
-package com.hx.template.http.impl;
+package com.hx.template.http;
 
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.ErrorCode;
@@ -10,7 +10,7 @@ public class HttpReturn {
     /**
      * 所有返回数据基对象
      */
-    public class BaseReturn {
+    public static class BaseReturn {
         /**
          * 状态
          */
@@ -53,7 +53,7 @@ public class HttpReturn {
      *
      * @author huangxiang
      */
-    public class RegisterReturn extends BaseReturn {
+    public static class RegisterReturn extends BaseReturn {
         private User data;
 
         public RegisterReturn() {
@@ -71,7 +71,7 @@ public class HttpReturn {
     /**
      * 登录返回
      */
-    public class LoginReturn extends BaseReturn {
+    public static class LoginReturn extends BaseReturn {
         private User data;
 
         public LoginReturn() {
@@ -92,7 +92,7 @@ public class HttpReturn {
      *
      * @author huangxiang
      */
-    public class ModifyPwdReturn extends BaseReturn {
+    public static class ModifyPwdReturn extends BaseReturn {
         private User data;
 
         public ModifyPwdReturn() {
