@@ -12,33 +12,23 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.hx.template.CustomApplication;
+import com.hx.template.global.GlobalActivityManager;
+import com.hx.template.global.SaveSceneUtils;
 
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = "BaseActivity";
 
-    public ProgressDialog mProgressDialog;
-
     private ConnectivityManager mConnectivityManager;
-
-    //是否记录当前Activity
-    private boolean addToList = true;
-
-    public void setAddToList(boolean addToList) {
-        this.addToList = addToList;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProgressDialog = new ProgressDialog(this);
-        if (addToList) {
-            //记录当前Activity
-            CustomApplication.addActivity(this);
-        }
+        GlobalActivityManager.push(this);
         mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         IntentFilter netFilter = new IntentFilter();
         netFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(netReceiver, netFilter);
+        SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
     }
 
     @Override
@@ -55,14 +45,28 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //取消当前Activity记录
-        CustomApplication.removeActivity(this);
         unregisterReceiver(netReceiver);
-        mProgressDialog = null;
         netReceiver = null;
         mConnectivityManager = null;
+        GlobalActivityManager.remove(this);
     }
 
+    public void finishForever() {
+        super.finish();
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        SaveSceneUtils.onSaveInstanceState(this, outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
+    }
 
     /**
      * 网络变化监听
@@ -75,17 +79,6 @@ public class BaseActivity extends AppCompatActivity {
                 if (netInfo != null && netInfo.isAvailable()) {
                     /////////////网络连接
                     onNetworkChange(true);
-                    String name = netInfo.getTypeName();
-                    if (netInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                        /////WiFi网络
-
-                    } else if (netInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
-                        /////有线网络
-
-                    } else if (netInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
-                        /////////移动网络
-
-                    }
                 } else {
                     ////////网络断开
                     onNetworkChange(false);
@@ -102,6 +95,4 @@ public class BaseActivity extends AppCompatActivity {
     protected void onNetworkChange(boolean on) {
 
     }
-
-
 }

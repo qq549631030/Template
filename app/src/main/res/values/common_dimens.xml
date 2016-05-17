@@ -20,15 +20,35 @@
     <dimen name="base_size_19dp">19dp</dimen>
     <dimen name="base_size_20dp">20dp</dimen>
 
+    <!--边距-->
+    <dimen name="base_padding_10dp">@dimen/base_size_10dp</dimen>
+    <dimen name="base_padding_11dp">@dimen/base_size_11dp</dimen>
+    <dimen name="base_padding_12dp">@dimen/base_size_12dp</dimen>
+    <dimen name="base_padding_15dp">@dimen/base_size_15dp</dimen>
+    <dimen name="base_padding_17dp">@dimen/base_size_17dp</dimen>
+    <dimen name="base_padding_18dp">@dimen/base_size_18dp</dimen>
+    <dimen name="base_padding_19dp">@dimen/base_size_19dp</dimen>
+    <dimen name="base_padding_20dp">@dimen/base_size_20dp</dimen>
     <!--一般分隔线尺寸-->
     <dimen name="base_divider_size">2px</dimen>
-
     <!-- 一般边距尺寸 -->
     <dimen name="base_padding_size">12dp</dimen>
     <!-- 较小边距尺寸 -->
     <dimen name="base_padding_size_small">8dp</dimen>
     <!--较大边距尺寸-->
     <dimen name="base_padding_size_large">16dp</dimen>
+    <!--对话框边距-->
+    <dimen name="base_dialog_padding">16.66dp</dimen>
+
+
+    <!-- 默认的高度-->
+    <dimen name="base_normal_height">46dp</dimen>
+    <!-- 输入框的高度 -->
+    <dimen name="base_edittext_height">44dp</dimen>
+    <!-- 按钮的高度 -->
+    <dimen name="base_button_height">44dp</dimen>
+    <!--对话框按钮高度-->
+    <dimen name="base_dialog_button_height">40dp</dimen>
 
 
 </resources>

@@ -22,33 +22,44 @@ public class HXLog {
         HXLog.TAG = tag;
     }
 
-    public static void v(String message) {
+    public static void v(String format, Object... params) {
         if (DEBUG) {
+            String message = String.format(format, params);
             Log.v(TAG, message);
         }
     }
 
-    public static void i(String message) {
+    public static void i(String format, Object... params) {
         if (DEBUG) {
+            String message = String.format(format, params);
             Log.i(TAG, message);
         }
     }
 
-    public static void w(String message) {
+    public static void w(String format, Object... params) {
         if (DEBUG) {
+            String message = String.format(format, params);
             Log.w(TAG, message);
         }
     }
 
-    public static void d(String message) {
+    public static void d(String format, Object... params) {
         if (DEBUG) {
+            String message = String.format(format, params);
             Log.d(TAG, message);
         }
     }
 
-    public static void e(String message) {
+    public static void e(String format, Object... params) {
         if (DEBUG) {
+            String message = String.format(format, params);
             Log.e(TAG, message);
         }
     }
+    public static void e(Throwable e) {
+        if (DEBUG) {
+           e.printStackTrace();
+        }
+    }
+    
 }

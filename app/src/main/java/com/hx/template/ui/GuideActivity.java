@@ -41,8 +41,6 @@ public class GuideActivity extends BaseActivity {
 
     private View[] mViews;
 
-    HandlerThread handlerThread = new HandlerThread("handleThread");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import com.android.volley.toolbox.Volley;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.hx.template.entity.User;
+import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.http.OkHttpStack;
 import com.hx.template.http.StethoOkHttpStack;
 import com.hx.template.utils.NetWorkUtils;
@@ -55,8 +58,6 @@ public class CustomApplication extends Application {
      */
     public static final String VOLLEY_TAG = "VolleyPatterns";
 
-    public static ArrayList<Activity> activityList;
-
     public static String sessionId = "";
 
     private static RequestQueue mRequestQueue;
@@ -71,6 +72,10 @@ public class CustomApplication extends Application {
 
     public static User currentUser;
 
+
+    private ActivityLifecycleCallbacks activityLifecycleCallbacks = null;
+    
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -83,8 +88,8 @@ public class CustomApplication extends Application {
         //初始化加密ormlite数据库
         SQLiteDatabase.loadLibs(this);
         instance = this;
-        activityList = new ArrayList<Activity>();
         initImageLoader(instance);
+        initActivityManager();
         enabledStrictMode();
         //内存泄露检测
         if (Constant.DEBUG) {
@@ -103,23 +108,6 @@ public class CustomApplication extends Application {
     }
 
 
-    public static void addActivity(Activity activity) {
-        activityList.add(activity);
-    }
-
-    public static void removeActivity(Activity activity) {
-        if (activityList.contains(activity)) {
-            activityList.remove(activity);
-        }
-    }
-
-    public static void finishAllActivity() {
-        for (Activity a : activityList) {
-            a.finish();
-        }
-        activityList.clear();
-    }
-
     private void enabledStrictMode() {
         if (SDK_INT >= GINGERBREAD) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
@@ -130,6 +118,40 @@ public class CustomApplication extends Application {
         }
     }
 
+    
+    private void initActivityManager(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
+                && activityLifecycleCallbacks == null) {
+            activityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
+                @Override
+                public void onActivityStopped(Activity activity) {}
+
+                @Override
+                public void onActivityStarted(Activity activity) {}
+
+                @Override
+                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+
+                @Override
+                public void onActivityResumed(Activity activity) {}
+
+                @Override
+                public void onActivityPaused(Activity activity) {}
+
+                @Override
+                public void onActivityDestroyed(Activity activity) {
+                    GlobalActivityManager.remove(activity);
+                }
+
+                @Override
+                public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+                    GlobalActivityManager.push(activity);
+                }
+            };
+            registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
+        }
+    }
+    
     public static void initImageLoader(Context context) {
         defaultOptions = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.default_image)

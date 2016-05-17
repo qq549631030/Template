@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="base_dialog_frame" />
+    <item type="id" name="base_dialog_title" />
+    <item type="id" name="base_dialog_message" />
+    <item type="id" name="base_dialog_progressBar" />
+    <item type="id" name="base_dialog_loading_progressBar" />
+    <item type="id" name="base_dialog_btn_ok" />
+    <item type="id" name="base_dialog_btn_cancel" />
+</resources>

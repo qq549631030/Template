@@ -12,7 +12,7 @@ import com.edmodo.cropper.CropImageView;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.utils.ClickUtils;
+import com.hx.template.global.FastClickUtils;
 import com.hx.template.utils.ImageUtils;
 
 import java.io.File;
@@ -52,7 +52,7 @@ public class CropperActivity extends BaseActivity {
     }
 
     private void initViews() {
-        cropImageView.setAspectRatio(300,300);
+        cropImageView.setAspectRatio(300, 300);
         cropImageView.setFixedAspectRatio(true);
         Bitmap bitmap = ImageUtils.getImage(this, srcUri);
         cropImageView.setImageBitmap(bitmap);
@@ -68,7 +68,7 @@ public class CropperActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_confirm:
-                if (ClickUtils.notFastClick()) {
+                if (FastClickUtils.isTimeToProcess(R.id.action_confirm)) {
                     Bitmap cropedBitmap = cropImageView.getCroppedImage();
                     try {
                         FileOutputStream outputStream = new FileOutputStream(cropedFile);

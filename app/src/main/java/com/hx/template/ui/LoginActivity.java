@@ -6,7 +6,9 @@
 
 package com.hx.template.ui;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,11 +21,14 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
+import com.hx.template.base.BaseDialog;
+import com.hx.template.base.BaseDialogConfig;
+import com.hx.template.base.BaseDialogConfigFactory;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
+import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.impl.volley.LoginModelImpl;
 import com.hx.template.presenter.impl.LoginPresenter;
-import com.hx.template.utils.ClickUtils;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.mvpview.LoginMvpView;
 
@@ -39,7 +44,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     EditText username;
     @Bind(R.id.password)
     EditText password;
-    ProgressDialog progressDialog;
     LoginPresenter presenter;
 
     @Override
@@ -49,7 +53,6 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        progressDialog = new ProgressDialog(this);
         presenter = new LoginPresenter(new LoginModelImpl());
         presenter.attachView(this);
     }
@@ -75,13 +78,13 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.forget_password:
-                if (ClickUtils.notFastClick()) {
+                if (FastClickUtils.isTimeToProcess(R.id.forget_password)) {
                     //TODO implement
                 }
                 break;
             case R.id.login:
                 if (checkInput()) {
-                    if (ClickUtils.notFastClick()) {
+                    if (FastClickUtils.isTimeToProcess(R.id.login)) {
                         presenter.login();
                     }
                 }
@@ -122,23 +125,24 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     protected void onDestroy() {
-        progressDialog = null;
         presenter.detachView();
         super.onDestroy();
     }
 
     @Override
     public void showLoadingProgress(String msg) {
-        if (progressDialog != null) {
-            progressDialog.setMessage(msg);
-            progressDialog.show();
-        }
+        BaseDialogConfig dialogConfig = BaseDialogConfigFactory.getDialogConfig(BaseDialogConfigFactory.BaseDialogType.BASE_DIALOG_LOADING, this, msg, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                    hideLoadingProgress();
+            }
+        });
+        Dialog dialog = BaseDialog.getDialog(this,dialogConfig);
+        dialog.show();
     }
 
     @Override
     public void hideLoadingProgress() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
-        }
+        BaseDialog.dismissDialog(this);
     }
 }

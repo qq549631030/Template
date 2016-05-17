@@ -6,6 +6,7 @@
 
 package com.hx.template.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -22,12 +23,12 @@ import com.hx.template.HttpConfig;
 import com.hx.template.R;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.ErrorCode;
+import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.HttpListener;
 import com.hx.template.http.HttpPostUtils;
 import com.hx.template.http.impl.HttpParams;
 import com.hx.template.http.impl.HttpParseUtils;
 import com.hx.template.http.impl.HttpReturn;
-import com.hx.template.utils.ClickUtils;
 import com.hx.template.utils.DeviceUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
@@ -60,6 +61,8 @@ public class RegisterActivity extends BaseActivity {
 
     private CountDownTimer countDownTimer;
 
+    ProgressDialog mProgressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,7 @@ public class RegisterActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mProgressDialog = new ProgressDialog(this);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -91,20 +95,20 @@ public class RegisterActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.getvcode:
                 if (checkPhone()) {
-                    if (ClickUtils.notFastClick()) {
+                    if (FastClickUtils.isTimeToProcess(R.id.getvcode)) {
                         getVerificationCode(username.getText().toString().trim());
                     }
                 }
                 break;
             case R.id.register:
                 if (checkInput()) {
-                    if (ClickUtils.notFastClick()) {
+                    if (FastClickUtils.isTimeToProcess(R.id.register)) {
                         register(username.getText().toString().trim(), password.getText().toString().trim(), DeviceUtils.getDeviceId(RegisterActivity.this), vcode.getText().toString().trim());
                     }
                 }
                 break;
             case R.id.to_login:
-                if (ClickUtils.notFastClick()) {
+                if (FastClickUtils.isTimeToProcess(R.id.to_login)) {
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
