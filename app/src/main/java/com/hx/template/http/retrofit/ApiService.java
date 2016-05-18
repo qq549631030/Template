@@ -13,4 +13,5 @@ import rx.Observable;
 public interface ApiService {
     @POST
     Observable<HttpReturn.LoginReturn> login(@Url String url, @Query("userName") String username, @Query("password") String password);
+    
 }

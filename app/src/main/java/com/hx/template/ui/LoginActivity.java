@@ -27,6 +27,7 @@ import com.hx.template.base.BaseDialogConfigFactory;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.model.impl.retrofit.RetrofitLoginImpl;
 import com.hx.template.model.impl.volley.LoginModelImpl;
 import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.ToastUtils;
@@ -53,7 +54,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        presenter = new LoginPresenter(new LoginModelImpl());
+        presenter = new LoginPresenter(new RetrofitLoginImpl());
         presenter.attachView(this);
     }
 

@@ -7,6 +7,8 @@ import com.hx.template.HttpConfig;
 import com.hx.template.R;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.ErrorCode;
+import com.hx.template.global.GsonUtils;
+import com.hx.template.global.HXLog;
 import com.hx.template.http.HttpReturn;
 import com.hx.template.http.retrofit.ApiService;
 import com.hx.template.http.retrofit.RetrofitUtils;
@@ -28,7 +30,7 @@ public class RetrofitLoginImpl implements LoginModel.Model {
     @Override
     public void login(String username, String password, final LoginModel.OnLoginListener listener) {
         ApiService apiService;
-//        ApiService apiService = RetrofitUtils.createApi(ApiService.class);
+//        apiService = RetrofitUtils.createApi(ApiService.class);
         Retrofit retrofit = RetrofitUtils.getRetrofit();
         NetworkBehavior behavior = NetworkBehavior.create();
         MockRetrofit mockRetrofit = new MockRetrofit.Builder(retrofit)
@@ -42,6 +44,7 @@ public class RetrofitLoginImpl implements LoginModel.Model {
                 .subscribe(new Subscriber<HttpReturn.LoginReturn>() {
                     @Override
                     public void onNext(HttpReturn.LoginReturn loginReturn) {
+                        HXLog.d(GsonUtils.toJson(loginReturn));
                         if (loginReturn != null) {
                             if (loginReturn.getStatus() == 1) {
                                 User user = loginReturn.getData();

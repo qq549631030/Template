@@ -11,6 +11,9 @@ public class HttpReturn {
      * 所有返回数据基对象
      */
     public static class BaseReturn {
+
+        public static final int STATUS_SUCCESS = 1;
+        public static final int STATUS_FAIL = 0;
         /**
          * 状态
          */
