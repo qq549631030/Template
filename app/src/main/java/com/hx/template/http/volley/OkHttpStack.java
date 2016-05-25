@@ -9,12 +9,13 @@
 package com.hx.template.http.volley;
 
 import com.android.volley.toolbox.HurlStack;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.OkUrlFactory;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import okhttp3.OkHttpClient;
+import okhttp3.OkUrlFactory;
 
 /**
  * Created by huangxiang on 15/10/21.
