@@ -81,6 +81,7 @@ public class HttpPostUtils {
                                          ErrorListener errorListener) {
         FormPostBackJsonRequest mRequest = new FormPostBackJsonRequest(url, listener,
                 errorListener);
+//        FormGetBackStringRequest mRequest = new FormGetBackStringRequest(url,listener,errorListener);
         mRequest.setAdditionalParams(params);//设置请求参数
         doBaseFormRequest(mRequest);
     }

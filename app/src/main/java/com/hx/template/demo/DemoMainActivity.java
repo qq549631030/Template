@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
-import com.hx.template.ui.SettingActivity;
 import com.hx.template.utils.ImageUtils;
 import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.qrcode.utils.ImageScanUtil;
@@ -41,8 +40,10 @@ public class DemoMainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
 //                Common.testLog(" click here");
-                Intent intent = new Intent(DemoMainActivity.this, SettingActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(DemoMainActivity.this, SettingActivity.class);
+//                startActivity(intent);
+                com.hx.template.model.impl.volley.TxxyModelImpl model = new com.hx.template.model.impl.volley.TxxyModelImpl();
+                model.getPublicKey();
             }
         });
         ImageLoader.getInstance().displayImage("http://imgt6.bdstatic.com/it/u=2,3222226309&fm=25&gp=0.jpg", image);

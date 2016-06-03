@@ -3,7 +3,12 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
-
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java-gen']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 23
@@ -26,7 +31,6 @@ repositories {
 }
 
 dependencies {
-    compile(group: 'net.zetetic', name: 'android-database-sqlcipher', version: '3.3.1-1', ext: 'aar')
-    compile(group: 'net.zetetic', name: 'android-database-sqlcipher', version: '3.3.1-2', ext: 'asc')
     compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile files('libs/sqlcipher.jar')
 }

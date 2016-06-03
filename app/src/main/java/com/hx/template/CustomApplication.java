@@ -18,13 +18,17 @@ import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.hx.template.entity.User;
 import com.hx.template.global.GlobalActivityManager;
+import com.hx.template.http.DefaultSSLSocketFactory;
+import com.hx.template.http.volley.HttpsTrustManager;
 import com.hx.template.http.volley.OkHttpStack;
 import com.hx.template.http.volley.StethoOkHttpStack;
+import com.hx.template.utils.DeviceUtils;
 import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
+import com.karumi.dexter.Dexter;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -36,7 +40,14 @@ import com.squareup.okhttp.OkHttpClient;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
+import java.util.UUID;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
@@ -68,9 +79,10 @@ public class CustomApplication extends Application {
 
     public static User currentUser;
 
+    private UUID deviceUuid;
 
     private ActivityLifecycleCallbacks activityLifecycleCallbacks = null;
-    
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -84,6 +96,7 @@ public class CustomApplication extends Application {
         //初始化加密ormlite数据库
         SQLiteDatabase.loadLibs(this);
         instance = this;
+        Dexter.initialize(instance);
         initImageLoader(instance);
         initActivityManager();
         enabledStrictMode();
@@ -104,6 +117,14 @@ public class CustomApplication extends Application {
     }
 
 
+    public UUID getDeviceUuid() {
+        return deviceUuid;
+    }
+
+    public void setDeviceUuid(UUID deviceUuid) {
+        this.deviceUuid = deviceUuid;
+    }
+
     private void enabledStrictMode() {
         if (SDK_INT >= GINGERBREAD) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
@@ -114,25 +135,30 @@ public class CustomApplication extends Application {
         }
     }
 
-    
-    private void initActivityManager(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
+
+    private void initActivityManager() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
                 && activityLifecycleCallbacks == null) {
             activityLifecycleCallbacks = new ActivityLifecycleCallbacks() {
                 @Override
-                public void onActivityStopped(Activity activity) {}
+                public void onActivityStopped(Activity activity) {
+                }
 
                 @Override
-                public void onActivityStarted(Activity activity) {}
+                public void onActivityStarted(Activity activity) {
+                }
 
                 @Override
-                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
+                public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+                }
 
                 @Override
-                public void onActivityResumed(Activity activity) {}
+                public void onActivityResumed(Activity activity) {
+                }
 
                 @Override
-                public void onActivityPaused(Activity activity) {}
+                public void onActivityPaused(Activity activity) {
+                }
 
                 @Override
                 public void onActivityDestroyed(Activity activity) {
@@ -147,7 +173,7 @@ public class CustomApplication extends Application {
             registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         }
     }
-    
+
     public static void initImageLoader(Context context) {
         defaultOptions = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.default_image)
@@ -206,7 +232,8 @@ public class CustomApplication extends Application {
                     } else {
                         stack = initReleaseHttpStack();
                     }
-                    mRequestQueue = Volley.newRequestQueue(instance, stack);
+                    HttpsTrustManager.allowAllSSL();
+                    mRequestQueue = Volley.newRequestQueue(instance, null);
                 }
             }
         }
@@ -221,7 +248,24 @@ public class CustomApplication extends Application {
     }
 
     public static HttpStack initReleaseHttpStack() {
-        OkHttpStack stack = new OkHttpStack();
+        okhttp3.OkHttpClient.Builder httpClient = new okhttp3.OkHttpClient.Builder();
+        try {
+            httpClient.sslSocketFactory(new DefaultSSLSocketFactory());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+        httpClient.hostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+
+        OkHttpStack stack = new OkHttpStack(httpClient.build());
         return stack;
     }
 
