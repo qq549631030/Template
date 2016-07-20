@@ -14,6 +14,7 @@ import com.hx.template.adapter.NetworkImageHolderView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +42,8 @@ public class BannerActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                urls.add("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg");
+                banner.notifyDataSetChanged();
             }
         });
 
@@ -90,12 +93,12 @@ public class BannerActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button:
-//
-//                urls.add("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg");
-//                urls.add("http://c.hiphotos.baidu.com/image/pic/item/34fae6cd7b899e51c54e161740a7d933c9950df4.jpg");
-//                urls.add("http://a.hiphotos.baidu.com/image/pic/item/b17eca8065380cd739c928e0a344ad34588281ec.jpg");
-//
-//                banner.notifyDataSetChanged();
+                int count = new Random().nextInt(10);
+                urls.clear();
+                for (int i = 0; i <count ; i++) {
+                    urls.add("http://f.hiphotos.baidu.com/image/pic/item/3ac79f3df8dcd10097cf5921708b4710b9122f5a.jpg");
+                }
+                banner.notifyDataSetChanged();
                 break;
         }
     }

@@ -42,8 +42,6 @@ public class DemoMainActivity extends BaseActivity {
 //                Common.testLog(" click here");
 //                Intent intent = new Intent(DemoMainActivity.this, SettingActivity.class);
 //                startActivity(intent);
-                com.hx.template.model.impl.volley.TxxyModelImpl model = new com.hx.template.model.impl.volley.TxxyModelImpl();
-                model.getPublicKey();
             }
         });
         ImageLoader.getInstance().displayImage("http://imgt6.bdstatic.com/it/u=2,3222226309&fm=25&gp=0.jpg", image);
