@@ -1,1 +1,1 @@
-include ':app', ':ormlite-sqlcipher'
+include ':app', ':ormlite-sqlcipher', ':commonutils'
