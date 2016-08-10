@@ -11,10 +11,12 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
+import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.components.CircleImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -188,6 +190,6 @@ public class CropperDemoActivity extends BaseActivity {
 
     private void updateAvatar(File avatar) {
         Uri uri = Uri.fromFile(avatar);
-        ImageLoader.getInstance().displayImage(uri.toString(), image);
+        ImageLoaderManager.getImageLoader(this).displayImage(uri.toString(), image);
     }
 }

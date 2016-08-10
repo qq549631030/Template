@@ -71,15 +71,9 @@ public class CustomApplication extends Application {
 
     private static CustomApplication instance;
 
-    public static DisplayImageOptions defaultOptions;//默认图片配置
-    public static DisplayImageOptions avatarOptions;//头像图片配置
-
-
     public static long currentLoginId;
 
     public static User currentUser;
-
-    private UUID deviceUuid;
 
     private ActivityLifecycleCallbacks activityLifecycleCallbacks = null;
 
@@ -97,7 +91,6 @@ public class CustomApplication extends Application {
         SQLiteDatabase.loadLibs(this);
         instance = this;
         Dexter.initialize(instance);
-        initImageLoader(instance);
         initActivityManager();
         enabledStrictMode();
         //内存泄露检测
@@ -116,15 +109,6 @@ public class CustomApplication extends Application {
         return instance;
     }
 
-
-    public UUID getDeviceUuid() {
-        return deviceUuid;
-    }
-
-    public void setDeviceUuid(UUID deviceUuid) {
-        this.deviceUuid = deviceUuid;
-    }
-
     private void enabledStrictMode() {
         if (SDK_INT >= GINGERBREAD) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
@@ -134,7 +118,6 @@ public class CustomApplication extends Application {
                     .build());
         }
     }
-
 
     private void initActivityManager() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH
@@ -173,54 +156,6 @@ public class CustomApplication extends Application {
             registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         }
     }
-
-    public static void initImageLoader(Context context) {
-        defaultOptions = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.default_image)
-                .showImageOnFail(R.drawable.default_image)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .displayer(new SimpleBitmapDisplayer())
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-        avatarOptions = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.default_avatar)
-                .showImageOnFail(R.drawable.default_avatar)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .displayer(new SimpleBitmapDisplayer())
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-
-        try {// 缓存目录
-            ImageLoaderConfiguration config;
-            config = new ImageLoaderConfiguration.Builder(context)
-                    .threadPriority(Thread.NORM_PRIORITY - 2)
-                    .denyCacheImageMultipleSizesInMemory()
-                    // 使用1/8 (13%)APP内存
-                    .memoryCacheSizePercentage(13)
-                    .diskCacheFileNameGenerator(new ImageNameGenerator())
-                    .tasksProcessingOrder(QueueProcessingType.LIFO)
-                    .defaultDisplayImageOptions(defaultOptions)
-                    .build();
-            ImageLoader.getInstance().init(config);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        L.disableLogging();
-    }
-
-    private static class ImageNameGenerator extends Md5FileNameGenerator {
-
-        @Override
-        public String generate(String imageUri) {
-            return super.generate(imageUri) + ".jpg";
-        }
-
-    }
-
 
     public synchronized RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
