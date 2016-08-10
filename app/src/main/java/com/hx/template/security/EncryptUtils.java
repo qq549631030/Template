@@ -19,6 +19,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
+ * AES对称加解密工具
  * Created by huangx on 2016/7/15.
  */
 public class EncryptUtils {
@@ -57,7 +58,7 @@ public class EncryptUtils {
     }
 
     /**
-     * 天下信用AES加解密 (不使用随机算法生成密钥)
+     * 简单AES加解密 (不使用随机算法生成密钥)
      *
      * @param mode
      * @param encryptPwd

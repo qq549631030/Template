@@ -33,6 +33,21 @@ public class ActivityDemoActivity extends Activity {
     }
 
     @Override
+    public void startActivity(Intent intent, Bundle options) {
+        super.startActivity(intent, options);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
+        super.startActivityForResult(intent, requestCode, options);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart() called with: " + "");

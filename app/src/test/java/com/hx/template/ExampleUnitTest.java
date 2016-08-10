@@ -2,6 +2,8 @@ package com.hx.template;
 
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 /**
@@ -10,6 +12,11 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
+        File file = new File("d:\\1\\2.jpg");
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        System.out.println(file.isDirectory());
         assertEquals(4, 2 + 2);
     }
 }

@@ -8,5 +8,5 @@ import android.content.Intent;
  * Created by huangx on 2016/7/1.
  */
 public interface OnActivityResultListener {
-    void onActivityResult(int requestCode, int resultCode, Intent data);
+    void onActivityResultDelegate(int requestCode, int resultCode, Intent data);
 }
