@@ -103,7 +103,7 @@ public class BaseJsonObjectRequest extends JsonObjectRequest {
         try {
             ByteArrayInputStream bis = new ByteArrayInputStream(data);
             in = new GZIPInputStream(bis);
-            BufferedReader r = new BufferedReader(new InputStreamReader(in),
+            BufferedReader r = new BufferedReader(new InputStreamReader(in, "UTF-8"),
                     1000);
             for (String line = r.readLine(); line != null; line = r.readLine()) {
                 sb.append(line);

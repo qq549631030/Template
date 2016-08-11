@@ -15,6 +15,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("NewApi")
 public class NotifyUtil {
@@ -160,7 +161,7 @@ public class NotifyUtil {
      * @param title
      * @param content
      */
-    public void notify_mailbox(PendingIntent pendingIntent, int smallIcon, int largeIcon, ArrayList<String> messageList,
+    public void notify_mailbox(PendingIntent pendingIntent, int smallIcon, int largeIcon, List<String> messageList,
                                String ticker, String title, String content, boolean sound, boolean vibrate, boolean lights) {
 
         setCompatBuilder(pendingIntent, smallIcon, ticker, title, content, sound, vibrate, lights);

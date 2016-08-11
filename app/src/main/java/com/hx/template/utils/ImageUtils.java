@@ -117,8 +117,7 @@ public class ImageUtils {
     public static InputStream imageToSteam(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
-        return isBm;
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 
     /**

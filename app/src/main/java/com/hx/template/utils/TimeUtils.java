@@ -23,8 +23,7 @@ public class TimeUtils {
     public static String transformToTime1(long time) {
         Date date = new Date(time);
         SimpleDateFormat mDateFormat = new SimpleDateFormat("MM/dd HH:mm");
-        String timeString = mDateFormat.format(date);
-        return timeString;
+        return mDateFormat.format(date);
     }
 
     /**
@@ -35,8 +34,7 @@ public class TimeUtils {
     public static String transformToTime2(long time) {
         Date date = new Date(time);
         SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String timeString = mDateFormat.format(date);
-        return timeString;
+        return mDateFormat.format(date);
     }
 
     /**
@@ -47,7 +45,6 @@ public class TimeUtils {
     public static String transformToTime3(long time) {
         Date date = new Date(time);
         SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String timeString = mDateFormat.format(date);
-        return timeString;
+        return mDateFormat.format(date);
     }
 }

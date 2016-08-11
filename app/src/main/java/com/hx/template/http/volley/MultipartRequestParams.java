@@ -53,7 +53,6 @@ public class MultipartRequestParams {
 			put(key, new FileInputStream(file), file.getName());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			System.out.println("MultipartRequestParams file not found!!!");
 		}
 	}
 

@@ -13,39 +13,39 @@ package com.hx.template;
  */
 public class Constant {
 
-    public static boolean DEBUG = true;
+    public static final boolean DEBUG = true;
 
-    public static String PROJECT_NAME = "template";// 密码加密密钥
+    public static final String PROJECT_NAME = "template";// 密码加密密钥
 
-    public static String emailFormat = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+    public static final String emailFormat = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
 
-    public static String phoneFormat = "^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$";// 手机号码正则表达式
+    public static final String phoneFormat = "^13[0-9]{9}$|14[0-9]{9}$|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$";// 手机号码正则表达式
 
-    public static String SECRET_KEY = "templatekey";// 密码加密密钥
+    public static final String SECRET_KEY = "templatekey";// 密码加密密钥
 
     /**
      * SharedPreference存储字段名
      */
-    public static String pref_isFirst = "isFirst";// 是否第一次使用
-    public static String pref_autoLogin = "autoLogin";// 是否自动登录
+    public static final String pref_isFirst = "isFirst";// 是否第一次使用
+    public static final String pref_autoLogin = "autoLogin";// 是否自动登录
 
-    public static String pref_remember_account = "remember_account";// 是否记住用户名
-    public static String pref_remember_pwd = "remember_pwd";// 是否记住密码
-    public static String pref_userName = "userName";// 登录名
-    public static String pref_password = "password";// 密码
-    public static String pref_current_user = "current_user";// 当前用户
+    public static final String pref_remember_account = "remember_account";// 是否记住用户名
+    public static final String pref_remember_pwd = "remember_pwd";// 是否记住密码
+    public static final String pref_userName = "userName";// 登录名
+    public static final String pref_password = "password";// 密码
+    public static final String pref_current_user = "current_user";// 当前用户
 
-    public static String crop_image_name = "crop.jpg";
-    public static String camera_image_name = "camera.jpg";
-    public static String photo_image_name = "photo.jpg";
-    public static String logo_image_name = "logo.jpg";
+    public static final String crop_image_name = "crop.jpg";
+    public static final String camera_image_name = "camera.jpg";
+    public static final String photo_image_name = "photo.jpg";
+    public static final String logo_image_name = "logo.jpg";
 
     /**
      * keystore
      */
-    public static String KEY_STORE_MD5 = "FA:FA:B3:05:B9:69:59:40:48:66:97:6C:ED:C9:68:03";
-    public static String KEY_STORE_SHA1 = "E8:3D:AD:C6:14:01:C7:57:2B:62:21:75:32:E2:26:45:D0:CF:9D:46";
-    public static String KEY_STORE_SHA256 = "C4:AD:25:EB:F9:AE:07:86:5E:ED:E9:57:D2:52:66:CF:80:0B:76:E9:9B:8D:7D:B9:AA:C8:F7:BA:1A:3C:89:7B";
+    public static final String KEY_STORE_MD5 = "FA:FA:B3:05:B9:69:59:40:48:66:97:6C:ED:C9:68:03";
+    public static final String KEY_STORE_SHA1 = "E8:3D:AD:C6:14:01:C7:57:2B:62:21:75:32:E2:26:45:D0:CF:9D:46";
+    public static final String KEY_STORE_SHA256 = "C4:AD:25:EB:F9:AE:07:86:5E:ED:E9:57:D2:52:66:CF:80:0B:76:E9:9B:8D:7D:B9:AA:C8:F7:BA:1A:3C:89:7B";
     /**
      * 商户PID
      */

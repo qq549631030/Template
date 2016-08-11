@@ -11,6 +11,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.hx.template.utils.ImageUtils;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Created by huangx on 2016/5/25.
@@ -30,7 +31,7 @@ public class QRCodeCreateUtil {
             if (text == null || "".equals(text) || text.length() < 1) {
                 return null;
             }
-            Hashtable<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
+            Map<EncodeHintType, String> hints = new Hashtable<EncodeHintType, String>();
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             //图像数据转换，使用了矩阵转换
             BitMatrix bitMatrix = new QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, width, height, hints);

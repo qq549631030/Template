@@ -114,8 +114,7 @@ public class EncryptUtils {
         secureRandom.setSeed(seed);
         keyGenerator.init(128, secureRandom);
         SecretKey secretKey = keyGenerator.generateKey();
-        byte[] rawKey = secretKey.getEncoded();
-        return rawKey;
+        return secretKey.getEncoded();
     }
 
     /**
@@ -184,7 +183,6 @@ public class EncryptUtils {
         if (!TextUtils.isEmpty(mode) && !TextUtils.isEmpty(padding)) {
             transformation = algorithm + "/" + mode + "/" + padding;
         }
-        Cipher cipher = Cipher.getInstance(transformation);
-        return cipher;
+        return Cipher.getInstance(transformation);
     }
 }

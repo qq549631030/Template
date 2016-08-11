@@ -37,8 +37,6 @@ public class MultipartRequest extends BaseFormRequest<JSONObject> {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                System.err
-                        .println("IOException writing to ByteArrayOutputStream");
             }
         }
         return baos.toByteArray();

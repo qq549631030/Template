@@ -178,8 +178,7 @@ public class CustomApplication extends Application {
     public static HttpStack initDebugHttpStack() {
         OkHttpClient client = new OkHttpClient();
         client.networkInterceptors().add(new StethoInterceptor());
-        StethoOkHttpStack stack = new StethoOkHttpStack(client);
-        return stack;
+        return new StethoOkHttpStack(client);
     }
 
     public static HttpStack initReleaseHttpStack() {
@@ -200,8 +199,7 @@ public class CustomApplication extends Application {
             }
         });
 
-        OkHttpStack stack = new OkHttpStack(httpClient.build());
-        return stack;
+        return new OkHttpStack(httpClient.build());
     }
 
     /**

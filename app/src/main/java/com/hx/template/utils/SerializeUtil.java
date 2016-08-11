@@ -25,8 +25,7 @@ public class SerializeUtil {
             //将对象序列化写入byte缓存
             os.writeObject(obj);
             //将序列化的数据转为16进制保存
-            String bytesToHexString = bytesToHexString(bos.toByteArray());
-            return bytesToHexString;
+            return bytesToHexString(bos.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
         }

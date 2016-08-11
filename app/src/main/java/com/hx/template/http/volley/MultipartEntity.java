@@ -38,7 +38,7 @@ class MultipartEntity {
     public void writeFirstBoundaryIfNeeds() {
         if (!isSetFirst) {
             try {
-                out.write(("--" + boundary + "\r\n").getBytes());
+                out.write(("--" + boundary + "\r\n").getBytes("UTF-8"));
             } catch (final IOException e) {
                 e.printStackTrace();
             }
@@ -53,7 +53,7 @@ class MultipartEntity {
         }
 
         try {
-            out.write(("\r\n--" + boundary + "--\r\n").getBytes());
+            out.write(("\r\n--" + boundary + "--\r\n").getBytes("UTF-8"));
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -65,9 +65,9 @@ class MultipartEntity {
         writeFirstBoundaryIfNeeds();
         try {
             out.write(("Content-Disposition: form-data; name=\"" + key + "\"\r\n\r\n")
-                    .getBytes());
-            out.write(value.getBytes());
-            out.write(("\r\n--" + boundary + "\r\n").getBytes());
+                    .getBytes("UTF-8"));
+            out.write(value.getBytes("UTF-8"));
+            out.write(("\r\n--" + boundary + "\r\n").getBytes("UTF-8"));
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -84,18 +84,18 @@ class MultipartEntity {
         try {
             type = "Content-Type: " + type + "\r\n";
             out.write(("Content-Disposition: form-data; name=\"" + key
-                    + "\"; filename=\"" + fileName + "\"\r\n").getBytes());
-            out.write(type.getBytes());
-            out.write("Content-Transfer-Encoding: binary\r\n\r\n".getBytes());
+                    + "\"; filename=\"" + fileName + "\"\r\n").getBytes("UTF-8"));
+            out.write(type.getBytes("UTF-8"));
+            out.write("Content-Transfer-Encoding: binary\r\n\r\n".getBytes("UTF-8"));
 
             final byte[] tmp = new byte[4096];
             int l = 0;
             while ((l = fin.read(tmp)) != -1) {
                 out.write(tmp, 0, l);
             }
-            if (!isLast)
-                out.write(("\r\n--" + boundary + "\r\n").getBytes());
-            else {
+            if (!isLast) {
+                out.write(("\r\n--" + boundary + "\r\n").getBytes("UTF-8"));
+            } else {
                 writeLastBoundaryIfNeeds();
             }
             out.flush();

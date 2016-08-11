@@ -50,8 +50,7 @@ public class GlobalActivityManager {
             if (activity == null || mList == null || !mList.contains(activity)) {
                 return false;
             }
-            boolean result = mList.remove(activity);
-            return result;
+            return mList.remove(activity);
         }
     }
 
@@ -312,10 +311,11 @@ public class GlobalActivityManager {
     public static String getMetaData(Context context, ComponentName cn, String meta) {
         try {
             ActivityInfo info = context.getPackageManager().getActivityInfo(cn, PackageManager.GET_META_DATA);
-            return info.metaData.getString(meta);
+            if (info != null && info.metaData != null) {
+                return info.metaData.getString(meta);
+            }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
         }
         return null;
     }

@@ -112,7 +112,9 @@ public class PageIndicator extends LinearLayout implements ViewPager.OnPageChang
 
     private void addIndicator(int count) {
         removeIndicator();
-        if (count <= 0) return;
+        if (count <= 0) {
+            return;
+        }
         if (mIndicatorType == IndicatorType.CIRCLE) {
             for (int i = 0; i < count; i++) {
                 ImageView img = new ImageView(getContext());

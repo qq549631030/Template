@@ -113,6 +113,9 @@ public class ShakeDetector implements SensorEventListener {
     this.accelerationThreshold = accelerationThreshold;
   }
 
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
   /** Queue of samples. Keeps a running average. */
   static class SampleQueue {
 
@@ -253,6 +256,5 @@ public class ShakeDetector implements SensorEventListener {
     }
   }
 
-  @Override public void onAccuracyChanged(Sensor sensor, int accuracy) {
-  }
+
 }

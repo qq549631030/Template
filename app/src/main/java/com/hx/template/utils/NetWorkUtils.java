@@ -41,9 +41,9 @@ public class NetWorkUtils {
 		try {
 			TelephonyManager telephonyManager = (TelephonyManager) context
 					.getSystemService(Context.TELEPHONY_SERVICE);
-			String NativePhoneNumber = "";
-			NativePhoneNumber = telephonyManager.getLine1Number();
-			return NativePhoneNumber;
+			String nativePhoneNumber = "";
+			nativePhoneNumber = telephonyManager.getLine1Number();
+			return nativePhoneNumber;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "";

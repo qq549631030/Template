@@ -16,7 +16,7 @@ import com.hx.template.BuildConfig;
 public class HXLog {
     private static String TAG = "HXLog";
 
-    public static boolean DEBUG = BuildConfig.DEBUG;
+    public static final boolean DEBUG = BuildConfig.DEBUG;
 
     public static void setTag(String tag) {
         HXLog.TAG = tag;

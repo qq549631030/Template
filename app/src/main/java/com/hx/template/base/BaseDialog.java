@@ -54,7 +54,7 @@ public class BaseDialog {
 
     public static void setTitle(Dialog dialog, CharSequence text, boolean updateConfig) {
         View title = dialog.findViewById(R.id.base_dialog_title);
-        if (title != null && title instanceof TextView) {
+        if (title instanceof TextView) {
             if (TextUtils.isEmpty(text)) {
                 title.setVisibility(View.GONE);
             } else {
@@ -76,7 +76,7 @@ public class BaseDialog {
 
     public static void setProgress(Dialog dialog, int max, int curr) {
         View progress = dialog.findViewById(R.id.base_dialog_progressBar);
-        if (progress != null && progress instanceof ProgressBar) {
+        if (progress instanceof ProgressBar) {
             ((ProgressBar) progress).setIndeterminate(max == 0);
             ((ProgressBar) progress).setMax(max);
             ((ProgressBar) progress).setProgress(curr);
@@ -89,7 +89,7 @@ public class BaseDialog {
 
     public static void setMessage(Dialog dialog, CharSequence text, boolean updateConfig) {
         View message = dialog.findViewById(R.id.base_dialog_message);
-        if (message != null && message instanceof TextView) {
+        if (message instanceof TextView) {
             ((TextView) message).setText(text);
             ((TextView) message).setMovementMethod(ScrollingMovementMethod.getInstance());
         }

@@ -22,7 +22,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class SaveSceneUtils {
+public final class SaveSceneUtils {
 
     public static final String RESTORE_INSTANCE_STATE_FLAG = "__restore_instance_state_flag";
 
@@ -334,7 +334,7 @@ public class SaveSceneUtils {
                         || InstanceType.STRINGARRAYLIST.equals(it)
                         || InstanceType.SPARSEPARCELABLEARRAY.equals(it)) {
                     Type superType = field.getGenericType();
-                    if (superType == null || !(superType instanceof ParameterizedType)) {
+                    if (!(superType instanceof ParameterizedType)) {
                         continue;
                     }
                     ParameterizedType parameterizedType = (ParameterizedType) superType;

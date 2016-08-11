@@ -35,11 +35,7 @@ public class FastClickUtils {
      * @return
      */
     public static boolean isTimeToProcess(int viewId, long processInterval) {
-//        if (map == null) {
-//            map = new HashMap<Integer, Long>();
-//        }
         long lastProcessTime = map.get(viewId) == null ? 0 : map.get(viewId).longValue();
-        System.out.println("lastProcessTime = "+lastProcessTime);
         long currentTime = SystemClock.elapsedRealtime();
         if (currentTime - lastProcessTime < processInterval) {
             return false;

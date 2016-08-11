@@ -16,6 +16,7 @@ import net.sourceforge.zbar.SymbolSet;
 
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class ImageScanUtil {
     /**
@@ -59,7 +60,7 @@ public class ImageScanUtil {
      * @return
      */
     public static String decodeByZXing(Bitmap scanBitmap) {
-        Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
+        Map<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
 
         PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(getYUV420sp(scanBitmap.getWidth(), scanBitmap.getHeight(), scanBitmap),
                 scanBitmap.getWidth(),

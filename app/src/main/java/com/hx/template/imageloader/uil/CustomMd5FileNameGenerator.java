@@ -13,7 +13,7 @@ public class CustomMd5FileNameGenerator extends Md5FileNameGenerator {
     /**
      * 指定某些url的对应本地缓存文件名称 格式（key为url，value为本地文件名）
      */
-    public static Map<String, String> fixNameMap = new HashMap<String, String>();
+    public static final Map<String, String> fixNameMap = new HashMap<String, String>();
 
     @Override
     public String generate(String imageUri) {

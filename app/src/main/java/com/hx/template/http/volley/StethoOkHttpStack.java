@@ -154,7 +154,9 @@ public class StethoOkHttpStack implements HttpStack {
 
     private static RequestBody createRequestBody(Request r) throws AuthFailureError {
         final byte[] body = r.getBody();
-        if (body == null) return null;
+        if (body == null) {
+            return null;
+        }
 
         return RequestBody.create(MediaType.parse(r.getBodyContentType()), body);
     }
