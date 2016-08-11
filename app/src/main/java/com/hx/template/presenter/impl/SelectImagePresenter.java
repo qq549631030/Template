@@ -21,6 +21,9 @@ public class SelectImagePresenter extends BasePresenter<SelectImageView> impleme
 
     private String cameraOutPath;
 
+    private static final int REQUEST_CODE_CAMERA = 10101;
+    private static final int REQUEST_CODE_GALLERY = 10102;
+
     @Override
     public void takeFromCamera(String outPath) {
         cameraOutPath = outPath;
@@ -28,7 +31,7 @@ public class SelectImagePresenter extends BasePresenter<SelectImageView> impleme
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE, null);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(outPath)));
             if (isViewAttached()) {
-                getMvpView().startActivityForResultDelegate(intent, 10101);
+                getMvpView().startActivityForResultDelegate(intent, REQUEST_CODE_CAMERA);
             }
         }
     }
@@ -38,7 +41,7 @@ public class SelectImagePresenter extends BasePresenter<SelectImageView> impleme
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT, null);
         intent.setType("image/*");
         if (isViewAttached()) {
-            getMvpView().startActivityForResultDelegate(intent, 10102);
+            getMvpView().startActivityForResultDelegate(intent, REQUEST_CODE_GALLERY);
         }
     }
 
@@ -46,13 +49,13 @@ public class SelectImagePresenter extends BasePresenter<SelectImageView> impleme
     public void onActivityResultDelegate(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
-                case 10101:
+                case REQUEST_CODE_CAMERA:
                     Uri cameraUri = Uri.fromFile(new File(cameraOutPath));
                     if (isViewAttached()) {
                         getMvpView().selectResult(cameraUri);
                     }
                     break;
-                case 10102:
+                case REQUEST_CODE_GALLERY:
                     if (data != null) {
                         Uri uri = data.getData();
                         if (isViewAttached()) {

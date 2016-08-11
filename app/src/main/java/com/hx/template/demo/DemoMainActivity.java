@@ -11,14 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
+import com.hx.template.base.BaseActivity;
+import com.hx.template.global.HXLog;
 import com.hx.template.imageloader.ImageLoaderManager;
-import com.hx.template.utils.ImageUtils;
+import com.hx.template.imageloader.ImageLoadingListener;
 import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.qrcode.utils.ImageScanUtil;
+import com.hx.template.utils.ImageUtils;
 import com.hx.template.utils.ToastUtils;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,12 +41,32 @@ public class DemoMainActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Common.testLog(" click here");
-//                Intent intent = new Intent(DemoMainActivity.this, SettingActivity.class);
+//                Intent intent = new Intent(DemoMainActivity.this, SelectImageActivity.class);
 //                startActivity(intent);
+                ImageLoaderManager.getImageLoader(DemoMainActivity.this).loadImageAsync("https://dn-pycredit-pub.qbox.me/logo-rzyl.png", new ImageLoadingListener() {
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, String errorCode, String errorMsg) {
+
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        HXLog.d("onLoadingComplete() called with: " + "imageUri = [" + imageUri + "], view = [" + view + "], loadedImage = [" + loadedImage + "]");
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+
+                    }
+                });
             }
         });
-        ImageLoaderManager.getImageLoader(this).displayImage("http://imgt6.bdstatic.com/it/u=2,3222226309&fm=25&gp=0.jpg", image);
+        ImageLoaderManager.getImageLoader(this).displayImage("http://b.hiphotos.baidu.com/image/h%3D200/sign=239b2b62d3ca7bcb627bc02f8e086b3f/7dd98d1001e9390170aa9f9f7fec54e737d196e2.jpg", image);
     }
 
     @Override

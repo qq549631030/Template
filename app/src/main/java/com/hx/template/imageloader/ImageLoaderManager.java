@@ -15,8 +15,8 @@ public class ImageLoaderManager {
         if (imageLoader == null) {
             synchronized (ImageLoaderManager.class) {
                 if (imageLoader == null) {
-//                    imageLoader = new UILImageLoader();
-                    imageLoader = new PicassoImageLoader();
+                    imageLoader = new UILImageLoader();
+//                    imageLoader = new PicassoImageLoader();
                     imageLoader.init(context);
                 }
             }

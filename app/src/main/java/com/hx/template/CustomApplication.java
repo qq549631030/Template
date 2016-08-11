@@ -92,7 +92,7 @@ public class CustomApplication extends Application {
         instance = this;
         Dexter.initialize(instance);
         initActivityManager();
-        enabledStrictMode();
+//        enabledStrictMode();
         //内存泄露检测
         if (Constant.DEBUG) {
 //            LeakCanary.install(this);

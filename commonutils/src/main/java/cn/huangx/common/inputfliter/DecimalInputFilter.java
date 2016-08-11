@@ -54,10 +54,8 @@ public class DecimalInputFilter implements InputFilter {
             } else {
                 if (splitArray.length == 2) {//小数有值
                     String fractionalStr = splitArray[1];
-                    if (fractionalLength > 0) {
-                        if (fractionalStr.length() > fractionalLength) {
-                            return destCsq;
-                        }
+                    if (fractionalLength > 0 && fractionalStr.length() > fractionalLength) {
+                        return destCsq;
                     }
                 }
             }

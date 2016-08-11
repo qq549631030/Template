@@ -1,6 +1,5 @@
 package cn.huangx.common.inputfliter;
 
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;

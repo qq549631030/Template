@@ -17,7 +17,7 @@ public class CommonInputFilter implements InputFilter {
     public static final String CAPITAL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String LOWER_CASE_LETTERS = "abcdefghijklmnopqrstuvwxyz";
 
-    protected char[] acceptChars;
+    private char[] acceptChars;
 
     public CommonInputFilter(String acceptStr) {
         if (!TextUtils.isEmpty(acceptStr)) {

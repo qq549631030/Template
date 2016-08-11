@@ -100,8 +100,8 @@ public class CropperDemoActivity extends BaseActivity {
                 case REQUEST_GALLERY:
                     if (data != null) {
                         Uri mUri = data.getData();
-//                        doCropPhoto(mUri);
-                        doCropPhoto2(mUri);
+                        doCropPhoto(mUri);
+//                        doCropPhoto2(mUri);
                     }
                     break;
                 case REQUEST_CAMERA:

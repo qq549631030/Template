@@ -105,6 +105,17 @@ android {
     }
     //解决android 6.0后移除apache http问题
     useLibrary 'org.apache.http.legacy'
+    
+    lintOptions {
+        abortOnError true
+
+        lintConfig file("${project.rootDir}/config/quality/lint/lint.xml")
+
+        // if true, generate an HTML report (with issue explanations, sourcecode, etc)
+        htmlReport true
+        // optional path to report (default will be lint-results.html in the builddir)
+        htmlOutput file("$project.buildDir/reports/lint/lint.html")
+    }
 }
 
 dependencies {

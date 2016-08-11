@@ -93,7 +93,8 @@
             android:label="@string/title_activity_scrolling"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".demo.RxJavaActivity" />
-        <activity android:name=".ui.SelectImageActivity"></activity>
+        <activity android:name=".ui.SelectImageActivity" />
+
     </application>
 
 </manifest>

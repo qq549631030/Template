@@ -205,4 +205,9 @@ public class ImageCompressUtils {
         }
         return true;
     }
+    
+    public static boolean isImage(String path){
+        
+        return true;
+    }
 }
