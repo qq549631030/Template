@@ -16,6 +16,7 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
+    enforceUniquePackageName = false
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen']
@@ -108,13 +109,12 @@ android {
     
     lintOptions {
         abortOnError true
+    }
 
-        lintConfig file("${project.rootDir}/config/quality/lint/lint.xml")
-
-        // if true, generate an HTML report (with issue explanations, sourcecode, etc)
-        htmlReport true
-        // optional path to report (default will be lint-results.html in the builddir)
-        htmlOutput file("$project.buildDir/reports/lint/lint.html")
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
+        incremental true
     }
 }
 
@@ -194,6 +194,9 @@ dependencies {
     compile project(':ormlite-sqlcipher')
     //权限管理 
     compile 'com.karumi:dexter:2.2.2'
+    //bmob
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
+    
     compile project(':commonutils')
 }
 

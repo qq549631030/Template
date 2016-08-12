@@ -13,6 +13,7 @@ import com.hx.template.http.HttpReturn;
 import com.hx.template.http.retrofit.ApiService;
 import com.hx.template.http.retrofit.RetrofitUtils;
 import com.hx.template.http.retrofit.mock.MockApiService;
+import com.hx.template.model.Callback;
 import com.hx.template.model.LoginModel;
 
 import retrofit2.Retrofit;
@@ -26,9 +27,9 @@ import rx.schedulers.Schedulers;
 /**
  * Created by huangx on 2016/4/1.
  */
-public class RetrofitLoginImpl implements LoginModel.Model {
+public class RetrofitLoginImpl implements LoginModel {
     @Override
-    public void login(String username, String password, final LoginModel.OnLoginListener listener) {
+    public void login(String username, String password, final Callback callback) {
         ApiService apiService;
 //        apiService = RetrofitUtils.createApi(ApiService.class);
         Retrofit retrofit = RetrofitUtils.getRetrofit();
@@ -48,22 +49,22 @@ public class RetrofitLoginImpl implements LoginModel.Model {
                         if (loginReturn != null) {
                             if (loginReturn.getStatus() == 1) {
                                 User user = loginReturn.getData();
-                                listener.loginSuccess(user);
+                                callback.onSuccess(user);
                             } else {
                                 ErrorCode code = loginReturn.getCode();
                                 if (code != null) {
-                                    listener.loginFailed(CustomApplication.getInstance().getString(loginReturn.getCode().getRes()));
+                                    callback.onFailure(code.getId(), CustomApplication.getInstance().getString(code.getRes()));
                                 } else {
                                     String msg = loginReturn.getMsg();
                                     if (TextUtils.isEmpty(msg)) {
-                                        listener.loginFailed(CustomApplication.getInstance().getString(R.string.error_unknow));
+                                        callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                                     } else {
-                                        listener.loginFailed(msg);
+                                        callback.onFailure("-1", msg);
                                     }
                                 }
                             }
                         } else {
-                            listener.loginFailed(CustomApplication.getInstance().getString(R.string.error_unknow));
+                            callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                         }
                     }
 
@@ -74,7 +75,7 @@ public class RetrofitLoginImpl implements LoginModel.Model {
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.loginFailed(CustomApplication.getInstance().getString(R.string.error_unknow));
+                        callback.onFailure(CustomApplication.getInstance().getString(R.string.error_unknow));
                     }
                 });
     }

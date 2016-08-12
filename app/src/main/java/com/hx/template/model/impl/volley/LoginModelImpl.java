@@ -13,6 +13,7 @@ import com.hx.template.http.volley.HttpPostUtils;
 import com.hx.template.http.HttpParams;
 import com.hx.template.http.HttpParseUtils;
 import com.hx.template.http.HttpReturn;
+import com.hx.template.model.Callback;
 import com.hx.template.model.LoginModel;
 
 import org.json.JSONObject;
@@ -24,9 +25,9 @@ import java.util.Map;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public class LoginModelImpl implements LoginModel.Model {
+public class LoginModelImpl implements LoginModel {
     @Override
-    public void login(String userName, String password, final LoginModel.OnLoginListener listener) {
+    public void login(String userName, String password, final Callback callback) {
         final Map<String, String> params = new HashMap<String, String>();
         if (!TextUtils.isEmpty(userName)) {
             params.put(HttpParams.Login.userName, userName);
@@ -45,28 +46,28 @@ public class LoginModelImpl implements LoginModel.Model {
                 if (mReturn != null) {
                     if (mReturn.getStatus() == 1) {
                         User user = mReturn.getData();
-                        listener.loginSuccess(user);
+                        callback.onSuccess(user);
                     } else {
                         ErrorCode code = mReturn.getCode();
                         if (code != null) {
-                            listener.loginFailed(CustomApplication.getInstance().getString(mReturn.getCode().getRes()));
+                            callback.onFailure(mReturn.getCode().getId(), CustomApplication.getInstance().getString(mReturn.getCode().getRes()));
                         } else {
                             String msg = mReturn.getMsg();
                             if (TextUtils.isEmpty(msg)) {
-                                listener.loginFailed(CustomApplication.getInstance().getString(R.string.error_unknow));
+                                callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                             } else {
-                                listener.loginFailed(msg);
+                                callback.onFailure("-1", msg);
                             }
                         }
                     }
                 } else {
-                    listener.loginFailed(CustomApplication.getInstance().getString(R.string.error_unknow));
+                    callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                 }
             }
 
             @Override
             public void onError(String ErrorMsg, int errorCode) {
-                listener.loginFailed(ErrorMsg);
+                callback.onFailure(Integer.toString(errorCode), ErrorMsg);
             }
         }, false);
     }

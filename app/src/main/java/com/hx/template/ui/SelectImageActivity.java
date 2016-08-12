@@ -9,7 +9,7 @@ import android.view.View;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.global.HXLog;
-import com.hx.template.mvpview.itf.SelectImageView;
+import com.hx.template.mvpview.SelectImageView;
 import com.hx.template.presenter.impl.SelectImagePresenter;
 
 import java.io.File;

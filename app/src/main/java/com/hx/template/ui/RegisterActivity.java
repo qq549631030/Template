@@ -50,16 +50,10 @@ public class RegisterActivity extends BaseActivity {
     EditText username;
     @Bind(R.id.password)
     EditText password;
-    @Bind(R.id.vcode)
-    EditText vcode;
-    @Bind(R.id.getvcode)
-    TextView getvcode;
     @Bind(R.id.register)
     TextView register;
     @Bind(R.id.to_login)
     TextView toLogin;
-
-    private CountDownTimer countDownTimer;
 
     ProgressDialog mProgressDialog;
 
@@ -72,38 +66,15 @@ public class RegisterActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mProgressDialog = new ProgressDialog(this);
-        countDownTimer = new CountDownTimer(60000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                if (getvcode != null) {
-                    getvcode.setText((millisUntilFinished / 1000) + "秒");
-                }
-            }
-
-            @Override
-            public void onFinish() {
-                if (getvcode != null) {
-                    getvcode.setText("重新发送");
-                    getvcode.setEnabled(true);
-                }
-            }
-        };
     }
 
-    @OnClick({R.id.getvcode, R.id.register, R.id.to_login})
+    @OnClick({ R.id.register, R.id.to_login})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.getvcode:
-                if (checkPhone()) {
-                    if (FastClickUtils.isTimeToProcess(R.id.getvcode)) {
-                        getVerificationCode(username.getText().toString().trim());
-                    }
-                }
-                break;
             case R.id.register:
                 if (checkInput()) {
                     if (FastClickUtils.isTimeToProcess(R.id.register)) {
-                        register(username.getText().toString().trim(), password.getText().toString().trim(), DeviceUtils.getDeviceId(RegisterActivity.this), vcode.getText().toString().trim());
+                        register(username.getText().toString().trim(), password.getText().toString().trim(), DeviceUtils.getDeviceId(RegisterActivity.this), null);
                     }
                 }
                 break;
@@ -133,62 +104,7 @@ public class RegisterActivity extends BaseActivity {
         if (!checkPhone()) {
             return false;
         }
-        if (TextUtils.isEmpty(vcode.getText().toString().trim())) {
-            ToastUtils.showToast(getApplicationContext(), "验证码不能为空");
-            return false;
-        }
         return true;
-    }
-
-
-    /**
-     * 获取验证码
-     *
-     * @param tel
-     */
-    private void getVerificationCode(String tel) {
-        mProgressDialog.setMessage("正在获取验证码...");
-        mProgressDialog.show();
-        final Map<String, String> params = new HashMap<String, String>();
-        params.put(HttpParams.SendCode.mobile, tel);
-        HttpPostUtils.doLazyFromPostRequest(RegisterActivity.this, HttpConfig.MEMBER_SENDAUTHCODE_URL, params, new HttpListener() {
-
-            @Override
-            public void onPass(JSONObject jsonObject) {
-                Type type = new TypeToken<HttpReturn.BaseReturn>() {
-                }.getType();
-                HttpReturn.BaseReturn mReturn = HttpParseUtils.parseReturn(jsonObject, type);
-                if (mReturn != null) {
-                    if (mReturn.getStatus() == 1) {
-                        mProgressDialog.dismiss();
-                        ToastUtils.showToast(getApplicationContext(), "验证码已发送");
-                        getvcode.setEnabled(false);
-                        countDownTimer.start();
-                    } else {
-                        mProgressDialog.dismiss();
-                        ErrorCode code = mReturn.getCode();
-                        if (code != null) {
-                            ToastUtils.showToast(getApplicationContext(), getResources().getString(mReturn.getCode().getRes()));
-                        } else {
-                            String msg = mReturn.getMsg();
-                            if (TextUtils.isEmpty(msg)) {
-                                ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                            } else {
-                                ToastUtils.showToast(getApplicationContext(), msg);
-                            }
-                        }
-                    }
-                } else {
-                    mProgressDialog.dismiss();
-                    ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                }
-            }
-
-            @Override
-            public void onError(String ErrorMsg, int errorCode) {
-                mProgressDialog.dismiss();
-            }
-        }, true);
     }
 
 

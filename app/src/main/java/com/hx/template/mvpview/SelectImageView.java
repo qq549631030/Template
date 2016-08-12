@@ -1,4 +1,4 @@
-package com.hx.template.mvpview.itf;
+package com.hx.template.mvpview;
 
 import android.content.Intent;
 import android.net.Uri;

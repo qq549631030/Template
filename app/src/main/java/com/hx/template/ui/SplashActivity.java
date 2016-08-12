@@ -13,6 +13,7 @@ import com.hx.template.CustomApplication;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.entity.User;
+import com.hx.template.model.Callback;
 import com.hx.template.model.LoginModel;
 import com.hx.template.model.impl.retrofit.RetrofitLoginImpl;
 import com.hx.template.model.impl.volley.LoginModelImpl;
@@ -30,7 +31,7 @@ public class SplashActivity extends BaseActivity {
     private boolean autoLogin;
     private String userName;
     private String password;
-   private LoginModel.Model loginModel;
+    private LoginModel loginModel;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -105,17 +106,21 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void login(String userName, final String password) {
-        loginModel.login(userName, password, new LoginModel.OnLoginListener() {
+        loginModel.login(userName, password, new Callback() {
             @Override
-            public void loginSuccess(User user) {
-                CustomApplication.saveLoginInfo(user,password);
-                mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
+            public void onSuccess(Object... data) {
+                if (data != null && data.length > 0 && data[0] instanceof User) {
+                    CustomApplication.saveLoginInfo((User) data[0], password);
+                    mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
+                }
             }
 
             @Override
-            public void loginFailed(String reason) {
-                ToastUtils.showToast(getApplicationContext(), reason);
-                mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
+            public void onFailure(String errorCode, Object... errorMsg) {
+                if (errorMsg != null && errorMsg.length > 0) {
+                    ToastUtils.showToast(getApplicationContext(), errorMsg[0].toString());
+                    mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
+                }
             }
         });
     }
