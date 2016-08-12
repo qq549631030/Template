@@ -14,9 +14,8 @@ import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.R;
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
-import com.hx.template.model.LoginModel;
-import com.hx.template.model.impl.retrofit.RetrofitLoginImpl;
-import com.hx.template.model.impl.volley.LoginModelImpl;
+import com.hx.template.model.UserModel;
+import com.hx.template.model.impl.retrofit.RetrofitUserImpl;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
@@ -31,7 +30,7 @@ public class SplashActivity extends BaseActivity {
     private boolean autoLogin;
     private String userName;
     private String password;
-    private LoginModel loginModel;
+    private UserModel userModel;
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -67,7 +66,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 //        NBSAppAgent.setLicenseKey("5bdc5627a996487392abdc6349523f48").withLocationServiceEnabled(true).start(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
-        loginModel = new RetrofitLoginImpl();
+        userModel = new RetrofitUserImpl();
         initData();
         if (isFirst) {
             mHandler.sendEmptyMessageDelayed(GO_TO_GUIDE, 1500);
@@ -106,7 +105,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void login(String userName, final String password) {
-        loginModel.login(userName, password, new Callback() {
+        userModel.login(userName, password, new Callback() {
             @Override
             public void onSuccess(Object... data) {
                 if (data != null && data.length > 0 && data[0] instanceof User) {

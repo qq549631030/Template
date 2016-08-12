@@ -2,21 +2,21 @@ package com.hx.template.presenter.impl;
 
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
-import com.hx.template.model.LoginModel;
+import com.hx.template.model.UserModel;
 import com.hx.template.presenter.BasePresenter;
-import com.hx.template.presenter.itf.ILoginPresenter;
-import com.hx.template.mvpview.LoginMvpView;
+import com.hx.template.presenter.itf.IUserPresenter;
+import com.hx.template.mvpview.impl.LoginMvpView;
 
 /**
  * Created by huangxiang on 16/3/30.
  */
-public class LoginPresenter extends BasePresenter<LoginMvpView> implements ILoginPresenter {
-    private LoginModel loginModel;
+public class UserPresenter extends BasePresenter<LoginMvpView> implements IUserPresenter {
+    private UserModel userModel;
 
-    public LoginPresenter(LoginModel loginModel) {
-        this.loginModel = loginModel;
-        if (loginModel == null) {
-            throw new IllegalArgumentException("loginModel can't be null");
+    public UserPresenter(UserModel userModel) {
+        this.userModel = userModel;
+        if (userModel == null) {
+            throw new IllegalArgumentException("userModel can't be null");
         }
     }
 
@@ -25,7 +25,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> implements ILogi
             return;
         }
         getMvpView().showLoadingProgress("登录中...");
-        loginModel.login(getMvpView().getUserName(), getMvpView().getPassword(), new Callback() {
+        userModel.login(getMvpView().getUserName(), getMvpView().getPassword(), new Callback() {
             @Override
             public void onSuccess(Object... data) {
                 if (!isViewAttached()) {

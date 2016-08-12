@@ -14,7 +14,7 @@ import com.hx.template.http.retrofit.ApiService;
 import com.hx.template.http.retrofit.RetrofitUtils;
 import com.hx.template.http.retrofit.mock.MockApiService;
 import com.hx.template.model.Callback;
-import com.hx.template.model.LoginModel;
+import com.hx.template.model.UserModel;
 
 import retrofit2.Retrofit;
 import retrofit2.mock.BehaviorDelegate;
@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by huangx on 2016/4/1.
  */
-public class RetrofitLoginImpl implements LoginModel {
+public class RetrofitUserImpl implements UserModel {
     @Override
     public void login(String username, String password, final Callback callback) {
         ApiService apiService;

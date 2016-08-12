@@ -7,7 +7,6 @@
 package com.hx.template.ui;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,11 +26,10 @@ import com.hx.template.base.BaseDialogConfigFactory;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.impl.retrofit.RetrofitLoginImpl;
-import com.hx.template.model.impl.volley.LoginModelImpl;
-import com.hx.template.presenter.impl.LoginPresenter;
+import com.hx.template.model.impl.retrofit.RetrofitUserImpl;
+import com.hx.template.presenter.impl.UserPresenter;
 import com.hx.template.utils.ToastUtils;
-import com.hx.template.mvpview.LoginMvpView;
+import com.hx.template.mvpview.impl.LoginMvpView;
 
 import java.util.regex.Pattern;
 
@@ -45,7 +43,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     EditText username;
     @Bind(R.id.password)
     EditText password;
-    LoginPresenter presenter;
+    UserPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        presenter = new LoginPresenter(new RetrofitLoginImpl());
+        presenter = new UserPresenter(new RetrofitUserImpl());
         presenter.attachView(this);
     }
 

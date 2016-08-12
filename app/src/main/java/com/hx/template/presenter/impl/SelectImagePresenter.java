@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.hx.template.mvpview.SelectImageView;
+import com.hx.template.mvpview.impl.SelectImageView;
 import com.hx.template.presenter.BasePresenter;
 import com.hx.template.presenter.itf.ISelectImagePresenter;
 

@@ -14,7 +14,7 @@ import com.hx.template.http.HttpParams;
 import com.hx.template.http.HttpParseUtils;
 import com.hx.template.http.HttpReturn;
 import com.hx.template.model.Callback;
-import com.hx.template.model.LoginModel;
+import com.hx.template.model.UserModel;
 
 import org.json.JSONObject;
 
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public class LoginModelImpl implements LoginModel {
+public class UserModelImpl implements UserModel {
     @Override
     public void login(String userName, String password, final Callback callback) {
         final Map<String, String> params = new HashMap<String, String>();
