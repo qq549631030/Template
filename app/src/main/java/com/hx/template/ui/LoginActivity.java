@@ -142,11 +142,15 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     @Override
     public void showLoadingProgress(String msg) {
         mProgressDialog.setMessage(msg);
-        mProgressDialog.show();
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
     }
 
     @Override
     public void hideLoadingProgress() {
-        mProgressDialog.dismiss();
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }

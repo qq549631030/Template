@@ -101,4 +101,6 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_reset_pwd">ResetPwdActivity</string>
+    <string name="title_activity_user_bind_phone">UserBindPhoneActivity</string>
+    <string name="title_activity_personal_info">PersonalInfoActivity</string>
 </resources>

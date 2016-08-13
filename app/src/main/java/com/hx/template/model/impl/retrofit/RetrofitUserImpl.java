@@ -97,6 +97,17 @@ public class RetrofitUserImpl implements UserModel {
 
     }
 
+    /**
+     * 更新用户信息
+     *
+     * @param user     要更新的用户信息
+     * @param callback 回调监听
+     */
+    @Override
+    public void updateUserInfo(User user, Callback callback) {
+
+    }
+
     @Override
     public void logout() {
 

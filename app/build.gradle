@@ -144,6 +144,7 @@ dependencies {
         exclude(group: 'com.squareup.okhttp3', module: 'okhttp')
         exclude(group: 'com.squareup.okhttp3', module: 'okio')
     }
+    //常用工具工程
     compile project(':commonutils')
 
     compile 'com.android.support:appcompat-v7:24.1.1'

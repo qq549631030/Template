@@ -96,6 +96,14 @@
         <activity
             android:name=".ui.ModifyPwdActivity"
             android:label="@string/title_activity_reset_pwd"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.UserBindPhoneActivity"
+            android:label="@string/title_activity_user_bind_phone"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PersonalInfoActivity"
+            android:label="@string/title_activity_personal_info"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

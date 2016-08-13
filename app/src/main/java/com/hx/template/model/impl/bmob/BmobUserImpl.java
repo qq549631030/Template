@@ -68,6 +68,31 @@ public class BmobUserImpl implements UserModel {
         });
     }
 
+    /**
+     * 更新用户信息
+     *
+     * @param user     要更新的用户信息
+     * @param callback 回调监听
+     */
+    @Override
+    public void updateUserInfo(User user, final Callback callback) {
+        User currentUser = User.getCurrentUser(User.class);
+        if (currentUser != null) {
+            user.update(currentUser.getObjectId(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+                    if (e == null) {
+                        callback.onSuccess();
+                    } else {
+                        callback.onFailure(Integer.toString(e.getErrorCode()), e.toString());
+                    }
+                }
+            });
+        } else {
+            callback.onFailure("1001", "请先登录");
+        }
+    }
+
     @Override
     public void logout() {
         User.logOut();

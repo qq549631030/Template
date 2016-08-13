@@ -34,6 +34,14 @@ public interface UserModel {
     void modifyPwd(String oldPwd, String newPwd, Callback callback);
 
     /**
+     * 更新用户信息
+     *
+     * @param user     要更新的用户信息
+     * @param callback 回调监听
+     */
+    void updateUserInfo(User user, Callback callback);
+
+    /**
      * 登出
      */
     void logout();
