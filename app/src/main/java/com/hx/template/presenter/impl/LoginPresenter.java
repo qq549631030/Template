@@ -10,16 +10,20 @@ import com.hx.template.mvpview.impl.LoginMvpView;
 /**
  * Created by huangxiang on 16/3/30.
  */
-public class UserPresenter extends BasePresenter<LoginMvpView> implements IUserPresenter {
+public class LoginPresenter extends BasePresenter<LoginMvpView> implements IUserPresenter {
     private UserModel userModel;
 
-    public UserPresenter(UserModel userModel) {
+    public LoginPresenter(UserModel userModel) {
         this.userModel = userModel;
         if (userModel == null) {
             throw new IllegalArgumentException("userModel can't be null");
         }
     }
 
+    /**
+     * 登录
+     */
+    @Override
     public void login() {
         if (!isViewAttached()) {
             return;

@@ -14,8 +14,8 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 24
+    buildToolsVersion '24.0.1'
     enforceUniquePackageName = false
     sourceSets {
         main {
@@ -85,13 +85,7 @@ android {
     }
     //渠道
     productFlavors {
-        wandoujia {
-        }
         baidu {
-        }
-        u360 {
-        }
-        tencent {
         }
         productFlavors.all {
                 //设UMENG_CHANNEL_VALUE的值为对应的渠道名(wandoujia、baidu、u360、tencent)
@@ -100,15 +94,26 @@ android {
     }
     //打包时忽略以下文件
     packagingOptions {
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/NOTICE.txt'
         exclude '.readme'
+        exclude 'META-INF/LICENSE'
+        exclude('META-INF/LICENSE.txt')
+        exclude('META-INF/NOTICE.txt')
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/DEPENDENCIES'
+        //bmob umeng推送的jar包含有的okio库跟okhttp的okio库冲突
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okio/okio/pom.properties'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.xml'
+        exclude 'META-INF/maven/com.squareup.okhttp3/okhttp/pom.properties'
+        exclude 'META-INF/maven/com.google.code.gson/gson/pom.xml'
+        exclude 'META-INF/maven/com.google.code.gson/gson/pom.properties'
+        exclude 'META-INF/rxjava.properties'
     }
     //解决android 6.0后移除apache http问题
     useLibrary 'org.apache.http.legacy'
-    
+
     lintOptions {
-        abortOnError true
+        abortOnError false
     }
 
     dexOptions {
@@ -121,9 +126,30 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
-    androidTestCompile 'com.android.support:support-annotations:23.1.1'
+    androidTestCompile 'com.android.support:support-annotations:24.1.1'
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    compile project(':ormlite-sqlcipher')
+
+    //听云性能监测
+    //    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.1.1"
+    //数据库加密
+    compile project(':ormlite-sqlcipher')
+    //bmob
+    compile('cn.bmob.android:bmob-sdk:3.5.0') {
+        exclude(group: 'com.google.code.gson', module: 'gson')
+        exclude(group: 'io.reactivex', module: 'rxjava')
+        exclude(group: 'io.reactivex', module: 'rxandroid')
+        exclude(group: 'com.squareup.okhttp3', module: 'okhttp')
+        exclude(group: 'com.squareup.okhttp3', module: 'okio')
+    }
+    compile project(':commonutils')
+
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:palette-v7:24.1.1'
+
     //Stetho 调试用
     compile 'com.facebook.stetho:stetho:1.2.0'
     compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
@@ -131,9 +157,7 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     //Gson(JSON)
-    compile 'com.google.code.gson:gson:2.2.4'
-    //网络请求
-
+    compile 'com.google.code.gson:gson:2.4'
     //volley
     compile 'com.mcxiaoke.volley:library:1.0.19'
     //Okhttp
@@ -145,17 +169,9 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     //Butterknife(依赖注入)
     compile 'com.jakewharton:butterknife:7.0.1'
-    //数据库
-
-    //GreenDao
-
-    //    compile 'de.greenrobot:greendao:2.0.0'
-
     //OrmLite
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-    //    compile 'net.zetetic:android-database-sqlcipher:3.4.0'
-
     //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
     //广告轮播控件
@@ -163,17 +179,12 @@ dependencies {
     //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    compile 'com.android.support:palette-v7:23.0.1'
     //java js 交互
     compile 'com.github.lzyzsd:jsbridge:1.0.2'
-    androidTestCompile 'com.android.support.test:runner:0.4'
-    androidTestCompile 'com.android.support.test:rules:0.4'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     //smack
     compile 'org.igniterealtime.smack:smack-android:4.1.0'
     compile 'org.igniterealtime.smack:smack-tcp:4.1.0'
     compile 'org.igniterealtime.smack:smack-android-extensions:4.1.0'
-    compile project(':ormlite-sqlcipher')
     //Rxjava
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
@@ -182,21 +193,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.retrofit2:retrofit-mock:2.0.2'
-    //听云性能监测
-
-    //    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.1.1"
-
-    //输入检验
-
-    //    compile 'com.github.yoojia:next-inputs:1.3.3'
-
-    //数据库加密
-    compile project(':ormlite-sqlcipher')
-    //权限管理 
+    //权限管理
     compile 'com.karumi:dexter:2.2.2'
-    //bmob
-    compile 'cn.bmob.android:bmob-sdk:3.5.0'
-    
-    compile project(':commonutils')
 }
 

@@ -3,11 +3,12 @@ package com.hx.template.mvpview.impl;
 import com.hx.template.entity.User;
 import com.hx.template.mvpview.LoadingView;
 import com.hx.template.mvpview.MvpView;
+import com.hx.template.mvpview.ShowErrorView;
 
 /**
  * Created by huangxiang on 16/3/9.
  */
-public interface LoginMvpView extends LoadingView, MvpView {
+public interface LoginMvpView extends LoadingView, ShowErrorView, MvpView {
     /**
      * 获取用户名
      *
@@ -28,11 +29,4 @@ public interface LoginMvpView extends LoadingView, MvpView {
      * @param user
      */
     void toMainActivity(User user);
-
-    /**
-     * 显示错误信息
-     *
-     * @param reason
-     */
-    void showFailedError(String reason);
 }

@@ -27,6 +27,11 @@ import java.util.Map;
  */
 public class UserModelImpl implements UserModel {
     @Override
+    public void register(String username, String password, Callback callback) {
+
+    }
+
+    @Override
     public void login(String userName, String password, final Callback callback) {
         final Map<String, String> params = new HashMap<String, String>();
         if (!TextUtils.isEmpty(userName)) {
@@ -70,5 +75,23 @@ public class UserModelImpl implements UserModel {
                 callback.onFailure(Integer.toString(errorCode), ErrorMsg);
             }
         }, false);
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param oldPwd
+     * @param newPwd
+     * @param callback
+     */
+    @Override
+    public void modifyPwd(String oldPwd, String newPwd, Callback callback) {
+
+    }
+
+
+    @Override
+    public void logout() {
+
     }
 }

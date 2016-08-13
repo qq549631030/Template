@@ -29,6 +29,11 @@ import rx.schedulers.Schedulers;
  */
 public class RetrofitUserImpl implements UserModel {
     @Override
+    public void register(String username, String password, Callback callback) {
+
+    }
+
+    @Override
     public void login(String username, String password, final Callback callback) {
         ApiService apiService;
 //        apiService = RetrofitUtils.createApi(ApiService.class);
@@ -78,5 +83,22 @@ public class RetrofitUserImpl implements UserModel {
                         callback.onFailure(CustomApplication.getInstance().getString(R.string.error_unknow));
                     }
                 });
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param oldPwd
+     * @param newPwd
+     * @param callback
+     */
+    @Override
+    public void modifyPwd(String oldPwd, String newPwd, Callback callback) {
+
+    }
+
+    @Override
+    public void logout() {
+
     }
 }

@@ -1,4 +1,4 @@
-package com.hx.template.ui;
+package com.hx.template.demo;
 
 import android.content.Intent;
 import android.net.Uri;

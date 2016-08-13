@@ -7,10 +7,12 @@
 package com.hx.template.ui;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,8 +28,8 @@ import com.hx.template.base.BaseDialogConfigFactory;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.impl.retrofit.RetrofitUserImpl;
-import com.hx.template.presenter.impl.UserPresenter;
+import com.hx.template.model.impl.bmob.BmobUserImpl;
+import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.mvpview.impl.LoginMvpView;
 
@@ -43,7 +45,10 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     EditText username;
     @Bind(R.id.password)
     EditText password;
-    UserPresenter presenter;
+
+    ProgressDialog mProgressDialog;
+
+    LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,9 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        presenter = new UserPresenter(new RetrofitUserImpl());
+        getSupportActionBar().setTitle("登录");
+        mProgressDialog = new ProgressDialog(this);
+        presenter = new LoginPresenter(new BmobUserImpl());
         presenter.attachView(this);
     }
 
@@ -92,8 +99,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
     }
 
     private boolean checkInput() {
-        if (!(Pattern.matches(Constant.phoneFormat, getUserName())) && (!Pattern.matches(Constant.emailFormat, getPassword()))) {
-            ToastUtils.showToast(getApplicationContext(), "用户名必须为手机号码或邮箱");
+        if (TextUtils.isEmpty(getUserName())) {
+            ToastUtils.showToast(this, "用户名不能为空");
+            return false;
+        }
+        if (TextUtils.isEmpty(getPassword())) {
+            ToastUtils.showToast(this, "密码不能为空");
             return false;
         }
         return true;
@@ -130,18 +141,12 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
 
     @Override
     public void showLoadingProgress(String msg) {
-        BaseDialogConfig dialogConfig = BaseDialogConfigFactory.getDialogConfig(BaseDialogConfigFactory.BaseDialogType.BASE_DIALOG_LOADING, this, msg, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                    hideLoadingProgress();
-            }
-        });
-        Dialog dialog = BaseDialog.getDialog(this,dialogConfig);
-        dialog.show();
+        mProgressDialog.setMessage(msg);
+        mProgressDialog.show();
     }
 
     @Override
     public void hideLoadingProgress() {
-        BaseDialog.dismissDialog(this);
+        mProgressDialog.dismiss();
     }
 }

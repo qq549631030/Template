@@ -9,53 +9,46 @@ package com.hx.template.ui;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.gson.reflect.TypeToken;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
-import com.hx.template.HttpConfig;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
+import com.hx.template.base.BaseActivity;
+import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
-import com.hx.template.entity.enums.ErrorCode;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.http.volley.HttpListener;
-import com.hx.template.http.volley.HttpPostUtils;
-import com.hx.template.http.HttpParams;
-import com.hx.template.http.HttpParseUtils;
-import com.hx.template.http.HttpReturn;
-import com.hx.template.utils.DeviceUtils;
-import com.hx.template.utils.SharedPreferencesUtil;
+import com.hx.template.model.impl.bmob.BmobUserImpl;
+import com.hx.template.mvpview.impl.RegisterMvpView;
+import com.hx.template.presenter.impl.RegisterPresenter;
 import com.hx.template.utils.ToastUtils;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity implements RegisterMvpView {
 
     @Bind(R.id.username)
     EditText username;
     @Bind(R.id.password)
     EditText password;
+    @Bind(R.id.confirm_password)
+    EditText confirmPassword;
     @Bind(R.id.register)
     TextView register;
     @Bind(R.id.to_login)
     TextView toLogin;
 
     ProgressDialog mProgressDialog;
+
+    RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,16 +58,25 @@ public class RegisterActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("注册");
         mProgressDialog = new ProgressDialog(this);
+        presenter = new RegisterPresenter(new BmobUserImpl());
+        presenter.attachView(this);
     }
 
-    @OnClick({ R.id.register, R.id.to_login})
+    @Override
+    protected void onDestroy() {
+        presenter.detachView();
+        super.onDestroy();
+    }
+
+    @OnClick({R.id.register, R.id.to_login})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.register:
                 if (checkInput()) {
                     if (FastClickUtils.isTimeToProcess(R.id.register)) {
-                        register(username.getText().toString().trim(), password.getText().toString().trim(), DeviceUtils.getDeviceId(RegisterActivity.this), null);
+                        presenter.register();
                     }
                 }
                 break;
@@ -88,79 +90,73 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-    private boolean checkPhone() {
-        if (TextUtils.isEmpty(username.getText().toString().trim())) {
-            ToastUtils.showToast(getApplicationContext(), "手机号码不能为空");
-            return false;
-        }
-        if (!(Pattern.matches(Constant.phoneFormat, username.getText().toString().trim()))) {
-            ToastUtils.showToast(getApplicationContext(), "手机号码有误");
-            return false;
-        }
-        return true;
-    }
-
     private boolean checkInput() {
-        if (!checkPhone()) {
+        if (TextUtils.isEmpty(getUserName())) {
+            ToastUtils.showToast(this, "用户名不能为空");
+            return false;
+        }
+        if (TextUtils.isEmpty(getPassword())) {
+            ToastUtils.showToast(this, "密码不能为空");
+            return false;
+        }
+        if (getUserName().equals(confirmPassword.getText().toString().trim())) {
+            ToastUtils.showToast(this, "两次输入的密码不一致");
             return false;
         }
         return true;
     }
 
-
-    private void register(String userName, String password, String deviceId, String authCode) {
-        mProgressDialog.setMessage("注册中...");
-        mProgressDialog.show();
-        final Map<String, String> params = new HashMap<String, String>();
-        params.put(HttpParams.Register.userName, userName);
-        params.put(HttpParams.Register.password, password);
-        params.put(HttpParams.Register.deviceNo, deviceId);
-        params.put(HttpParams.Register.authCode, authCode);
-        HttpPostUtils.doLazyFromPostRequest(RegisterActivity.this, HttpConfig.REGISTER_URL, params, new HttpListener() {
-
-            @Override
-            public void onPass(JSONObject jsonObject) {
-                Type type = new TypeToken<HttpReturn.RegisterReturn>() {
-                }.getType();
-                HttpReturn.RegisterReturn mReturn = HttpParseUtils.parseReturn(jsonObject, type);
-                if (mReturn != null) {
-                    if (mReturn.getStatus() == 1) {
-                        User user = mReturn.getData();
-                        if (user != null) {
-                            registerSuccess(params);
-                        } else {
-                            mProgressDialog.dismiss();
-                        }
-                    } else {
-                        mProgressDialog.dismiss();
-                        ErrorCode code = mReturn.getCode();
-                        if (code != null) {
-                            ToastUtils.showToast(getApplicationContext(), getResources().getString(mReturn.getCode().getRes()));
-                        } else {
-                            String msg = mReturn.getMsg();
-                            if (TextUtils.isEmpty(msg)) {
-                                ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                            } else {
-                                ToastUtils.showToast(getApplicationContext(), msg);
-                            }
-                        }
-                    }
-                } else {
-                    mProgressDialog.dismiss();
-                    ToastUtils.showToast(getApplicationContext(), getResources().getString(R.string.error_unknow));
-                }
-            }
-
-            @Override
-            public void onError(String ErrorMsg, int errorCode) {
-                mProgressDialog.dismiss();
-            }
-        }, true);
+    /**
+     * 获取用户名
+     *
+     * @return
+     */
+    @Override
+    public String getUserName() {
+        return username.getText().toString().trim();
     }
 
-    private void registerSuccess(Map<String, String> params) {
-        SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_userName, params.get(HttpParams.Login.userName));
-        ToastUtils.showToast(getApplicationContext(), "注册成功");
+    /**
+     * 获取密码
+     *
+     * @return
+     */
+    @Override
+    public String getPassword() {
+        return password.getText().toString().trim();
+    }
+
+    /**
+     * 跳转到主页
+     *
+     * @param user
+     */
+    @Override
+    public void toMainActivity(User user) {
+        CustomApplication.saveLoginInfo(user, getPassword());
+        Intent intent = new Intent(RegisterActivity.this, DemoMainActivity.class);
+        startActivity(intent);
         finish();
+    }
+
+    /**
+     * 显示错误信息
+     *
+     * @param reason
+     */
+    @Override
+    public void showFailedError(String reason) {
+        ToastUtils.showToast(getApplicationContext(), "注册失败：" + reason);
+    }
+
+    @Override
+    public void showLoadingProgress(String msg) {
+        mProgressDialog.setMessage(msg);
+        mProgressDialog.show();
+    }
+
+    @Override
+    public void hideLoadingProgress() {
+        mProgressDialog.dismiss();
     }
 }

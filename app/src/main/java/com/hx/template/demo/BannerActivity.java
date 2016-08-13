@@ -2,7 +2,12 @@ package com.hx.template.demo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
+import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
+import android.util.SparseLongArray;
 import android.view.View;
 import android.widget.Button;
 

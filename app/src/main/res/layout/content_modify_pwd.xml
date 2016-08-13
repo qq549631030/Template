@@ -1,18 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright &amp;copy; 2014-2016  All rights reserved.
-  ~  Licensed under the 深圳中盟燧石科技 License, Version 1.0 (the "License");
-  ~
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hx.template.ui.RegisterActivity"
-    tools:showIn="@layout/activity_register">
-
+    tools:context=".ui.ModifyPwdActivity"
+    tools:showIn="@layout/activity_modify_pwd">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,16 +32,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="账号 :" />
+                    android:text="原密码 :" />
 
                 <EditText
-                    android:id="@+id/username"
+                    android:id="@+id/old_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@null"
                     android:ems="10"
                     android:gravity="center_vertical"
-                    android:hint="请输入用户名"
+                    android:hint="请输入原密码"
                     android:inputType="phone"
                     android:paddingLeft="10dp"
                     android:textSize="14sp">
@@ -65,10 +59,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="密码 :" />
+                    android:text="新密码 :" />
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/new_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@null"
@@ -110,7 +104,7 @@
             android:background="@color/app_base_line_color_gray" />
 
         <TextView
-            android:id="@+id/register"
+            android:id="@+id/confirm"
             android:layout_width="match_parent"
             android:layout_height="47dp"
             android:layout_marginLeft="12dp"
@@ -118,44 +112,8 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/round_rect_solid_red_corner_small"
             android:gravity="center"
-            android:text="立即注册"
+            android:text="修改"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:gravity="center_vertical">
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0.5dp"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:background="@color/app_base_line_color_gray" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OR"
-                android:textColor="@color/app_base_text_color_gray" />
-
-            <View
-                android:layout_width="wrap_content"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:background="@color/app_base_line_color_gray" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/to_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已有账号 , 去登录!"
-            android:textColor="@color/app_base_text_color_red" />
     </LinearLayout>
-
 </RelativeLayout>

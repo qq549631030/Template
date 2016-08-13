@@ -3,7 +3,6 @@ package com.hx.template;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -22,20 +21,12 @@ import com.hx.template.http.DefaultSSLSocketFactory;
 import com.hx.template.http.volley.HttpsTrustManager;
 import com.hx.template.http.volley.OkHttpStack;
 import com.hx.template.http.volley.StethoOkHttpStack;
-import com.hx.template.utils.DeviceUtils;
 import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.SecretUtils;
 import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.utils.ToastUtils;
 import com.karumi.dexter.Dexter;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
-import com.nostra13.universalimageloader.utils.L;
 import com.squareup.okhttp.OkHttpClient;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -44,10 +35,11 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+
+import cn.bmob.v3.Bmob;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
@@ -71,7 +63,7 @@ public class CustomApplication extends Application {
 
     private static CustomApplication instance;
 
-    public static long currentLoginId;
+    public static String currentLoginId;
 
     public static User currentUser;
 
@@ -91,6 +83,7 @@ public class CustomApplication extends Application {
         SQLiteDatabase.loadLibs(this);
         instance = this;
         Dexter.initialize(instance);
+        Bmob.initialize(instance,"0dffa5dd0fb6b49c5dbcd57971946e0b");
         initActivityManager();
 //        enabledStrictMode();
         //内存泄露检测
@@ -304,7 +297,7 @@ public class CustomApplication extends Application {
      */
     public static boolean saveLoginInfo(User user, String password) {
         if (user != null) {
-            CustomApplication.currentLoginId = user.getId();
+            CustomApplication.currentLoginId = user.getObjectId();
             CustomApplication.currentUser = user;
             try {
                 SharedPreferencesUtil.setParam(getInstance(), Constant.pref_userName, user.getUsername());
