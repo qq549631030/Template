@@ -1,12 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hx.template.ui.UserBindPhoneActivity"
-    tools:showIn="@layout/activity_user_bind_phone">
+    tools:context="com.hx.template.ui.fragment.BindPhoneFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,9 +35,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="@null"
-                    android:ems="10"
+                    android:ems="11"
                     android:gravity="center_vertical"
-                    android:hint="请输入手机号码"
+                    android:hint="请输入要绑定的手机号码"
                     android:inputType="phone"
                     android:paddingLeft="10dp"
                     android:textSize="14sp" />
@@ -83,17 +79,14 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
+        <Button
             android:id="@+id/bind"
+            style="@style/BaseButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/base_normal_height"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/round_rect_solid_red_corner_small"
-            android:gravity="center"
-            android:text="绑定"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:text="绑定" />
     </LinearLayout>
-</RelativeLayout>
+</FrameLayout>

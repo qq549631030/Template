@@ -1,4 +1,4 @@
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;

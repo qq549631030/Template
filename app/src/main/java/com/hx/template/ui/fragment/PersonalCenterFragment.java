@@ -1,12 +1,10 @@
-package com.hx.template.ui;
+package com.hx.template.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hx.template.R;
@@ -16,6 +14,8 @@ import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
+import com.hx.template.ui.activity.PersonalInfoActivity;
+import com.hx.template.ui.activity.SettingActivity;
 import com.hx.template.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;

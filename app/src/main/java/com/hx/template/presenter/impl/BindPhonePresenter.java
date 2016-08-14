@@ -4,18 +4,19 @@ import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.UserModel;
-import com.hx.template.mvpview.impl.UserBindPhoneMvpView;
+import com.hx.template.mvpview.impl.BindPhoneMvpView;
+import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
 import com.hx.template.presenter.BasePresenter;
 import com.hx.template.presenter.itf.IUserBindPhonePresenter;
 
 /**
  * Created by huangxiang on 16/8/13.
  */
-public class UserBindPhonePresenter extends BasePresenter<UserBindPhoneMvpView> implements IUserBindPhonePresenter {
+public class BindPhonePresenter extends BasePresenter<VerifyPhoneMvpView> implements IUserBindPhonePresenter {
     private SMSModel smsModel;
     private UserModel userModel;
 
-    public UserBindPhonePresenter(SMSModel smsModel, UserModel userModel) {
+    public BindPhonePresenter(SMSModel smsModel, UserModel userModel) {
         this.smsModel = smsModel;
         this.userModel = userModel;
     }
@@ -74,24 +75,32 @@ public class UserBindPhonePresenter extends BasePresenter<UserBindPhoneMvpView> 
     @Override
     public void bindPhone() {
         if (isViewAttached()) {
-            User user = new User();
-            user.setMobilePhoneNumber(getMvpView().getVerifyPhoneNumber());
-            user.setMobilePhoneNumberVerified(true);
-            userModel.updateUserInfo(user, new Callback() {
-                @Override
-                public void onSuccess(Object... data) {
-                    if (isViewAttached()) {
-                        getMvpView().bindSuccess();
+            if (getMvpView() instanceof BindPhoneMvpView) {
+                User user = new User();
+                user.setMobilePhoneNumber(getMvpView().getVerifyPhoneNumber());
+                user.setMobilePhoneNumberVerified(true);
+                userModel.updateUserInfo(user, new Callback() {
+                    @Override
+                    public void onSuccess(Object... data) {
+                        if (isViewAttached()) {
+                            if (getMvpView() instanceof BindPhoneMvpView) {
+                                BindPhoneMvpView view = (BindPhoneMvpView) getMvpView();
+                                view.bindSuccess();
+                            }
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(String errorCode, Object... errorMsg) {
-                    if (isViewAttached()) {
-                        getMvpView().bindFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
+                    @Override
+                    public void onFailure(String errorCode, Object... errorMsg) {
+                        if (isViewAttached()) {
+                            if (getMvpView() instanceof BindPhoneMvpView) {
+                                BindPhoneMvpView view = (BindPhoneMvpView) getMvpView();
+                                view.bindFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
+                            }
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import com.hx.template.mvpview.SMSVerifyView;
 /**
  * Created by huangxiang on 16/8/13.
  */
-public interface UserBindPhoneMvpView extends SMSRequestView, SMSVerifyView, MvpView {
+public interface BindPhoneMvpView extends VerifyPhoneMvpView {
     /**
      * 绑定成功
      */

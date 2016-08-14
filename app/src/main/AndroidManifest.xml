@@ -28,7 +28,7 @@
         tools:replace="android:allowBackup">
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
-            android:name=".ui.SplashActivity"
+            android:name=".ui.activity.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -68,22 +68,22 @@
             android:label="@string/title_activity_cropper_demo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.GuideActivity"
+            android:name=".ui.activity.GuideActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.RegisterActivity"
+            android:name=".ui.activity.RegisterActivity"
             android:label="@string/title_activity_register"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.SettingActivity"
+            android:name=".ui.activity.SettingActivity"
             android:label="@string/title_activity_setting"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".demo.ActivityDemoActivity" />
@@ -94,19 +94,19 @@
         <activity android:name=".demo.RxJavaActivity" />
         <activity android:name=".demo.SelectImageActivity" />
         <activity
-            android:name=".ui.ModifyPwdActivity"
+            android:name=".ui.activity.ModifyPwdActivity"
             android:label="@string/title_activity_reset_pwd"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.UserBindPhoneActivity"
+            android:name=".ui.activity.BindPhoneActivity"
             android:label="@string/title_activity_user_bind_phone"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.PersonalInfoActivity"
+            android:name=".ui.activity.PersonalInfoActivity"
             android:label="@string/title_activity_personal_info"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.PersonalInfoUpdateActivity"
+            android:name=".ui.activity.PersonalInfoUpdateActivity"
             android:label="@string/title_activity_personal_info_update"
             android:theme="@style/AppTheme.NoActionBar"/>
         <!--Image Selector Entry-->

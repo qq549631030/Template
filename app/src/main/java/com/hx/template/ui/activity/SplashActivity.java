@@ -1,4 +1,4 @@
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.os.Message;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
 import com.hx.template.utils.SharedPreferencesUtil;
 //import com.networkbench.agent.impl.NBSAppAgent;

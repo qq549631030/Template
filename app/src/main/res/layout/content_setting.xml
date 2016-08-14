@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hx.template.ui.SettingActivity"
+    tools:context=".ui.activity.SettingActivity"
     tools:showIn="@layout/activity_setting">
 
     <LinearLayout
@@ -72,22 +72,16 @@
                 android:gravity="center_vertical"
                 tools:text="15870679047" />
         </RelativeLayout>
-
-
     </LinearLayout>
 
-    <TextView
+    <Button
         android:id="@+id/logout"
+        style="@style/BaseButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/base_normal_height"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/round_rect_solid_red_corner_small"
-        android:gravity="center"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="退出登录"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/base_padding_size"
+        android:layout_marginRight="@dimen/base_padding_size"
+        android:layout_marginTop="@dimen/base_padding_size"
+        android:text="退出登录" />
 
 </LinearLayout>

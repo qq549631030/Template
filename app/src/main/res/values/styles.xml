@@ -22,4 +22,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BaseButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/round_rect_solid_blue_corner_small</item>
+        <item name="android:textColor">@color/app_base_white</item>
+        <item name="android:minHeight">@dimen/base_normal_height</item>
+        <item name="android:textSize">@dimen/base_text_size_t3</item>
+    </style>
+
 </resources>

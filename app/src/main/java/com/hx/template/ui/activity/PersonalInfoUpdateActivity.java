@@ -1,4 +1,4 @@
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -52,7 +52,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity implements Personal
         userModel = new BmobUserImpl();
         presenter = new PersonalInfoUpdatePresenter(userModel);
         presenter.attachView(this);
-        initViews();
+        refreshViews();
     }
 
     @Override
@@ -61,13 +61,14 @@ public class PersonalInfoUpdateActivity extends BaseActivity implements Personal
         super.onDestroy();
     }
 
-    private void initViews() {
+    private void refreshViews() {
         User currentUser = User.getCurrentUser(User.class);
         if (currentUser == null) {
             return;
         }
         switch (infoType) {
             case User.INFO_TYPE_NICKNAME:
+                setTitle("更改昵称");
                 editText.setText(StringUtils.nullStrToEmpty(currentUser.getNickname()));
                 editText.setSelection(editText.getText().length());
                 break;

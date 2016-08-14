@@ -1,11 +1,10 @@
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.HandlerThread;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
@@ -18,7 +17,7 @@ import android.widget.TextView;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.demo.DemoMainActivity;
+import com.hx.template.entity.User;
 import com.hx.template.utils.ColorUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.components.PageIndicator;
@@ -83,8 +82,12 @@ public class GuideActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.start:
                 SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_isFirst, false);
-                Intent intentHome = new Intent(GuideActivity.this, MainActivity.class);
-                startActivity(intentHome);
+                User currentUser = User.getCurrentUser(User.class);
+                if (currentUser != null) {
+                    startActivity(new Intent(GuideActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                } else {
+                    startActivity(new Intent(GuideActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                }
                 GuideActivity.this.finish();
                 break;
         }

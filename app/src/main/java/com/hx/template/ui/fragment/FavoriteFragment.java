@@ -1,4 +1,4 @@
-package com.hx.template.ui;
+package com.hx.template.ui.fragment;
 
 
 import android.os.Bundle;

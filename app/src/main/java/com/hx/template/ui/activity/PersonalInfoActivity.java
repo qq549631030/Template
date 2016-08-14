@@ -1,8 +1,9 @@
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -50,6 +51,10 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
     TextView nickname;
     @Bind(R.id.username)
     TextView username;
+    @Bind(R.id.mobile_phone)
+    TextView mobilePhone;
+    @Bind(R.id.email)
+    TextView email;
     @Bind(R.id.gender)
     TextView gender;
 
@@ -100,6 +105,28 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
         if (currentUser != null) {
             nickname.setText(StringUtils.nullStrToEmpty(currentUser.getNickname()));
             username.setText(StringUtils.nullStrToEmpty(currentUser.getUsername()));
+            String mobile = currentUser.getMobilePhoneNumber();
+            boolean mobileVerified = currentUser.getMobilePhoneNumberVerified() != null ? currentUser.getMobilePhoneNumberVerified().booleanValue() : false;
+            if (!TextUtils.isEmpty(mobile)) {
+                if (mobileVerified) {
+                    mobilePhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()) + "(已验证)");
+                } else {
+                    mobilePhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()) + "(未验证)");
+                }
+            } else {
+                mobilePhone.setText("未绑定");
+            }
+            String emailAddr = currentUser.getEmail();
+            boolean emailVerified = currentUser.getEmailVerified() != null ? currentUser.getEmailVerified().booleanValue() : false;
+            if (!TextUtils.isEmpty(emailAddr)) {
+                if (emailVerified) {
+                    email.setText(StringUtils.nullStrToEmpty(emailAddr) + "(已验证)");
+                } else {
+                    email.setText(StringUtils.nullStrToEmpty(emailAddr) + "(未验证)");
+                }
+            } else {
+                email.setText("未设置");
+            }
             BmobFile avatarFile = currentUser.getAvatar();
             if (avatarFile != null) {
                 ImageLoaderManager.getImageLoader(this).displayImage(avatarFile.getFileUrl(), avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar);
@@ -148,6 +175,9 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
         }
     }
 
+    /**
+     * 头像修改成功
+     */
     @Override
     public void avatarUpdateSuccess() {
         hideLoadingProgress();

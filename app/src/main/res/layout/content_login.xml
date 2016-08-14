@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hx.template.ui.LoginActivity"
+    tools:context=".ui.activity.LoginActivity"
     tools:showIn="@layout/activity_login">
 
 
@@ -85,16 +85,13 @@
 
         <Button
             android:id="@+id/login"
+            style="@style/BaseButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/round_rect_solid_red_corner_small"
-            android:gravity="center"
-            android:text="登录"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:text="登录" />
 
         <TextView
             android:id="@+id/forget_password"
@@ -104,7 +101,7 @@
             android:layout_marginRight="12dp"
             android:layout_marginTop="12dp"
             android:text="忘记密码"
-            android:textColor="@color/app_base_text_color_orange"
+            android:textColor="@color/base_color_c1"
             android:textSize="14sp" />
     </LinearLayout>
 

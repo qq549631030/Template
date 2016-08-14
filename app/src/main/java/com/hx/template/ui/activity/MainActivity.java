@@ -6,15 +6,12 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,6 +19,10 @@ import android.widget.FrameLayout;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.components.MainTabItemView;
+import com.hx.template.ui.fragment.FavoriteFragment;
+import com.hx.template.ui.fragment.GroupFragment;
+import com.hx.template.ui.fragment.HomeFragment;
+import com.hx.template.ui.fragment.PersonalCenterFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

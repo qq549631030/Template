@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hx.template.ui.RegisterActivity"
+    tools:context=".ui.activity.RegisterActivity"
     tools:showIn="@layout/activity_register">
 
 
@@ -109,19 +109,15 @@
             android:layout_height="0.5dp"
             android:background="@color/app_base_line_color_gray" />
 
-        <TextView
+        <Button
             android:id="@+id/register"
+            style="@style/BaseButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/round_rect_solid_red_corner_small"
-            android:gravity="center"
-            android:text="立即注册"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/base_padding_size"
+            android:layout_marginRight="@dimen/base_padding_size"
+            android:layout_marginTop="@dimen/base_padding_size"
+            android:text="立即注册" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -140,7 +136,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="OR"
-                android:textColor="@color/app_base_text_color_gray" />
+                android:textColor="@color/base_color_c4" />
 
             <View
                 android:layout_width="wrap_content"
@@ -155,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已有账号 , 去登录!"
-            android:textColor="@color/app_base_text_color_red" />
+            android:textColor="@color/base_color_c1" />
     </LinearLayout>
 
 </RelativeLayout>

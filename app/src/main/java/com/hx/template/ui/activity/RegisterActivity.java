@@ -4,26 +4,23 @@
  *
  */
 
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.demo.DemoMainActivity;
-import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.LoginMvpView;
-import com.hx.template.presenter.impl.LoginPresenter;
+import com.hx.template.mvpview.impl.RegisterMvpView;
+import com.hx.template.presenter.impl.RegisterPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -31,61 +28,54 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity implements LoginMvpView {
+public class RegisterActivity extends BaseActivity implements RegisterMvpView {
 
     @Bind(R.id.username)
     EditText username;
     @Bind(R.id.password)
     EditText password;
+    @Bind(R.id.confirm_password)
+    EditText confirmPassword;
 
     ProgressDialog mProgressDialog;
 
-    LoginPresenter presenter;
+    RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("登录");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("注册");
         mProgressDialog = new ProgressDialog(this);
-        presenter = new LoginPresenter(new BmobUserImpl());
+        presenter = new RegisterPresenter(new BmobUserImpl());
         presenter.attachView(this);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return super.onCreateOptionsMenu(menu);
+    protected void onDestroy() {
+        presenter.detachView();
+        super.onDestroy();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.register:
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @OnClick({R.id.forget_password, R.id.login})
+    @OnClick({R.id.register, R.id.to_login})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.forget_password:
-                if (FastClickUtils.isTimeToProcess(R.id.forget_password)) {
-                    //TODO implement
+            case R.id.register:
+                if (checkInput()) {
+                    if (FastClickUtils.isTimeToProcess(R.id.register)) {
+                        presenter.register();
+                    }
                 }
                 break;
-            case R.id.login:
-                if (checkInput()) {
-                    if (FastClickUtils.isTimeToProcess(R.id.login)) {
-                        showLoadingProgress("登录中...");
-                        presenter.login();
-                    }
+            case R.id.to_login:
+                if (FastClickUtils.isTimeToProcess(R.id.to_login)) {
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                 }
                 break;
         }
@@ -100,47 +90,53 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             ToastUtils.showToast(this, "密码不能为空");
             return false;
         }
+        if (getUserName().equals(confirmPassword.getText().toString().trim())) {
+            ToastUtils.showToast(this, "两次输入的密码不一致");
+            return false;
+        }
         return true;
     }
 
+    /**
+     * 获取用户名
+     *
+     * @return
+     */
     @Override
     public String getUserName() {
         return username.getText().toString().trim();
     }
 
+    /**
+     * 获取密码
+     *
+     * @return
+     */
     @Override
     public String getPassword() {
         return password.getText().toString().trim();
     }
 
     /**
-     * 登录成功
-     *
-     * @param user 用户
+     * 注册成功
      */
     @Override
-    public void loginSuccess(User user) {
+    public void registerSuccess() {
         hideLoadingProgress();
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     /**
-     * 登录失败
+     * 注册失败
      *
      * @param errorCode 错误码
      * @param errorMsg  错误信息
      */
     @Override
-    public void loginFail(String errorCode, String errorMsg) {
+    public void registerFail(String errorCode, String errorMsg) {
         hideLoadingProgress();
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
-    }
-
-    @Override
-    protected void onDestroy() {
-        presenter.detachView();
-        super.onDestroy();
     }
 }

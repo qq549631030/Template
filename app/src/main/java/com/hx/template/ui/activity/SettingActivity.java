@@ -4,7 +4,7 @@
  *
  */
 
-package com.hx.template.ui;
+package com.hx.template.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -91,7 +91,7 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(SettingActivity.this, ModifyPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.bind_phone_layout:
-                startActivity(new Intent(SettingActivity.this, UserBindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                startActivity(new Intent(SettingActivity.this, BindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
