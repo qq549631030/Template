@@ -1,13 +1,11 @@
 package com.hx.template.mvpview.impl;
 
-import com.hx.template.mvpview.LoadingView;
 import com.hx.template.mvpview.MvpView;
-import com.hx.template.mvpview.ShowErrorView;
 
 /**
  * Created by huangxiang on 16/8/13.
  */
-public interface ModifyPwdMvpView extends LoadingView, MvpView, ShowErrorView {
+public interface ModifyPwdMvpView extends MvpView {
     /**
      * 获取旧密码
      *
@@ -23,7 +21,15 @@ public interface ModifyPwdMvpView extends LoadingView, MvpView, ShowErrorView {
     String getNewPwd();
 
     /**
-     * 退出
+     * 修改成功
      */
-    void exit();
+    void modifySuccess();
+
+    /**
+     * 修改失败
+     *
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
+     */
+    void modifyFail(String errorCode, String errorMsg);
 }

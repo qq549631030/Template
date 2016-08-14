@@ -1,9 +1,6 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'newlens'
 
-repositories {
-    mavenCentral()
-}
 //用于获取当前时间
 def releaseTime() {
     return new Date().format("yyyy-MM-dd", TimeZone.getDefault())
@@ -17,6 +14,9 @@ android {
     compileSdkVersion 24
     buildToolsVersion '24.0.1'
     enforceUniquePackageName = false
+    configurations {
+        all*.exclude group: 'xpp3', module: 'xpp3'
+    }
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen']
@@ -147,54 +147,58 @@ dependencies {
     //常用工具工程
     compile project(':commonutils')
 
-    compile 'com.android.support:appcompat-v7:24.1.1'
-    compile 'com.android.support:design:24.1.1'
-    compile 'com.android.support:palette-v7:24.1.1'
-
     //Stetho 调试用
-    compile 'com.facebook.stetho:stetho:1.2.0'
-    compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
     //内存泄露检测(debug时候用就好)
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     //Gson(JSON)
-    compile 'com.google.code.gson:gson:2.4'
     //volley
-    compile 'com.mcxiaoke.volley:library:1.0.19'
     //Okhttp
-    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
     //图片缓存
+    //EventBus(事件总线)
+    //Butterknife(依赖注入)
+    //OrmLite
+    //二维码扫描
+    //广告轮播控件
+    //图片裁剪
+    //java js 交互
+    //smack
+    //Rxjava
+    //retrofit
+    //权限管理
+    //图片选择
+    //图片压缩
+    compile 'com.android.support:appcompat-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
+    compile 'com.android.support:palette-v7:24.1.1'
+    compile 'com.facebook.stetho:stetho:1.2.0'
+    compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    //EventBus(事件总线)
-    compile 'de.greenrobot:eventbus:2.4.0'
-    //Butterknife(依赖注入)
+    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    //OrmLite
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-    //二维码扫描
     compile 'com.google.zxing:core:3.2.1'
-    //广告轮播控件
     compile 'com.bigkoo:convenientbanner:2.0.5'
-    //图片裁剪
     compile 'com.edmodo:cropper:1.0.1'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    //java js 交互
     compile 'com.github.lzyzsd:jsbridge:1.0.2'
-    //smack
     compile 'org.igniterealtime.smack:smack-android:4.1.0'
     compile 'org.igniterealtime.smack:smack-tcp:4.1.0'
     compile 'org.igniterealtime.smack:smack-android-extensions:4.1.0'
-    //Rxjava
     compile 'io.reactivex:rxjava:1.1.2'
     compile 'io.reactivex:rxandroid:1.1.0'
-    //retrofit
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
     compile 'com.squareup.retrofit2:retrofit-mock:2.0.2'
-    //权限管理
     compile 'com.karumi:dexter:2.2.2'
+    compile 'com.github.lovetuzitong:MultiImageSelector:1.2'
+    compile 'id.zelory:compressor:1.0.2'
+    compile 'com.android.support:support-v4:24.1.1'
 }
 

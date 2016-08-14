@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity {
                 Fragment fragment1 = mFragmentManager
                         .findFragmentByTag("mainMenuItem1");
                 if (fragment1 == null) {
-                    fragment1 = new PersonalCenterFragment();
+                    fragment1 = new HomeFragment();
                 }
                 switchContent(currentFragment, fragment1, "mainMenuItem1");
                 currentIndex = 0;
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
                 Fragment fragment2 = mFragmentManager
                         .findFragmentByTag("mainMenuItem2");
                 if (fragment2 == null) {
-                    fragment2 = new PersonalCenterFragment();
+                    fragment2 = new GroupFragment();
                 }
                 switchContent(currentFragment, fragment2, "mainMenuItem2");
                 currentIndex = 1;
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity {
                 Fragment fragment3 = mFragmentManager
                         .findFragmentByTag("mainMenuItem3");
                 if (fragment3 == null) {
-                    fragment3 = new PersonalCenterFragment();
+                    fragment3 = new FavoriteFragment();
                 }
                 switchContent(currentFragment, fragment3, "mainMenuItem3");
                 currentIndex = 2;
@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity {
                 Fragment fragment = mFragmentManager
                         .findFragmentByTag("mainMenuItem1");
                 if (fragment == null) {
-                    fragment = new PersonalCenterFragment();
+                    fragment = new HomeFragment();
                 }
                 switchContent(currentFragment, fragment, "mainMenuItem1");
                 currentIndex = 0;

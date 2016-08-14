@@ -104,7 +104,15 @@
         <activity
             android:name=".ui.PersonalInfoActivity"
             android:label="@string/title_activity_personal_info"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.PersonalInfoUpdateActivity"
+            android:label="@string/title_activity_personal_info_update"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <!--Image Selector Entry-->
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
     </application>
 
 </manifest>

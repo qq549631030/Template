@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.UserModel;
@@ -19,7 +20,10 @@ import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.UserBindPhoneMvpView;
 import com.hx.template.presenter.impl.UserBindPhonePresenter;
+import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.regex.Pattern;
 
@@ -92,6 +96,7 @@ public class UserBindPhoneActivity extends BaseActivity implements UserBindPhone
         switch (view.getId()) {
             case R.id.getvcode:
                 if (checkPhone()) {
+                    showLoadingProgress("正在获取短信验证码...");
                     presenter.requestSMSCode();
                 }
                 break;
@@ -149,28 +154,6 @@ public class UserBindPhoneActivity extends BaseActivity implements UserBindPhone
     }
 
     /**
-     * 获取验证码成功
-     *
-     * @param data 返回信息
-     */
-    @Override
-    public void onRequestSuccess(Object... data) {
-        getvcode.setEnabled(false);
-        countDownTimer.start();
-    }
-
-    /**
-     * 获取验证码失败
-     *
-     * @param errorCode 错误码
-     * @param errorMsg  错误信息
-     */
-    @Override
-    public void onRequestFail(String errorCode, Object... errorMsg) {
-
-    }
-
-    /**
      * 获取手机号码
      *
      * @return
@@ -191,6 +174,32 @@ public class UserBindPhoneActivity extends BaseActivity implements UserBindPhone
     }
 
     /**
+     * 获取验证码成功
+     *
+     * @param data 返回信息
+     */
+    @Override
+    public void onRequestSuccess(Object... data) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this,"验证码获取成功");
+        getvcode.setEnabled(false);
+        countDownTimer.start();
+    }
+
+    /**
+     * 获取验证码失败
+     *
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
+     */
+    @Override
+    public void onRequestFail(String errorCode, String errorMsg) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
+    }
+
+
+    /**
      * 验证成功
      *
      * @param data 返回信息
@@ -207,49 +216,32 @@ public class UserBindPhoneActivity extends BaseActivity implements UserBindPhone
      * @param errorMsg  错误信息
      */
     @Override
-    public void onVerifyFail(String errorCode, Object... errorMsg) {
+    public void onVerifyFail(String errorCode, String errorMsg) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
 
     }
 
     /**
-     * 显示loading对话框
-     *
-     * @param msg
+     * 绑定成功
      */
     @Override
-    public void showLoadingProgress(String msg) {
-        mProgressDialog.setMessage(msg);
-        if (!mProgressDialog.isShowing()) {
-            mProgressDialog.show();
-        }
-    }
-
-    /**
-     * 隐藏loading对话框
-     */
-    @Override
-    public void hideLoadingProgress() {
-        if (mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
-
-    /**
-     * 显示错误信息
-     *
-     * @param errorMsg
-     */
-    @Override
-    public void showFailedError(String errorMsg) {
-        ToastUtils.showToast(this, errorMsg);
-    }
-
-    /**
-     * 退出
-     */
-    @Override
-    public void exit() {
+    public void bindSuccess() {
+        hideLoadingProgress();
         ToastUtils.showToast(this, "绑定成功");
+        EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
+    }
+
+    /**
+     * 绑定失败
+     *
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
+     */
+    @Override
+    public void bindFail(String errorCode, String errorMsg) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

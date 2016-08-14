@@ -11,12 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.hx.template.CustomApplication;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.SaveSceneUtils;
+import com.hx.template.mvpview.LoadingView;
 
-public class BaseActivity extends AppCompatActivity {
-    private static final String TAG = "BaseActivity";
+public class BaseActivity extends AppCompatActivity implements LoadingView {
+
+    private ProgressDialog mProgressDialog;
 
     private ConnectivityManager mConnectivityManager;
 
@@ -29,6 +30,7 @@ public class BaseActivity extends AppCompatActivity {
         netFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(netReceiver, netFilter);
         SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
+        mProgressDialog = new ProgressDialog(this);
     }
 
     @Override
@@ -94,5 +96,28 @@ public class BaseActivity extends AppCompatActivity {
      */
     protected void onNetworkChange(boolean on) {
 
+    }
+
+    /**
+     * 显示loading对话框
+     *
+     * @param msg
+     */
+    @Override
+    public void showLoadingProgress(String msg) {
+        mProgressDialog.setMessage(msg);
+        if (!mProgressDialog.isShowing()) {
+            mProgressDialog.show();
+        }
+    }
+
+    /**
+     * 隐藏loading对话框
+     */
+    @Override
+    public void hideLoadingProgress() {
+        if (mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+        }
     }
 }

@@ -19,6 +19,7 @@ public class RegisterPresenter extends BasePresenter<RegisterMvpView> implements
             throw new IllegalArgumentException("userModel can't be null");
         }
     }
+
     /**
      * 注册
      */
@@ -27,27 +28,18 @@ public class RegisterPresenter extends BasePresenter<RegisterMvpView> implements
         if (!isViewAttached()) {
             return;
         }
-        getMvpView().showLoadingProgress("注册中...");
         userModel.register(getMvpView().getUserName(), getMvpView().getPassword(), new Callback() {
             @Override
             public void onSuccess(Object... data) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoadingProgress();
-                if (data.length > 0 && data[0] instanceof User) {
-                    getMvpView().toMainActivity((User) data[0]);
+                if (isViewAttached()) {
+                    getMvpView().registerSuccess();
                 }
             }
 
             @Override
             public void onFailure(String errorCode, Object... errorMsg) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoadingProgress();
-                if (errorMsg.length > 0) {
-                    getMvpView().showFailedError(errorMsg.toString());
+                if (isViewAttached()) {
+                    getMvpView().registerFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
                 }
             }
         });

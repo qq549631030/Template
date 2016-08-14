@@ -13,15 +13,21 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.entity.User;
+import com.hx.template.event.UserInfoUpdateEvent;
+import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.utils.DataCleanManager;
 import com.hx.template.utils.StringUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
@@ -35,6 +41,8 @@ public class SettingActivity extends BaseActivity {
     TextView cacheSize;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.bind_phone)
+    TextView bindPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +51,32 @@ public class SettingActivity extends BaseActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("设置");
+        setTitle("设置");
         refreshViews();
     }
 
-    @OnClick({R.id.clean_cache_layout, R.id.logout, R.id.reset_pwd})
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UserInfoUpdateEvent event) {
+        refreshViews();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @OnClick({R.id.clean_cache_layout, R.id.bind_phone_layout, R.id.logout, R.id.modify_pwd})
     public void onClick(View view) {
+        if (!FastClickUtils.isTimeToProcess(view.getId())) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.clean_cache_layout:
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要清除缓存吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -59,8 +87,11 @@ public class SettingActivity extends BaseActivity {
                     }
                 }).setNegativeButton("取消", null).show();
                 break;
-            case R.id.reset_pwd:
-
+            case R.id.modify_pwd:
+                startActivity(new Intent(SettingActivity.this, ModifyPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                break;
+            case R.id.bind_phone_layout:
+                startActivity(new Intent(SettingActivity.this, UserBindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -89,6 +120,10 @@ public class SettingActivity extends BaseActivity {
             cacheSize.setText(StringUtils.nullStrToEmpty(sizeString));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        User currentUser = User.getCurrentUser(User.class);
+        if (currentUser != null) {
+            bindPhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()));
         }
     }
 

@@ -31,5 +31,5 @@ public interface SMSVerifyView {
      * @param errorCode 错误码
      * @param errorMsg  错误信息
      */
-    void onVerifyFail(String errorCode, Object... errorMsg);
+    void onVerifyFail(String errorCode, String errorMsg);
 }

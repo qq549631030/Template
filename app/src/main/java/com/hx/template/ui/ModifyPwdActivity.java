@@ -12,6 +12,7 @@ import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.ModifyPwdMvpView;
 import com.hx.template.presenter.impl.ModifyPwdPresenter;
+import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 import butterknife.Bind;
@@ -42,7 +43,7 @@ public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("修改密码");
+        setTitle("修改密码");
         mProgressDialog = new ProgressDialog(this);
         userModel = new BmobUserImpl();
         presenter = new ModifyPwdPresenter(userModel);
@@ -58,7 +59,8 @@ public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView 
     @OnClick(R.id.confirm)
     public void onClick() {
         if (checkInput()) {
-
+            showLoadingProgress("正在修改...");
+            presenter.modifyPwd();
         }
     }
 
@@ -71,7 +73,7 @@ public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView 
             ToastUtils.showToast(this, "新密码不能为空");
             return false;
         }
-        if (getNewPwd().equals(confirmPassword.getText().toString().trim())) {
+        if (!getNewPwd().equals(confirmPassword.getText().toString().trim())) {
             ToastUtils.showToast(this, "两次输入的密码不一致");
             return false;
         }
@@ -89,33 +91,24 @@ public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView 
     }
 
     /**
-     * 退出
+     * 修改成功
      */
     @Override
-    public void exit() {
+    public void modifySuccess() {
+        hideLoadingProgress();
         ToastUtils.showToast(this, "修改成功");
         finish();
     }
 
-    @Override
-    public void showLoadingProgress(String msg) {
-        mProgressDialog.setMessage(msg);
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void hideLoadingProgress() {
-        mProgressDialog.dismiss();
-    }
-
     /**
-     * 显示错误信息
+     * 修改失败
      *
-     * @param errorMsg
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
      */
     @Override
-    public void showFailedError(String errorMsg) {
-        ToastUtils.showToast(getApplicationContext(), "修改密码失败：" + errorMsg);
-
+    public void modifyFail(String errorCode, String errorMsg) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

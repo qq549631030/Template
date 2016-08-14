@@ -28,27 +28,20 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> implements IUser
         if (!isViewAttached()) {
             return;
         }
-        getMvpView().showLoadingProgress("登录中...");
         userModel.login(getMvpView().getUserName(), getMvpView().getPassword(), new Callback() {
             @Override
             public void onSuccess(Object... data) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoadingProgress();
-                if (data.length > 0 && data[0] instanceof User) {
-                    getMvpView().toMainActivity((User) data[0]);
+                if (isViewAttached()) {
+                    if (data.length > 0 && data[0] instanceof User) {
+                        getMvpView().loginSuccess((User) data[0]);
+                    }
                 }
             }
 
             @Override
             public void onFailure(String errorCode, Object... errorMsg) {
-                if (!isViewAttached()) {
-                    return;
-                }
-                getMvpView().hideLoadingProgress();
-                if (errorMsg.length > 0) {
-                    getMvpView().showFailedError(errorMsg.toString());
+                if (isViewAttached()) {
+                    getMvpView().loginFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
                 }
             }
         });

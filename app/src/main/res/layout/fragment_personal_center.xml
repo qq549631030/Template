@@ -14,40 +14,69 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="240dp">
 
-                <ImageView
-                    android:id="@+id/bg"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+            <RelativeLayout
+                android:id="@+id/personal_into_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_padding_size"
+                android:background="@color/app_base_white"
+                android:padding="@dimen/base_padding_size">
+
+                <com.hx.template.components.CircleImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/default_avatar" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center_horizontal"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/base_padding_size"
+                    android:layout_marginRight="@dimen/base_padding_size"
+                    android:layout_toLeftOf="@+id/qrcode"
+                    android:layout_toRightOf="@+id/avatar"
                     android:orientation="vertical">
-
-                    <com.hx.template.components.CircleImageView
-                        android:id="@+id/avatar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/default_avatar" />
 
                     <TextView
                         android:id="@+id/nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/base_padding_12dp"
+                        android:layout_marginTop="@dimen/base_padding_size"
                         tools:text="nickname" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="账号：" />
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/qrcode"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/icon_qrcode" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/base_padding_size"
                 android:background="@color/app_base_white"
                 android:divider="@drawable/horizontal_divider_gray"
                 android:orientation="vertical"
@@ -57,10 +86,12 @@
                     android:id="@+id/settings"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/base_normal_height"
+                    android:drawableLeft="@drawable/icon_setting"
+                    android:drawablePadding="@dimen/base_padding_size"
                     android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/activity_horizontal_margin"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
-                    android:text="@string/action_settings" />
+                    android:paddingLeft="@dimen/base_padding_size"
+                    android:paddingRight="@dimen/base_padding_size"
+                    android:text="设置" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

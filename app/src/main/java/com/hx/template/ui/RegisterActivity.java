@@ -25,6 +25,7 @@ import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.RegisterMvpView;
 import com.hx.template.presenter.impl.RegisterPresenter;
+import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 import java.util.regex.Pattern;
@@ -127,36 +128,25 @@ public class RegisterActivity extends BaseActivity implements RegisterMvpView {
     }
 
     /**
-     * 跳转到主页
-     *
-     * @param user
+     * 注册成功
      */
     @Override
-    public void toMainActivity(User user) {
-        CustomApplication.saveLoginInfo(user, getPassword());
-        Intent intent = new Intent(RegisterActivity.this, DemoMainActivity.class);
+    public void registerSuccess() {
+        hideLoadingProgress();
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
     /**
-     * 显示错误信息
+     * 注册失败
      *
-     * @param reason
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
      */
     @Override
-    public void showFailedError(String reason) {
-        ToastUtils.showToast(getApplicationContext(), "注册失败：" + reason);
-    }
-
-    @Override
-    public void showLoadingProgress(String msg) {
-        mProgressDialog.setMessage(msg);
-        mProgressDialog.show();
-    }
-
-    @Override
-    public void hideLoadingProgress() {
-        mProgressDialog.dismiss();
+    public void registerFail(String errorCode, String errorMsg) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

@@ -24,21 +24,18 @@ public class ModifyPwdPresenter extends BasePresenter<ModifyPwdMvpView> implemen
         if (!isViewAttached()) {
             return;
         }
-        getMvpView().showLoadingProgress("修改中...");
         userModel.modifyPwd(getMvpView().getOldPwd(), getMvpView().getNewPwd(), new Callback() {
             @Override
             public void onSuccess(Object... data) {
                 if (isViewAttached()) {
-                    getMvpView().exit();
+                    getMvpView().modifySuccess();
                 }
             }
 
             @Override
             public void onFailure(String errorCode, Object... errorMsg) {
                 if (isViewAttached()) {
-                    if (errorMsg != null && errorMsg.length > 0) {
-                        getMvpView().showFailedError(errorMsg[0].toString());
-                    }
+                    getMvpView().modifyFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
                 }
             }
         });

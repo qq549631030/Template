@@ -10,26 +10,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hx.template.R;
+import com.hx.template.base.BaseFragment;
 import com.hx.template.components.CircleImageView;
+import com.hx.template.entity.User;
+import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.imageloader.ImageLoaderManager;
+import com.hx.template.utils.StringUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * 个人中心
  */
-public class PersonalCenterFragment extends Fragment {
+public class PersonalCenterFragment extends BaseFragment {
 
-    @Bind(R.id.bg)
-    ImageView bg;
     @Bind(R.id.avatar)
     CircleImageView avatar;
     @Bind(R.id.nickname)
     TextView nickname;
-    @Bind(R.id.settings)
-    TextView settings;
+    @Bind(R.id.username)
+    TextView username;
+
+    @Override
+    protected String getFragmentTitle() {
+        return "个人中心";
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,7 +55,38 @@ public class PersonalCenterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+        refreshViews();
+    }
+
+    private void refreshViews() {
+        User currentUser = User.getCurrentUser(User.class);
+        if (currentUser != null) {
+            nickname.setText(StringUtils.nullStrToEmpty(currentUser.getNickname()));
+            username.setText(StringUtils.nullStrToEmpty(currentUser.getUsername()));
+            BmobFile avatarFile = currentUser.getAvatar();
+            if (avatarFile != null) {
+                ImageLoaderManager.getImageLoader(getContext()).displayImage(avatarFile.getFileUrl(), avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar);
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UserInfoUpdateEvent event) {
+        if (isViewCreated) {
+            refreshViews();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     @Override
@@ -51,14 +95,17 @@ public class PersonalCenterFragment extends Fragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.avatar, R.id.settings})
+
+    @OnClick({R.id.settings, R.id.qrcode, R.id.personal_into_layout})
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
         }
         switch (view.getId()) {
-            case R.id.avatar:
-
+            case R.id.personal_into_layout:
+                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                break;
+            case R.id.qrcode:
                 break;
             case R.id.settings:
                 startActivity(new Intent(getContext(), SettingActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));

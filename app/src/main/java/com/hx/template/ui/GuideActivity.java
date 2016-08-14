@@ -83,7 +83,7 @@ public class GuideActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.start:
                 SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_isFirst, false);
-                Intent intentHome = new Intent(GuideActivity.this, DemoMainActivity.class);
+                Intent intentHome = new Intent(GuideActivity.this, MainActivity.class);
                 startActivity(intentHome);
                 GuideActivity.this.finish();
                 break;

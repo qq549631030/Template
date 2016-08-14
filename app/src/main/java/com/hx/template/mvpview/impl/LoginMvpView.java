@@ -1,14 +1,12 @@
 package com.hx.template.mvpview.impl;
 
 import com.hx.template.entity.User;
-import com.hx.template.mvpview.LoadingView;
 import com.hx.template.mvpview.MvpView;
-import com.hx.template.mvpview.ShowErrorView;
 
 /**
  * Created by huangxiang on 16/3/9.
  */
-public interface LoginMvpView extends LoadingView, ShowErrorView, MvpView {
+public interface LoginMvpView extends MvpView {
     /**
      * 获取用户名
      *
@@ -24,9 +22,17 @@ public interface LoginMvpView extends LoadingView, ShowErrorView, MvpView {
     String getPassword();
 
     /**
-     * 跳转到主页
+     * 登录成功
      *
-     * @param user
+     * @param user 用户
      */
-    void toMainActivity(User user);
+    void loginSuccess(User user);
+
+    /**
+     * 登录失败
+     *
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
+     */
+    void loginFail(String errorCode, String errorMsg);
 }

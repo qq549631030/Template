@@ -26,12 +26,10 @@ public class UserBindPhonePresenter extends BasePresenter<UserBindPhoneMvpView> 
     @Override
     public void requestSMSCode() {
         if (isViewAttached()) {
-            getMvpView().showLoadingProgress("正在获取短信验证码...");
             smsModel.requestSMSCode(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate(), new Callback() {
                 @Override
                 public void onSuccess(Object... data) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
                         getMvpView().onRequestSuccess(data);
                     }
                 }
@@ -39,11 +37,7 @@ public class UserBindPhonePresenter extends BasePresenter<UserBindPhoneMvpView> 
                 @Override
                 public void onFailure(String errorCode, Object... errorMsg) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().onRequestFail(errorCode, errorMsg);
-                        if (errorMsg != null && errorMsg.length > 0) {
-                            getMvpView().showFailedError(errorMsg[0].toString());
-                        }
+                        getMvpView().onRequestFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
                     }
                 }
             });
@@ -67,11 +61,7 @@ public class UserBindPhonePresenter extends BasePresenter<UserBindPhoneMvpView> 
                 @Override
                 public void onFailure(String errorCode, Object... errorMsg) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().onVerifyFail(errorCode, errorMsg);
-                        if (errorMsg != null && errorMsg.length > 0) {
-                            getMvpView().showFailedError(errorMsg[0].toString());
-                        }
+                        getMvpView().onVerifyFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
                     }
                 }
             });
@@ -91,18 +81,14 @@ public class UserBindPhonePresenter extends BasePresenter<UserBindPhoneMvpView> 
                 @Override
                 public void onSuccess(Object... data) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().exit();
+                        getMvpView().bindSuccess();
                     }
                 }
 
                 @Override
                 public void onFailure(String errorCode, Object... errorMsg) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        if (errorMsg != null && errorMsg.length > 0) {
-                            getMvpView().showFailedError(errorMsg[0].toString());
-                        }
+                        getMvpView().bindFail(errorCode, (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "");
                     }
                 }
             });

@@ -6,9 +6,7 @@
 
 package com.hx.template.ui;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,22 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.hx.template.base.BaseActivity;
-import com.hx.template.Constant;
-import com.hx.template.CustomApplication;
 import com.hx.template.R;
-import com.hx.template.base.BaseDialog;
-import com.hx.template.base.BaseDialogConfig;
-import com.hx.template.base.BaseDialogConfigFactory;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.demo.DemoMainActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.presenter.impl.LoginPresenter;
-import com.hx.template.utils.ToastUtils;
 import com.hx.template.mvpview.impl.LoginMvpView;
-
-import java.util.regex.Pattern;
+import com.hx.template.presenter.impl.LoginPresenter;
+import com.hx.template.utils.StringUtils;
+import com.hx.template.utils.ToastUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -91,6 +83,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
             case R.id.login:
                 if (checkInput()) {
                     if (FastClickUtils.isTimeToProcess(R.id.login)) {
+                        showLoadingProgress("登录中...");
                         presenter.login();
                     }
                 }
@@ -120,37 +113,34 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         return password.getText().toString().trim();
     }
 
+    /**
+     * 登录成功
+     *
+     * @param user 用户
+     */
     @Override
-    public void toMainActivity(User user) {
-        CustomApplication.saveLoginInfo(user, getPassword());
-        Intent intent = new Intent(LoginActivity.this, DemoMainActivity.class);
+    public void loginSuccess(User user) {
+        hideLoadingProgress();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * 登录失败
+     *
+     * @param errorCode 错误码
+     * @param errorMsg  错误信息
+     */
     @Override
-    public void showFailedError(String reason) {
-        ToastUtils.showToast(getApplicationContext(), "登录失败：" + reason);
+    public void loginFail(String errorCode, String errorMsg) {
+        hideLoadingProgress();
+        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 
     @Override
     protected void onDestroy() {
         presenter.detachView();
         super.onDestroy();
-    }
-
-    @Override
-    public void showLoadingProgress(String msg) {
-        mProgressDialog.setMessage(msg);
-        if (!mProgressDialog.isShowing()) {
-            mProgressDialog.show();
-        }
-    }
-
-    @Override
-    public void hideLoadingProgress() {
-        if (mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
     }
 }

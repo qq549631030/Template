@@ -21,13 +21,15 @@
         <RelativeLayout
             android:id="@+id/clean_cache_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/base_normal_height"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:padding="15dp"
+                android:layout_centerVertical="true"
                 android:text="清除缓存" />
 
             <TextView
@@ -35,18 +37,43 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:padding="15dp"
+                android:layout_centerVertical="true"
                 tools:text="213k" />
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/reset_pwd"
+            android:id="@+id/modify_pwd"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_normal_height"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="重置密码" />
+            android:text="修改密码" />
+
+        <RelativeLayout
+            android:id="@+id/bind_phone_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_normal_height"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="绑定手机" />
+
+            <TextView
+                android:id="@+id/bind_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/base_normal_height"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical"
+                tools:text="15870679047" />
+        </RelativeLayout>
+
+
     </LinearLayout>
 
     <TextView

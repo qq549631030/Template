@@ -31,5 +31,5 @@ public interface SMSRequestView {
      * @param errorCode 错误码
      * @param errorMsg  错误信息
      */
-    void onRequestFail(String errorCode, Object... errorMsg);
+    void onRequestFail(String errorCode, String errorMsg);
 }
