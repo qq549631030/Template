@@ -47,6 +47,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity implements Personal
         setContentView(R.layout.activity_personal_info_update);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         infoType = getIntent().getIntExtra(User.INFO_TYPE, -1);
         mProgressDialog = new ProgressDialog(this);
         userModel = new BmobUserImpl();

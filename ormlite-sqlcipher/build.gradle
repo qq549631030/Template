@@ -6,7 +6,6 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen']
-            jniLibs.srcDirs = ['libs']
         }
     }
     defaultConfig {
@@ -14,6 +13,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        ndk {
+            abiFilters "armeabi-v7a", "x86", "armeabi"
+        }
     }
     buildTypes {
         release {
@@ -24,13 +26,13 @@ android {
 
 }
 
-repositories {
-    flatDir {
-        dirs 'libs' //this way we can find the .aar file in libs folder
-    }
-}
+//repositories {
+//    flatDir {
+//        dirs 'libs' //this way we can find the .aar file in libs folder
+//    }
+//}
 
 dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile files('libs/sqlcipher.jar')
 }
