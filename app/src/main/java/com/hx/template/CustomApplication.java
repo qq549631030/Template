@@ -287,27 +287,4 @@ public class CustomApplication extends Application {
         }
         return connect;
     }
-
-    /**
-     * 保存登录信息
-     *
-     * @param user
-     * @param password
-     * @return
-     */
-    public static boolean saveLoginInfo(User user, String password) {
-        if (user != null) {
-            CustomApplication.currentLoginId = user.getObjectId();
-            CustomApplication.currentUser = user;
-            try {
-                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_userName, user.getUsername());
-                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_password, SecretUtils.encrypt(Constant.SECRET_KEY, password));
-                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_current_user, SerializeUtil.serialize(user));
-                SharedPreferencesUtil.setParam(getInstance(), Constant.pref_autoLogin, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return true;
-    }
 }

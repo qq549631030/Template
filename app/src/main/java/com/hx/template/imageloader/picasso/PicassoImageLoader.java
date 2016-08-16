@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.hx.template.imageloader.ImageLoader;
 import com.hx.template.imageloader.ImageLoadingListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -31,7 +32,26 @@ public class PicassoImageLoader implements ImageLoader {
 
     @Override
     public void displayImage(String uri, ImageView imageView, int imageResForEmptyUri, int imageResOnFail, int imageResOnLoading) {
-        Picasso.with(context).load(uri).placeholder(imageResOnLoading).error(imageResOnFail).into(imageView);
+        displayImage(uri, imageView, imageResForEmptyUri, imageResOnFail, imageResOnLoading, null);
+    }
+
+    @Override
+    public void displayImage(final String uri, final ImageView imageView, int imageResForEmptyUri, int imageResOnFail, int imageResOnLoading, final ImageLoadingListener loadingListener) {
+        Picasso.with(context).load(uri).placeholder(imageResOnLoading).error(imageResOnFail).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                if (loadingListener != null) {
+                    loadingListener.onLoadingComplete(uri, imageView, null);
+                }
+            }
+
+            @Override
+            public void onError() {
+                if (loadingListener != null) {
+                    loadingListener.onLoadingFailed(uri, imageView, null, null);
+                }
+            }
+        });
     }
 
     @Override

@@ -26,19 +26,10 @@ public class Constant {
     /**
      * SharedPreference存储字段名
      */
-    public static final String pref_isFirst = "isFirst";// 是否第一次使用
-    public static final String pref_autoLogin = "autoLogin";// 是否自动登录
-
-    public static final String pref_remember_account = "remember_account";// 是否记住用户名
-    public static final String pref_remember_pwd = "remember_pwd";// 是否记住密码
-    public static final String pref_userName = "userName";// 登录名
-    public static final String pref_password = "password";// 密码
-    public static final String pref_current_user = "current_user";// 当前用户
+    public static final String pref_lastLaunchVersion = "lastLaunchVersion";// 上一次使用时候的版本
 
     public static final String crop_image_name = "crop.jpg";
     public static final String camera_image_name = "camera.jpg";
-    public static final String photo_image_name = "photo.jpg";
-    public static final String logo_image_name = "logo.jpg";
 
     /**
      * keystore

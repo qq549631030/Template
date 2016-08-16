@@ -53,6 +53,11 @@ public class UILImageLoader implements ImageLoader {
 
     @Override
     public void displayImage(String uri, ImageView imageView, int imageResForEmptyUri, int imageResOnFail, int imageResOnLoading) {
+        displayImage(uri, imageView, imageResForEmptyUri, imageResOnFail, imageResOnLoading, null);
+    }
+
+    @Override
+    public void displayImage(String uri, ImageView imageView, int imageResForEmptyUri, int imageResOnFail, int imageResOnLoading, final ImageLoadingListener loadingListener) {
         DisplayImageOptions.Builder builder = new DisplayImageOptions.Builder().
                 cloneFrom(defaultOptions);
         if (imageResForEmptyUri > 0) {
@@ -64,14 +69,35 @@ public class UILImageLoader implements ImageLoader {
         if (imageResOnLoading > 0) {
             builder.showImageOnLoading(imageResOnLoading);
         }
-        com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(uri, imageView, builder.build());
+
+        com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(uri, imageView, builder.build(), loadingListener == null ? null : new com.nostra13.universalimageloader.core.listener.ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String imageUri, View view) {
+                loadingListener.onLoadingStarted(imageUri,view);
+            }
+
+            @Override
+            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                loadingListener.onLoadingFailed(imageUri, view, failReason.getType().name(), failReason.getCause().getMessage());
+            }
+
+            @Override
+            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                loadingListener.onLoadingComplete(imageUri, view, loadedImage);
+            }
+
+            @Override
+            public void onLoadingCancelled(String imageUri, View view) {
+                loadingListener.onLoadingCancelled(imageUri, view);
+            }
+        });
     }
 
     @Override
     public Bitmap loadImageSync(String uri) {
         return com.nostra13.universalimageloader.core.ImageLoader.getInstance().loadImageSync(uri);
     }
-    
+
     @Override
     public void loadImageAsync(String uri, final ImageLoadingListener loadingListener) {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().loadImage(uri, new com.nostra13.universalimageloader.core.listener.ImageLoadingListener() {

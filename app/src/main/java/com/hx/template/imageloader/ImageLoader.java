@@ -15,6 +15,9 @@ public interface ImageLoader {
 
     void displayImage(String uri, ImageView imageView, int imageResForEmptyUri, int imageResOnFail, int imageResOnLoading);
 
+
+    void displayImage(String uri, ImageView imageView, int imageResForEmptyUri, int imageResOnFail, int imageResOnLoading,ImageLoadingListener loadingListener);
+
     /**
      * 同步加载
      *

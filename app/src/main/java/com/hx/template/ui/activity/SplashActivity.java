@@ -11,6 +11,9 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.utils.SharedPreferencesUtil;
+
+import cn.huangx.common.utils.AppUtils;
+import cn.huangx.common.utils.PackageUtils;
 //import com.networkbench.agent.impl.NBSAppAgent;
 
 public class SplashActivity extends BaseActivity {
@@ -55,7 +58,9 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 //        NBSAppAgent.setLicenseKey("5bdc5627a996487392abdc6349523f48").withLocationServiceEnabled(true).start(this.getApplicationContext());
         setContentView(R.layout.activity_splash);
-        isFirst = (Boolean) SharedPreferencesUtil.getParam(this, Constant.pref_isFirst, true);
+        int lastLaunchVersion = (int) SharedPreferencesUtil.getParam(this, Constant.pref_lastLaunchVersion, 1);
+        int currentVersion = PackageUtils.getAppVersionCode(this);
+        isFirst = lastLaunchVersion < currentVersion;
         if (isFirst) {
             mHandler.sendEmptyMessageDelayed(GO_TO_GUIDE, 1500);
         } else {

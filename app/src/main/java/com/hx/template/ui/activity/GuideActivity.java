@@ -25,6 +25,7 @@ import com.hx.template.components.PageIndicator;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.huangx.common.utils.PackageUtils;
 
 public class GuideActivity extends BaseActivity {
 
@@ -81,7 +82,8 @@ public class GuideActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start:
-                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_isFirst, false);
+                int currentVersion = PackageUtils.getAppVersionCode(this);
+                SharedPreferencesUtil.setParam(getApplicationContext(), Constant.pref_lastLaunchVersion, currentVersion);
                 User currentUser = User.getCurrentUser(User.class);
                 if (currentUser != null) {
                     startActivity(new Intent(GuideActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
