@@ -34,6 +34,7 @@ import android.widget.RelativeLayout;
 
 import com.google.zxing.Result;
 import com.hx.template.R;
+import com.hx.template.base.BaseActivity;
 import com.hx.template.qrcode.decode.zxing.ZxingDecodeThread;
 import com.hx.template.qrcode.utils.BeepManager;
 import com.hx.template.qrcode.camera.CameraManager;
@@ -52,9 +53,10 @@ import java.lang.reflect.Field;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends Activity implements SurfaceHolder.Callback {
+public final class CaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
+    public static final String EXTRA_RESULT = "extra_result";
 
     public static final int SCAN_BY_ZXING = 1;
     public static final int SCAN_BY_ZBAR = 2;
@@ -188,16 +190,17 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     public void handleDecode(Object result, Bundle bundle) {
         inactivityTimer.onActivity();
         beepManager.playBeepSoundAndVibrate();
-
         bundle.putInt("width", mCropRect.width());
         bundle.putInt("height", mCropRect.height());
         if (result instanceof Result) {
-            bundle.putString("result", ((Result) result).getText());
+            bundle.putString(EXTRA_RESULT, ((Result) result).getText());
         } else {
-            bundle.putString("result", (String) result);
+            bundle.putString(EXTRA_RESULT, (String) result);
         }
-
-        startActivity(new Intent(CaptureActivity.this, ResultActivity.class).putExtras(bundle));
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

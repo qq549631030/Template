@@ -8,17 +8,21 @@
 
 package com.hx.template.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.components.MainTabItemView;
+import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.ui.fragment.FavoriteFragment;
 import com.hx.template.ui.fragment.GroupFragment;
 import com.hx.template.ui.fragment.HomeFragment;
@@ -27,10 +31,13 @@ import com.hx.template.ui.fragment.PersonalCenterFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.huangx.common.utils.ToastUtils;
 
 public class MainActivity extends BaseActivity {
 
     public static String PAGE_INDEX = "pageIndex";
+
+    public final static int REQUEST_CODE_SCAN = 1001;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -61,6 +68,33 @@ public class MainActivity extends BaseActivity {
         initViews();
         currentIndex = getIntent().getIntExtra(PAGE_INDEX, 0);
         switchPage(currentIndex);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.main_menu_scan:
+                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK && data != null) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                String result = bundle.getString(CaptureActivity.EXTRA_RESULT);
+                ToastUtils.show(getApplicationContext(),result);
+            }
+        }
     }
 
     private void initViews() {

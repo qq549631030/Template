@@ -12,11 +12,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() throws Exception {
-        File file = new File("d:\\1\\2.jpg");
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        System.out.println(file.isDirectory());
+        System.out.println("");
         assertEquals(4, 2 + 2);
     }
 }
