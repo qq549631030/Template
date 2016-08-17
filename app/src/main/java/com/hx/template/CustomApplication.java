@@ -71,7 +71,7 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //初始化加密ormlite数据库
-        SQLiteDatabase.loadLibs(this);
+//        SQLiteDatabase.loadLibs(this);
         instance = this;
         Dexter.initialize(instance);
         Bmob.initialize(instance, "0dffa5dd0fb6b49c5dbcd57971946e0b");

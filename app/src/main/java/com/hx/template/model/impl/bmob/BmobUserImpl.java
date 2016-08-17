@@ -93,6 +93,26 @@ public class BmobUserImpl implements UserModel {
         }
     }
 
+    /**
+     * 请求验证Email
+     *
+     * @param email    要验证有邮箱
+     * @param callback 回调监听
+     */
+    @Override
+    public void requestEmailVerify(String email, final Callback callback) {
+        User.requestEmailVerify(email, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    callback.onSuccess();
+                } else {
+                    callback.onFailure(Integer.toString(e.getErrorCode()), e.toString());
+                }
+            }
+        });
+    }
+
     @Override
     public void logout() {
         User.logOut();

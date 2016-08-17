@@ -108,6 +108,17 @@ public class RetrofitUserImpl implements UserModel {
 
     }
 
+    /**
+     * 请求验证Email
+     *
+     * @param email    要验证有邮箱
+     * @param callback 回调监听
+     */
+    @Override
+    public void requestEmailVerify(String email, Callback callback) {
+
+    }
+
     @Override
     public void logout() {
 

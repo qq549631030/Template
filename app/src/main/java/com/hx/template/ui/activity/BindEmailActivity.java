@@ -2,33 +2,43 @@ package com.hx.template.ui.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseStepActivity;
 import com.hx.template.entity.User;
+import com.hx.template.ui.fragment.BindEmailFragment;
+import com.hx.template.ui.fragment.EmailStateFragment;
+import com.hx.template.ui.fragment.VerifyPhoneFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class BindEmailActivity extends BaseStepActivity {
 
-    @Bind(R.id.toolbar)
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         User currentUser = User.getCurrentUser(User.class);
         if (currentUser == null) {
             finish();
             return;
         }
-        boolean emailVerified = currentUser.getEmail() != null ? currentUser.getEmailVerified().booleanValue() : false;
-
-        setContentView(R.layout.activity_bind_email);
-        ButterKnife.bind(this);
+        String email = currentUser.getEmail();
+        if (!TextUtils.isEmpty(email)) {
+            fragmentClass = EmailStateFragment.class;
+        } else {
+            fragmentClass = BindEmailFragment.class;
+        }
+        super.onCreate(savedInstanceState);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    protected int getContentLayout() {
+        return R.layout.activity_bind_email;
+    }
 }

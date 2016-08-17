@@ -141,9 +141,9 @@ dependencies {
     //数据库加密
     compile project(':ormlite-sqlcipher')
     //bmob
-    compile 'cn.bmob.android:bmob-sdk:3.5.0'
     //常用工具工程
     compile project(':commonutils')
+    compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:palette-v7:24.1.1'

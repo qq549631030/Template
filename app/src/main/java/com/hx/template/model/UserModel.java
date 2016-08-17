@@ -42,6 +42,14 @@ public interface UserModel {
     void updateUserInfo(User user, Callback callback);
 
     /**
+     * 请求验证Email
+     *
+     * @param email    要验证有邮箱
+     * @param callback 回调监听
+     */
+    void requestEmailVerify(String email, Callback callback);
+
+    /**
      * 登出
      */
     void logout();

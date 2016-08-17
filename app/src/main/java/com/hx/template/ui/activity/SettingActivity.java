@@ -43,6 +43,8 @@ public class SettingActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.bind_phone)
     TextView bindPhone;
+    @Bind(R.id.bind_email)
+    TextView bindEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class SettingActivity extends BaseActivity {
         super.onStop();
     }
 
-    @OnClick({R.id.clean_cache_layout, R.id.bind_phone_layout, R.id.logout, R.id.modify_pwd})
+    @OnClick({R.id.clean_cache_layout, R.id.bind_phone_layout, R.id.bind_email_layout, R.id.logout, R.id.modify_pwd})
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
@@ -92,6 +94,9 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.bind_phone_layout:
                 startActivity(new Intent(SettingActivity.this, BindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                break;
+            case R.id.bind_email_layout:
+                startActivity(new Intent(SettingActivity.this, BindEmailActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -124,6 +129,7 @@ public class SettingActivity extends BaseActivity {
         User currentUser = User.getCurrentUser(User.class);
         if (currentUser != null) {
             bindPhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()));
+            bindEmail.setText(StringUtils.nullStrToEmpty(currentUser.getEmail()));
         }
     }
 

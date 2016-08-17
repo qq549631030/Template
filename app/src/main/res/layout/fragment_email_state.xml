@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/base_padding_size"
+    tools:context="com.hx.template.ui.fragment.EmailStateFragment">
+
+    <TextView
+        android:id="@+id/email_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_padding_20dp"
+        tools:text="您已设置邮箱xxx，还未验证，请登录邮箱验证" />
+
+    <Button
+        android:id="@+id/resend"
+        style="@style/BaseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_padding_size"
+        android:text="重新发送验证邮件" />
+
+    <Button
+        android:id="@+id/rebind"
+        style="@style/BaseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/base_padding_size"
+        android:text="绑定其它邮箱" />
+</LinearLayout>

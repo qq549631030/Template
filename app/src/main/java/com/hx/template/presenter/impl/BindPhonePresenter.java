@@ -7,12 +7,12 @@ import com.hx.template.model.UserModel;
 import com.hx.template.mvpview.impl.BindPhoneMvpView;
 import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
 import com.hx.template.presenter.BasePresenter;
-import com.hx.template.presenter.itf.IUserBindPhonePresenter;
+import com.hx.template.presenter.itf.IBindPhonePresenter;
 
 /**
  * Created by huangxiang on 16/8/13.
  */
-public class BindPhonePresenter extends BasePresenter<VerifyPhoneMvpView> implements IUserBindPhonePresenter {
+public class BindPhonePresenter extends BasePresenter<VerifyPhoneMvpView> implements IBindPhonePresenter {
     private SMSModel smsModel;
     private UserModel userModel;
 

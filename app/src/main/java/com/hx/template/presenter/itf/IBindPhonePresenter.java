@@ -3,7 +3,7 @@ package com.hx.template.presenter.itf;
 /**
  * Created by huangxiang on 16/8/13.
  */
-public interface IUserBindPhonePresenter {
+public interface IBindPhonePresenter {
     /**
      * 获取短信验证码
      */
