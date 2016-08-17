@@ -116,6 +116,10 @@
         <activity
             android:name=".ui.activity.QrcodeCardActivity"
             android:label="@string/title_activity_qrcode_card"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.BindEmailActivity"
+            android:label="@string/title_activity_bind_email"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
