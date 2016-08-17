@@ -91,12 +91,6 @@ public class BaseJsonObjectRequest extends JsonObjectRequest {
         }
     }
 
-    @Override
-    protected void onFinish() {
-        super.onFinish();
-        responseCacheListener = null;
-    }
-
     private String decodeGZip(byte[] data) {
         InputStream in;
         StringBuilder sb = new StringBuilder();

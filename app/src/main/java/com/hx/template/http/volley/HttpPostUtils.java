@@ -55,7 +55,7 @@ public class HttpPostUtils {
             }
         });
         //for debug
-        HXLog.i("request url = " + request.getOriginUrl());
+        HXLog.i("request url = " + request.getUrl());
         try {
             HXLog.i("request headers = " + request.getHeaders().toString());
             HXLog.i("request params = " + request.getParams().toString());
@@ -110,7 +110,7 @@ public class HttpPostUtils {
             }
         });
         //for debug
-        HXLog.i("request url = " + request.getOriginUrl());
+        HXLog.i("request url = " + request.getUrl());
         try {
             HXLog.i("request headers = " + request.getHeaders().toString());
             HXLog.i("request params = " + params.toString());

@@ -14,20 +14,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp.StethoInterceptor;
-import com.hx.template.entity.User;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.http.DefaultSSLSocketFactory;
 import com.hx.template.http.volley.HttpsTrustManager;
 import com.hx.template.http.volley.OkHttpStack;
 import com.hx.template.http.volley.StethoOkHttpStack;
-import com.hx.template.utils.NetWorkUtils;
-import com.hx.template.utils.SecretUtils;
-import com.hx.template.utils.SerializeUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
-import com.hx.template.utils.ToastUtils;
 import com.karumi.dexter.Dexter;
-import com.squareup.okhttp.OkHttpClient;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -40,6 +34,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import cn.bmob.v3.Bmob;
+import okhttp3.OkHttpClient;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
@@ -63,10 +58,6 @@ public class CustomApplication extends Application {
 
     private static CustomApplication instance;
 
-    public static String currentLoginId;
-
-    public static User currentUser;
-
     private ActivityLifecycleCallbacks activityLifecycleCallbacks = null;
 
 
@@ -83,19 +74,19 @@ public class CustomApplication extends Application {
         SQLiteDatabase.loadLibs(this);
         instance = this;
         Dexter.initialize(instance);
-        Bmob.initialize(instance,"0dffa5dd0fb6b49c5dbcd57971946e0b");
+        Bmob.initialize(instance, "0dffa5dd0fb6b49c5dbcd57971946e0b");
         initActivityManager();
-//        enabledStrictMode();
-        //内存泄露检测
-        if (Constant.DEBUG) {
-//            LeakCanary.install(this);
+        if (BuildConfig.DEBUG) {
+            enabledStrictMode();
         }
         //Stetho
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                        .build());
+        if (BuildConfig.DEBUG) {
+            Stetho.initialize(
+                    Stetho.newInitializerBuilder(this)
+                            .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                            .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                            .build());
+        }
     }
 
     public static CustomApplication getInstance() {
@@ -155,13 +146,13 @@ public class CustomApplication extends Application {
             synchronized (CustomApplication.class) {
                 if (mRequestQueue == null) {
                     HttpStack stack = null;
-                    if (Constant.DEBUG) {
+                    if (BuildConfig.DEBUG) {
                         stack = initDebugHttpStack();
                     } else {
                         stack = initReleaseHttpStack();
                     }
                     HttpsTrustManager.allowAllSSL();
-                    mRequestQueue = Volley.newRequestQueue(instance, null);
+                    mRequestQueue = Volley.newRequestQueue(instance, stack);
                 }
             }
         }
@@ -188,10 +179,9 @@ public class CustomApplication extends Application {
         httpClient.hostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
-                return true;
+                return true;//信任所有host
             }
         });
-
         return new OkHttpStack(httpClient.build());
     }
 
@@ -271,20 +261,5 @@ public class CustomApplication extends Application {
             }
             headers.put(COOKIE_KEY, builder.toString());
         }
-    }
-
-    /**
-     * 检查网络是否连接
-     *
-     * @param showToast 是否显示提示
-     * @return
-     */
-    public static boolean isNetworkConnected(boolean showToast) {
-        boolean connect = NetWorkUtils.isNetWorkConnect(getInstance());
-        if (!connect && showToast) {
-            ToastUtils.showToast(getInstance(), getInstance().getResources()
-                    .getString(R.string.error_network_available));
-        }
-        return connect;
     }
 }

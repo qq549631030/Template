@@ -128,13 +128,6 @@ public abstract class BaseFormRequest<T> extends Request<T> {
         }
     }
 
-    @Override
-    protected void onFinish() {
-        super.onFinish();
-        mListener = null;
-        responseCacheListener = null;
-    }
-
     //返回结果转换
     protected abstract T converResult(String result);
 
