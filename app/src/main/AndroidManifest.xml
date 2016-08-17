@@ -108,11 +108,15 @@
         <activity
             android:name=".ui.activity.PersonalInfoUpdateActivity"
             android:label="@string/title_activity_personal_info_update"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <!--Image Selector Entry-->
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- Image Selector Entry -->
         <activity
-            android:configChanges="orientation|screenSize"
-            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity" />
+            android:name="me.nereo.multi_image_selector.MultiImageSelectorActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ui.activity.QrcodeCardActivity"
+            android:label="@string/title_activity_qrcode_card"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

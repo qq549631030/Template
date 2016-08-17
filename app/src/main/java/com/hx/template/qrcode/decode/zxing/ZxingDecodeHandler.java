@@ -33,9 +33,9 @@ import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.hx.template.R;
+import com.hx.template.global.HXLog;
 import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.qrcode.decode.DecodeHandler;
-import com.hx.template.utils.LogUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -116,7 +116,7 @@ public class ZxingDecodeHandler extends DecodeHandler {
 
             long endTime = SystemClock.uptimeMillis();
 
-            LogUtils.e("huangxiang", "total cost time " + (endTime - startTime));
+            HXLog.e("total cost time " + (endTime - startTime));
             // Don't log the barcode contents for security.
             if (handler != null) {
                 Message message = Message.obtain(handler, R.id.decode_succeeded, rawResult);

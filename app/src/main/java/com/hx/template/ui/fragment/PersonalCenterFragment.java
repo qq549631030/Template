@@ -55,6 +55,7 @@ public class PersonalCenterFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        EventBus.getDefault().register(this);
         refreshViews();
     }
 
@@ -78,19 +79,8 @@ public class PersonalCenterFragment extends BaseFragment {
     }
 
     @Override
-    public void onStart() {
-        EventBus.getDefault().register(this);
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    @Override
     public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
         super.onDestroyView();
         ButterKnife.unbind(this);
     }

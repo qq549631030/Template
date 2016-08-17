@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
+import com.hx.template.global.HXLog;
+
 public class NetWorkUtils {
 	/**
 	 * 判断网络是否连接并可pin通
@@ -23,7 +25,7 @@ public class NetWorkUtils {
 				isConnect = networkInfo.isAvailable()
 						&& networkInfo.isConnected();
 			}
-			LogUtils.d("NetWorkUtils", "****net work connection = " + isConnect);
+			HXLog.d("****net work connection = " + isConnect);
 			return isConnect;
 		} catch (Exception e) {
 			e.printStackTrace();

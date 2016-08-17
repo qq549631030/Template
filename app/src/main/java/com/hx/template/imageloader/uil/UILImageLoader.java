@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.hx.template.BuildConfig;
 import com.hx.template.R;
 import com.hx.template.imageloader.ImageLoader;
 import com.hx.template.imageloader.ImageLoadingListener;
@@ -13,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.SimpleBitmapDisplayer;
+import com.nostra13.universalimageloader.utils.L;
 
 /**
  * Created by huangx on 2016/8/10.
@@ -25,7 +27,7 @@ public class UILImageLoader implements ImageLoader {
     public void init(Context context) {
         defaultOptions = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.default_image)
-                .showImageOnLoading(R.drawable.default_image)
+//                .showImageOnLoading(R.drawable.default_image)
                 .showImageOnFail(R.drawable.default_image)
                 .cacheInMemory(true)//缓存到内存
                 .cacheOnDisk(true)//缓存到SD卡
@@ -44,6 +46,13 @@ public class UILImageLoader implements ImageLoader {
                 .defaultDisplayImageOptions(defaultOptions)
                 .build();
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().init(config);
+        if (BuildConfig.DEBUG) {
+            L.writeDebugLogs(true);
+            L.writeLogs(true);
+        }else{
+            L.writeDebugLogs(false);
+            L.writeLogs(false);
+        }
     }
 
     @Override

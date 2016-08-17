@@ -10,9 +10,9 @@ import android.widget.ImageView;
 
 import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
+import com.hx.template.global.HXLog;
 import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.hx.template.utils.ImageUtils;
-import com.hx.template.utils.LogUtils;
 import com.hx.template.utils.ToastUtils;
 
 import butterknife.Bind;
@@ -80,7 +80,7 @@ public class RxJavaActivity extends BaseActivity {
                         public Bitmap call(Uri uri) {
                             Bitmap bitmap = ImageUtils.getImage(getApplicationContext(), uri);
                             String result = ImageScanUtil.decodeByZXing(bitmap);
-                            LogUtils.e("huangxiang","result = "+result);
+                            HXLog.e("result = "+result);
                             return bitmap;
                         }
                     })

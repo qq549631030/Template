@@ -10,7 +10,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
-import com.hx.template.utils.LogUtils;
+import com.hx.template.global.HXLog;
 import com.hx.template.utils.NetWorkUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.Map;
 
 public class HttpGetUtils {
-    private final static String TAG = HttpGetUtils.class.getSimpleName();
-
     /**
      * 执行HTTP请求
      *
@@ -53,7 +51,7 @@ public class HttpGetUtils {
                 url = url.substring(0, url.length() - 1);
             }
         }
-        LogUtils.i(TAG, url);
+        HXLog.i(url);
         FormGetBackJsonRequest mRequest = new FormGetBackJsonRequest(url, listener,
                 errorListener);
 
@@ -71,11 +69,11 @@ public class HttpGetUtils {
         doRequest(mRequest);
     }
 
-    
-    public static void doFormGetRequest(){
-        
+
+    public static void doFormGetRequest() {
+
     }
-    
+
     /**
      * 以json形式执行GET请求
      *
@@ -96,7 +94,7 @@ public class HttpGetUtils {
                 url = url.substring(0, url.length() - 1);
             }
         }
-        LogUtils.i(TAG, url);
+        HXLog.i(url);
         BaseJsonObjectRequest mRequest = new BaseJsonObjectRequest(url, params, listener,
                 errorListener);
 

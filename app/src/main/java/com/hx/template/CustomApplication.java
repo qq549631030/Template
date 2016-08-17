@@ -80,7 +80,7 @@ public class CustomApplication extends Application {
             enabledStrictMode();
         }
         //Stetho
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && Constant.STETHO_DEBUG) {
             Stetho.initialize(
                     Stetho.newInitializerBuilder(this)
                             .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
