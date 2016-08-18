@@ -7,24 +7,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.HttpStack;
-import com.android.volley.toolbox.Volley;
 import com.facebook.stetho.Stetho;
-import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
-import com.hx.template.http.DefaultSSLSocketFactory;
 import com.hx.template.http.bmob.BmobManager;
-import com.hx.template.http.volley.HttpsTrustManager;
-import com.hx.template.http.volley.OkHttpStack;
-import com.hx.template.http.volley.StethoOkHttpStack;
-import com.hx.template.listener.BmobUserChangeListener;
+import com.hx.template.listener.BmobDataChangeListener;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.karumi.dexter.Dexter;
 
@@ -33,19 +23,9 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLSession;
-
-import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobRealTimeData;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.UpdateListener;
-import okhttp3.OkHttpClient;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
@@ -76,7 +56,7 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //初始化加密ormlite数据库
-        SQLiteDatabase.loadLibs(this);
+//        SQLiteDatabase.loadLibs(this);
         instance = this;
         Dexter.initialize(instance);
         BmobManager.init(instance);
@@ -185,13 +165,13 @@ public class CustomApplication extends Application {
         }
     }
 
-    private static BmobUserChangeListener userListener;
+    private static BmobDataChangeListener userListener;
 
     public static void startSyncUserInfo() {
         final User currentUser = User.getCurrentUser(User.class);
         if (currentUser != null) {
             if (userListener == null) {
-                userListener = new BmobUserChangeListener(currentUser.getObjectId()) {
+                userListener = new BmobDataChangeListener("_User", currentUser.getObjectId(), BmobRealTimeData.ACTION_UPDATEROW) {
                     @Override
                     public void onDataChange(JSONObject jsonObject) {
                         if (jsonObject != null) {
@@ -213,13 +193,13 @@ public class CustomApplication extends Application {
                     }
                 };
             }
-            BmobManager.subRowUpdate("_User", currentUser.getObjectId(), userListener);
+            BmobManager.subBmobDataChangeListener(userListener);
         }
     }
 
     public static void stopSyncUserInfo() {
         if (userListener != null) {
-            BmobManager.unSubRowUpdate("_User", userListener.getObjectId(), userListener);
+            BmobManager.unSubBmobDataChangeListener(userListener);
         }
     }
 }

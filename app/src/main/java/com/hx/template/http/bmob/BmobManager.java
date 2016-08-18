@@ -21,10 +21,6 @@ public class BmobManager {
 
     public static final String APP_KEY = "0dffa5dd0fb6b49c5dbcd57971946e0b";
 
-    interface BmobRealTimeDataConnectListener {
-        void onConnectCompleted(Exception e);
-    }
-
     private static List<BmobDataChangeListener> listeners = new ArrayList<BmobDataChangeListener>();
 
     private static BmobRealTimeData bmobRealTimeData;
@@ -33,7 +29,7 @@ public class BmobManager {
         Bmob.initialize(context, APP_KEY);
     }
 
-    public static void startRealTimeListener(final BmobRealTimeDataConnectListener listener) {
+    public static void startRealTimeListener() {
         if (bmobRealTimeData == null) {
             bmobRealTimeData = new BmobRealTimeData();
         }
@@ -41,8 +37,10 @@ public class BmobManager {
             bmobRealTimeData.start(new ValueEventListener() {
                 @Override
                 public void onConnectCompleted(Exception e) {
-                    if (listener != null) {
-                        listener.onConnectCompleted(e);
+                    for (BmobDataChangeListener listener : listeners) {
+                        if (!listener.isStarted()) {
+                            subListener(listener);
+                        }
                     }
                 }
 
@@ -53,34 +51,62 @@ public class BmobManager {
                     }
                 }
             });
-        } else {
-            if (listener != null) {
-                listener.onConnectCompleted(null);
-            }
         }
     }
 
-
-    public static void subRowUpdate(final String tableName, final String objectId, final BmobDataChangeListener listener) {
-        startRealTimeListener(new BmobRealTimeDataConnectListener() {
-            @Override
-            public void onConnectCompleted(Exception e) {
-                if (e == null) {
-                    if (bmobRealTimeData != null && bmobRealTimeData.isConnected()) {
-                        if (!listeners.contains(listener)) {
-                            listeners.add(listener);
-                        }
-                        bmobRealTimeData.subRowUpdate(tableName, objectId);
-                    }
-                }
-            }
-        });
+    private static void subListener(BmobDataChangeListener listener) {
+        if (bmobRealTimeData.ACTION_UPDATETABLE.equals(listener.getAction())) {
+            bmobRealTimeData.subTableUpdate(listener.getTableName());
+        } else if (bmobRealTimeData.ACTION_UPDATEROW.equals(listener.getAction())) {
+            bmobRealTimeData.subRowUpdate(listener.getTableName(), listener.getObjectId());
+        } else if (bmobRealTimeData.ACTION_DELETETABLE.equals(listener.getAction())) {
+            bmobRealTimeData.subTableDelete(listener.getTableName());
+        } else if (bmobRealTimeData.ACTION_DELETEROW.equals(listener.getAction())) {
+            bmobRealTimeData.subRowDelete(listener.getTableName(), listener.getObjectId());
+        }
+        listener.setStarted(true);
     }
 
-    public static void unSubRowUpdate(String tableName, String objectId, BmobDataChangeListener listener) {
+
+    private static void unSubListener(BmobDataChangeListener listener) {
+        if (bmobRealTimeData.ACTION_UPDATETABLE.equals(listener.getAction())) {
+            bmobRealTimeData.unsubTableUpdate(listener.getTableName());
+        } else if (bmobRealTimeData.ACTION_UPDATEROW.equals(listener.getAction())) {
+            bmobRealTimeData.unsubRowUpdate(listener.getTableName(), listener.getObjectId());
+        } else if (bmobRealTimeData.ACTION_DELETETABLE.equals(listener.getAction())) {
+            bmobRealTimeData.unsubTableDelete(listener.getTableName());
+        } else if (bmobRealTimeData.ACTION_DELETEROW.equals(listener.getAction())) {
+            bmobRealTimeData.unsubRowDelete(listener.getTableName(), listener.getObjectId());
+        }
+        listener.setStarted(false);
+    }
+
+    /**
+     * 监听数据变化
+     *
+     * @param listener
+     */
+    public static void subBmobDataChangeListener(BmobDataChangeListener listener) {
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
+        if (bmobRealTimeData == null || !bmobRealTimeData.isConnected()) {
+            startRealTimeListener();
+        } else {
+            subListener(listener);
+        }
+
+    }
+
+    /**
+     * 取消监听数据变化
+     *
+     * @param listener
+     */
+    public static void unSubBmobDataChangeListener(BmobDataChangeListener listener) {
+        listeners.remove(listener);
         if (bmobRealTimeData != null && bmobRealTimeData.isConnected()) {
-            bmobRealTimeData.unsubRowUpdate(tableName, objectId);
-            listeners.remove(listener);
+            unSubListener(listener);
         }
     }
 }
