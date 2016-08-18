@@ -83,7 +83,7 @@ public class EmailStateFragment extends BaseStepFragment implements BindEmailMvp
         if (user != null) {
             String email = user.getEmail();
             boolean emailVerified = user.getEmailVerified();
-            if (emailVerified) {
+            if (!emailVerified) {
                 resend.setVisibility(View.VISIBLE);
                 rebind.setVisibility(View.VISIBLE);
                 emailState.setText("您已设置邮箱:" + email + "，还未验证，请登录邮箱验证");

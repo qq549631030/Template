@@ -13,11 +13,11 @@ public class User extends BmobUser {
     public static final String INFO_TYPE = "info_type";
 
     public static final int INFO_TYPE_NICKNAME = 1;
-
+    @DatabaseField
     private String nickname;
 
     private BmobFile avatar;
-
+    @DatabaseField
     private String gender;
 
     public String getNickname() {

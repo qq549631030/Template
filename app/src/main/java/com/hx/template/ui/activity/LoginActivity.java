@@ -9,6 +9,7 @@ package com.hx.template.ui.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -16,19 +17,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.database.ormlite.CustomDatabaseHelper;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.global.HXLog;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.LoginMvpView;
 import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
+import java.sql.SQLException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.huangx.common.utils.FileUtils;
 
 public class LoginActivity extends BaseActivity implements LoginMvpView {
 
@@ -122,6 +129,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         hideLoadingProgress();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        CustomApplication.startSyncUserInfo();
         finish();
     }
 

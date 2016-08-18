@@ -3,16 +3,22 @@ package com.hx.template.ui.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
 import com.hx.template.Constant;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.utils.SharedPreferencesUtil;
 
+import java.io.File;
+import java.io.IOException;
+
 import cn.huangx.common.utils.AppUtils;
+import cn.huangx.common.utils.FileUtils;
 import cn.huangx.common.utils.PackageUtils;
 //import com.networkbench.agent.impl.NBSAppAgent;
 
@@ -67,6 +73,7 @@ public class SplashActivity extends BaseActivity {
             User currentUser = User.getCurrentUser(User.class);
             if (currentUser != null) {
                 mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
+                CustomApplication.startSyncUserInfo();
             } else {
                 mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
             }

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
@@ -54,24 +55,19 @@ public class SettingActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("设置");
+        EventBus.getDefault().register(this);
         refreshViews();
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(UserInfoUpdateEvent event) {
         refreshViews();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
     }
 
     @OnClick({R.id.clean_cache_layout, R.id.bind_phone_layout, R.id.bind_email_layout, R.id.logout, R.id.modify_pwd})
@@ -104,6 +100,7 @@ public class SettingActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         BmobUserImpl bmobUser = new BmobUserImpl();
                         bmobUser.logout();
+                        CustomApplication.stopSyncUserInfo();
                         startActivity(new Intent(SettingActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         GlobalActivityManager.finishAll();
                     }

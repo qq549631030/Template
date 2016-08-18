@@ -9,10 +9,6 @@ import com.hx.template.base.BaseStepActivity;
 import com.hx.template.entity.User;
 import com.hx.template.ui.fragment.BindEmailFragment;
 import com.hx.template.ui.fragment.EmailStateFragment;
-import com.hx.template.ui.fragment.VerifyPhoneFragment;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class BindEmailActivity extends BaseStepActivity {
 

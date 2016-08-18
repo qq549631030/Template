@@ -111,7 +111,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity implements Personal
     @Override
     public void updateSuccess() {
         hideLoadingProgress();
-        EventBus.getDefault().post(new UserInfoUpdateEvent());
+//        EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
     }
 

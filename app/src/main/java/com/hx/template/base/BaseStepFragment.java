@@ -65,7 +65,7 @@ public class BaseStepFragment extends BaseFragment {
      * @param args 下一步Fragment初始化参数
      */
     protected void nextStepAction(Bundle args) {
-        if (getActivity() != null) {
+        if (getActivity() == null) {
             return;
         }
         if (isLastStep()) {//当前已经是

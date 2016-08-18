@@ -163,7 +163,7 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }
         ToastUtils.showToast(getContext(), "绑定成功");
-        EventBus.getDefault().post(new UserInfoUpdateEvent());
+//        EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
     }
 

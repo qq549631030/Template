@@ -15,15 +15,23 @@ import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
 import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.hx.template.entity.User;
+import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.GlobalActivityManager;
+import com.hx.template.global.HXLog;
 import com.hx.template.http.DefaultSSLSocketFactory;
+import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.http.volley.HttpsTrustManager;
 import com.hx.template.http.volley.OkHttpStack;
 import com.hx.template.http.volley.StethoOkHttpStack;
+import com.hx.template.listener.BmobUserChangeListener;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.karumi.dexter.Dexter;
 
 import net.sqlcipher.database.SQLiteDatabase;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -34,6 +42,9 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobRealTimeData;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 import okhttp3.OkHttpClient;
 
 import static android.os.Build.VERSION.SDK_INT;
@@ -47,14 +58,8 @@ public class CustomApplication extends Application {
     private static final String SET_COOKIE_KEY = "Set-Cookie";
     private static final String COOKIE_KEY = "Cookie";
     private static final String SESSION_COOKIE = "JSESSIONID";
-    /**
-     * Log or request TAG
-     */
-    public static final String VOLLEY_TAG = "VolleyPatterns";
 
     public static String sessionId = "";
-
-    private static RequestQueue mRequestQueue;
 
     private static CustomApplication instance;
 
@@ -71,13 +76,13 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         //初始化加密ormlite数据库
-//        SQLiteDatabase.loadLibs(this);
+        SQLiteDatabase.loadLibs(this);
         instance = this;
         Dexter.initialize(instance);
-        Bmob.initialize(instance, "0dffa5dd0fb6b49c5dbcd57971946e0b");
+        BmobManager.init(instance);
         initActivityManager();
         if (BuildConfig.DEBUG) {
-            enabledStrictMode();
+//            enabledStrictMode();
         }
         //Stetho
         if (BuildConfig.DEBUG && Constant.STETHO_DEBUG) {
@@ -141,89 +146,6 @@ public class CustomApplication extends Application {
         }
     }
 
-    public synchronized RequestQueue getRequestQueue() {
-        if (mRequestQueue == null) {
-            synchronized (CustomApplication.class) {
-                if (mRequestQueue == null) {
-                    HttpStack stack = null;
-                    if (BuildConfig.DEBUG) {
-                        stack = initDebugHttpStack();
-                    } else {
-                        stack = initReleaseHttpStack();
-                    }
-                    HttpsTrustManager.allowAllSSL();
-                    mRequestQueue = Volley.newRequestQueue(instance, stack);
-                }
-            }
-        }
-        return mRequestQueue;
-    }
-
-    public static HttpStack initDebugHttpStack() {
-        OkHttpClient client = new OkHttpClient();
-        client.networkInterceptors().add(new StethoInterceptor());
-        return new StethoOkHttpStack(client);
-    }
-
-    public static HttpStack initReleaseHttpStack() {
-        okhttp3.OkHttpClient.Builder httpClient = new okhttp3.OkHttpClient.Builder();
-        try {
-            httpClient.sslSocketFactory(new DefaultSSLSocketFactory());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        }
-        httpClient.hostnameVerifier(new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                return true;//信任所有host
-            }
-        });
-        return new OkHttpStack(httpClient.build());
-    }
-
-    /**
-     * Adds the specified request to the global queue, if tag is specified then
-     * it is used else Default TAG is used.
-     *
-     * @param req
-     */
-    public <T> void addToRequestQueue(Request<T> req, String tag) {
-        // set the default tag if tag is empty
-        req.setTag(TextUtils.isEmpty(tag) ? VOLLEY_TAG : tag);
-
-        getRequestQueue().add(req);
-    }
-
-    /**
-     * Adds the specified request to the global queue using the Default TAG.
-     *
-     * @param req
-     */
-    public <T> void addToRequestQueue(Request<T> req) {
-        // set the default tag if tag is empty
-        if (req.getTag() == null) {
-            req.setTag(VOLLEY_TAG);
-        }
-        getRequestQueue().add(req);
-    }
-
-    /**
-     * Cancels all pending requests by the specified TAG, it is important to
-     * specify a TAG so that the pending/ongoing requests can be cancelled.
-     *
-     * @param tag
-     */
-    public void cancelPendingRequests(Object tag) {
-        if (mRequestQueue != null) {
-            mRequestQueue.cancelAll(tag);
-        }
-    }
-
-
     /**
      * 保存session
      *
@@ -260,6 +182,44 @@ public class CustomApplication extends Application {
                 builder.append(headers.get(COOKIE_KEY));
             }
             headers.put(COOKIE_KEY, builder.toString());
+        }
+    }
+
+    private static BmobUserChangeListener userListener;
+
+    public static void startSyncUserInfo() {
+        final User currentUser = User.getCurrentUser(User.class);
+        if (currentUser != null) {
+            if (userListener == null) {
+                userListener = new BmobUserChangeListener(currentUser.getObjectId()) {
+                    @Override
+                    public void onDataChange(JSONObject jsonObject) {
+                        if (jsonObject != null) {
+                            HXLog.d(jsonObject.toString());
+                            String appKey = jsonObject.optString("appKey");
+                            String tableName = jsonObject.optString("tableName");
+                            String objectId = jsonObject.optString("objectId");
+                            String action = jsonObject.optString("action");
+                            JSONObject data = jsonObject.optJSONObject("data");
+                            if (BmobManager.APP_KEY.equals(appKey)) {
+                                if ("_User".equals(tableName) && currentUser.getObjectId().equals(objectId) && BmobRealTimeData.ACTION_UPDATEROW.equals(action)) {
+                                    if (data != null) {
+                                        SharedPreferencesUtil.setParam(instance, "bmob_sp", "user", data.toString());
+                                        EventBus.getDefault().post(new UserInfoUpdateEvent());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+            BmobManager.subRowUpdate("_User", currentUser.getObjectId(), userListener);
+        }
+    }
+
+    public static void stopSyncUserInfo() {
+        if (userListener != null) {
+            BmobManager.unSubRowUpdate("_User", userListener.getObjectId(), userListener);
         }
     }
 }

@@ -29,7 +29,7 @@ public class HttpGetUtils {
      */
     public static <T> void doRequest(Request<T> request) {
         request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
-        CustomApplication.getInstance().addToRequestQueue(request);
+        VolleyManager.addToRequestQueue(request);
     }
 
     /**

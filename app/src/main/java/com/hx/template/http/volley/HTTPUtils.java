@@ -9,6 +9,7 @@ import com.hx.template.CustomApplication;
  */
 public class HTTPUtils {
     private static final String TAG = "HTTPUtils";
+
     /**
      * 执行HTTP请求
      *
@@ -17,6 +18,6 @@ public class HTTPUtils {
      */
     public static <T> void doRequest(Request<T> request) {
         request.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 0, 1.0f));//超时5s,超时后重连0次
-        CustomApplication.getInstance().addToRequestQueue(request);
+        VolleyManager.addToRequestQueue(request);
     }
 }

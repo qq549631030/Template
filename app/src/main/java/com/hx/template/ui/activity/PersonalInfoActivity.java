@@ -214,7 +214,7 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
     @Override
     public void avatarUpdateSuccess() {
         hideLoadingProgress();
-        EventBus.getDefault().post(new UserInfoUpdateEvent());
+//        EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
     /**

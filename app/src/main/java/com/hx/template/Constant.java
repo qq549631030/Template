@@ -13,7 +13,7 @@ package com.hx.template;
  */
 public class Constant {
 
-    public static final boolean STETHO_DEBUG = false;
+    public static final boolean STETHO_DEBUG = true;
 
     public static final String PROJECT_NAME = "template";// 密码加密密钥
 
