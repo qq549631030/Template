@@ -23,6 +23,8 @@ import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GlobalActivityManager;
+import com.hx.template.model.ModelManager;
+import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.utils.DataCleanManager;
 import com.hx.template.utils.StringUtils;
@@ -99,8 +101,8 @@ public class SettingActivity extends BaseActivity {
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        BmobUserImpl bmobUser = new BmobUserImpl();
-                        bmobUser.logout();
+                        UserModel userModel = ModelManager.newUserModel();
+                        userModel.logout();
                         CustomApplication.stopSyncUserInfo();
                         startActivity(new Intent(SettingActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         GlobalActivityManager.finishAll();

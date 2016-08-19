@@ -11,6 +11,7 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.PersonalInfoUpdateMvpView;
 import com.hx.template.presenter.Presenter;
@@ -50,7 +51,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdateP
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new PersonalInfoUpdatePresenter(new BmobUserImpl());
+                return new PersonalInfoUpdatePresenter(ModelManager.newUserModel());
             }
         });
     }

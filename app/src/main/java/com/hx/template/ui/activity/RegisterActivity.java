@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.RegisterMvpView;
 import com.hx.template.presenter.Presenter;
@@ -55,7 +56,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMv
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new RegisterPresenter(new BmobUserImpl());
+                return new RegisterPresenter(ModelManager.newUserModel());
             }
         });
     }

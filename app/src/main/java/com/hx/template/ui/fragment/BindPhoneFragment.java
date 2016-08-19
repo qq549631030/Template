@@ -18,6 +18,7 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.http.bmob.BmobSMSTemplate;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.BindPhoneMvpView;
@@ -96,7 +97,7 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindPhonePresenter(new BmobSMSModel(), new BmobUserImpl());
+                return new BindPhonePresenter(ModelManager.newSMSModel(), ModelManager.newUserModel());
             }
         });
     }

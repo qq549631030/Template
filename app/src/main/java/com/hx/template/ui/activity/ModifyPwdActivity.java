@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.ModifyPwdMvpView;
 import com.hx.template.presenter.Presenter;
@@ -47,7 +48,7 @@ public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPw
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ModifyPwdPresenter(new BmobUserImpl());
+                return new ModifyPwdPresenter(ModelManager.newUserModel());
             }
         });
     }

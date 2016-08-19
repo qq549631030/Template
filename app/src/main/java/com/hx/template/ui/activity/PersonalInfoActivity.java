@@ -18,6 +18,7 @@ import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobFileModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.PersonalInfoMvpView;
@@ -82,7 +83,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new PersonalInfoPresenter(new BmobUserImpl(), new BmobFileModel());
+                return new PersonalInfoPresenter(ModelManager.newUserModel(), ModelManager.newFileModel());
             }
         });
     }

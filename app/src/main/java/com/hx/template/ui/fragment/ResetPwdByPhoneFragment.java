@@ -17,6 +17,7 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.ResetPwdByPhoneMvpView;
@@ -69,7 +70,7 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ResetPwdByPhonePresenter(new BmobSMSModel(), new BmobUserImpl());
+                return new ResetPwdByPhonePresenter(ModelManager.newSMSModel(), ModelManager.newUserModel());
             }
         });
     }

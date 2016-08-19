@@ -21,6 +21,7 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.LoginMvpView;
 import com.hx.template.presenter.PresenterFactory;
@@ -55,7 +56,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> im
         return new PresenterLoader(this, new PresenterFactory<LoginPresenter>() {
             @Override
             public LoginPresenter create() {
-                return new LoginPresenter(new BmobUserImpl());
+                return new LoginPresenter(ModelManager.newUserModel());
             }
         });
     }

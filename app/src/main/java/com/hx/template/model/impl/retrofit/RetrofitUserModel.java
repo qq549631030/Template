@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 /**
  * Created by huangx on 2016/4/1.
  */
-public class RetrofitUserImpl implements UserModel {
+public class RetrofitUserModel implements UserModel {
     @Override
     public void register(String username, String password, Callback callback) {
 

@@ -14,6 +14,7 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.ResetPwdByEmailMvpView;
 import com.hx.template.presenter.Presenter;
@@ -55,7 +56,7 @@ public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPre
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ResetPwdByEmailPresenter(new BmobUserImpl());
+                return new ResetPwdByEmailPresenter(ModelManager.newUserModel());
             }
         });
     }

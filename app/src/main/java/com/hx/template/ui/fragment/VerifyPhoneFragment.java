@@ -20,6 +20,7 @@ import com.hx.template.base.BaseStepFragment;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
+import com.hx.template.model.ModelManager;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
@@ -68,7 +69,7 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindPhonePresenter(new BmobSMSModel(), new BmobUserImpl());
+                return new BindPhonePresenter(ModelManager.newSMSModel(), ModelManager.newUserModel());
             }
         });
     }

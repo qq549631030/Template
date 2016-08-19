@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public class UserModelImpl implements UserModel {
+public class VolleyUserModel implements UserModel {
     @Override
     public void register(String username, String password, Callback callback) {
 
