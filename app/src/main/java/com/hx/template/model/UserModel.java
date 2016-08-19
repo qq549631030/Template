@@ -50,6 +50,23 @@ public interface UserModel {
     void requestEmailVerify(String email, Callback callback);
 
     /**
+     * 手机号码重置密码
+     *
+     * @param code     收到的驗证码
+     * @param pwd      新密码
+     * @param callback 回调监听
+     */
+    void resetPasswordBySMSCode(String code, String pwd, Callback callback);
+
+    /**
+     * 邮箱重置密码
+     *
+     * @param email    绑定的邮箱地址
+     * @param callback 回调监听
+     */
+    void resetPasswordByEmail(String email, Callback callback);
+
+    /**
      * 登出
      */
     void logout();

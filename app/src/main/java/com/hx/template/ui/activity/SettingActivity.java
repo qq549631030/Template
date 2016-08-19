@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -125,11 +126,34 @@ public class SettingActivity extends BaseActivity {
         }
         User currentUser = User.getCurrentUser(User.class);
         if (currentUser != null) {
-            bindPhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()));
-            bindEmail.setText(StringUtils.nullStrToEmpty(currentUser.getEmail()));
+            String mobile = currentUser.getMobilePhoneNumber();
+            boolean mobileVerified = currentUser.getMobilePhoneNumberVerified() != null ? currentUser.getMobilePhoneNumberVerified().booleanValue() : false;
+            if (!TextUtils.isEmpty(mobile)) {
+                if (mobileVerified) {
+                    bindPhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()) + "(已验证)");
+                } else {
+                    bindPhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()) + "(未验证)");
+                }
+            } else {
+                bindPhone.setText("未绑定");
+            }
+            String emailAddr = currentUser.getEmail();
+            boolean emailVerified = currentUser.getEmailVerified() != null ? currentUser.getEmailVerified().booleanValue() : false;
+            if (!TextUtils.isEmpty(emailAddr)) {
+                if (emailVerified) {
+                    bindEmail.setText(StringUtils.nullStrToEmpty(emailAddr) + "(已验证)");
+                } else {
+                    bindEmail.setText(StringUtils.nullStrToEmpty(emailAddr) + "(未验证)");
+                }
+            } else {
+                bindEmail.setText("未设置");
+            }
         }
     }
 
+    /**
+     * 清除缓存
+     */
     private void cleanCache() {
         File cacheInternal = getCacheDir();
         DataCleanManager.deleteFolderFile(cacheInternal.getAbsolutePath(), false);

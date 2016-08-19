@@ -53,6 +53,7 @@ public class BmobManager {
                 @Override
                 public void onDataChange(JSONObject jsonObject) {
                     if (jsonObject != null) {
+                        HXLog.d("onDataChange jsonObject = "+jsonObject.toString());
                         String appKey = jsonObject.optString("appKey");
                         String tableName = jsonObject.optString("tableName");
                         String objectId = jsonObject.optString("objectId");

@@ -101,28 +101,8 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
         if (currentUser != null) {
             nickname.setText(StringUtils.nullStrToEmpty(currentUser.getNickname()));
             username.setText(StringUtils.nullStrToEmpty(currentUser.getUsername()));
-            String mobile = currentUser.getMobilePhoneNumber();
-            boolean mobileVerified = currentUser.getMobilePhoneNumberVerified() != null ? currentUser.getMobilePhoneNumberVerified().booleanValue() : false;
-            if (!TextUtils.isEmpty(mobile)) {
-                if (mobileVerified) {
-                    mobilePhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()) + "(已验证)");
-                } else {
-                    mobilePhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()) + "(未验证)");
-                }
-            } else {
-                mobilePhone.setText("未绑定");
-            }
-            String emailAddr = currentUser.getEmail();
-            boolean emailVerified = currentUser.getEmailVerified() != null ? currentUser.getEmailVerified().booleanValue() : false;
-            if (!TextUtils.isEmpty(emailAddr)) {
-                if (emailVerified) {
-                    email.setText(StringUtils.nullStrToEmpty(emailAddr) + "(已验证)");
-                } else {
-                    email.setText(StringUtils.nullStrToEmpty(emailAddr) + "(未验证)");
-                }
-            } else {
-                email.setText("未设置");
-            }
+            mobilePhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()));
+            email.setText(StringUtils.nullStrToEmpty(currentUser.getEmail()));
             BmobFile avatarFile = currentUser.getAvatar();
             if (avatarFile != null) {
                 ImageLoaderManager.getImageLoader(this).displayImage(avatarFile.getFileUrl(), avatar, R.drawable.default_avatar, R.drawable.default_avatar, 0);

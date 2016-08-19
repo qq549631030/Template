@@ -90,7 +90,7 @@ public class RegisterActivity extends BaseActivity implements RegisterMvpView {
             ToastUtils.showToast(this, "密码不能为空");
             return false;
         }
-        if (getUserName().equals(confirmPassword.getText().toString().trim())) {
+        if (getPassword().equals(confirmPassword.getText().toString().trim())) {
             ToastUtils.showToast(this, "两次输入的密码不一致");
             return false;
         }

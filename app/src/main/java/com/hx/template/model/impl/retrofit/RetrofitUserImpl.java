@@ -120,6 +120,22 @@ public class RetrofitUserImpl implements UserModel {
     }
 
     @Override
+    public void resetPasswordBySMSCode(String code, String pwd, Callback callback) {
+        
+    }
+
+    /**
+     * 邮箱重置密码
+     *
+     * @param email    绑定的邮箱地址
+     * @param callback 回调监听
+     */
+    @Override
+    public void resetPasswordByEmail(String email, Callback callback) {
+        
+    }
+
+    @Override
     public void logout() {
 
     }

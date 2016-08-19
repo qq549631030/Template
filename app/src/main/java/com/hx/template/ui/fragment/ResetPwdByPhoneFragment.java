@@ -4,7 +4,6 @@ package com.hx.template.ui.fragment;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +15,17 @@ import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
-import com.hx.template.event.UserInfoUpdateEvent;
+import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.BindPhoneMvpView;
-import com.hx.template.presenter.impl.BindPhonePresenter;
+import com.hx.template.mvpview.impl.ResetPwdByEmailMvpView;
+import com.hx.template.mvpview.impl.ResetPwdByPhoneMvpView;
+import com.hx.template.presenter.impl.ResetPwdByPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.regex.Pattern;
 
@@ -36,10 +34,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 手机号码重置密码
  */
-public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpView {
-
+public class ResetPwdByPhoneFragment extends BaseStepFragment implements ResetPwdByPhoneMvpView {
 
     @Bind(R.id.phone)
     EditText phone;
@@ -47,30 +44,25 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
     EditText vcode;
     @Bind(R.id.getvcode)
     TextView getvcode;
-
-    BindPhonePresenter presenter;
+    @Bind(R.id.password)
+    EditText password;
+    @Bind(R.id.confirm_password)
+    EditText confirmPassword;
 
     SMSModel smsModel;
 
     UserModel userModel;
 
+    ResetPwdByPhonePresenter presenter;
+
     private CountDownTimer countDownTimer;
-
-
-    public BindPhoneFragment() {
-    }
-
-    @Override
-    protected String getFragmentTitle() {
-        return "绑定手机";
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         smsModel = new BmobSMSModel();
         userModel = new BmobUserImpl();
-        presenter = new BindPhonePresenter(smsModel, userModel);
+        presenter = new ResetPwdByPhonePresenter(smsModel, userModel);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -92,7 +84,7 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bind_phone, container, false);
+        View view = inflater.inflate(R.layout.fragment_reset_pwd_by_phone, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -110,8 +102,25 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.getvcode, R.id.bind})
+
+    public ResetPwdByPhoneFragment() {
+    }
+
+    @Override
+    public boolean canBack() {
+        return false;
+    }
+
+    @Override
+    protected String getFragmentTitle() {
+        return super.getFragmentTitle();
+    }
+
+    @OnClick({R.id.getvcode, R.id.confirm, R.id.reset_by_email})
     public void onClick(View view) {
+        if (!FastClickUtils.isTimeToProcess(view.getId())) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.getvcode:
                 if (checkPhone()) {
@@ -121,13 +130,17 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
                     presenter.requestSMSCode();
                 }
                 break;
-            case R.id.bind:
+            case R.id.confirm:
                 if (checkInput()) {
                     if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在绑定...");
+                        ((BaseActivity) getActivity()).showLoadingProgress("正在重置...");
                     }
-                    presenter.verifySmsCode();
+                    presenter.resetPasswordBySMSCode();
                 }
+                break;
+            case R.id.reset_by_email:
+                setNextTarget(ResetPwdByEmailFragment.class);
+                nextStepAction(new Bundle());
                 break;
         }
     }
@@ -152,30 +165,57 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
             ToastUtils.showToast(getContext(), "验证码不能为空");
             return false;
         }
+        if (TextUtils.isEmpty(getPassword())) {
+            ToastUtils.showToast(getContext(), "密码不能为空");
+            return false;
+        }
+        if (getPassword().equals(confirmPassword.getText().toString().trim())) {
+            ToastUtils.showToast(getContext(), "两次输入的密码不一致");
+            return false;
+        }
         return true;
     }
 
     /**
-     * 绑定成功
+     * 获取验证码
+     *
+     * @return
      */
     @Override
-    public void bindSuccess() {
+    public String getSMSCode() {
+        return vcode.getText().toString().trim();
+    }
+
+    /**
+     * 获取密码
+     *
+     * @return
+     */
+    @Override
+    public String getPassword() {
+        return password.getText().toString().trim();
+    }
+
+    /**
+     * 重置成功
+     */
+    @Override
+    public void resetSuccess() {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }
-        ToastUtils.showToast(getContext(), "绑定成功");
-//        EventBus.getDefault().post(new UserInfoUpdateEvent());
+        ToastUtils.showToast(getContext(), "重置成功");
         finish();
     }
 
     /**
-     * 绑定失败
+     * 重置失败
      *
      * @param errorCode 错误码
      * @param errorMsg  错误信息
      */
     @Override
-    public void bindFail(String errorCode, String errorMsg) {
+    public void resetFail(String errorCode, String errorMsg) {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }
@@ -199,9 +239,8 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
      */
     @Override
     public String getSMSTemplate() {
-        return BmobSMSTemplate.TEMPLATE_BIND_PHONE;
+        return BmobSMSTemplate.TEMPLATE_RESET_PWD;
     }
-
 
     /**
      * 获取验证码成功
@@ -226,50 +265,6 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
      */
     @Override
     public void onRequestFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
-        ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
-    }
-
-    /**
-     * 获取手机号码
-     *
-     * @return
-     */
-    @Override
-    public String getVerifyPhoneNumber() {
-        return phone.getText().toString().trim();
-    }
-
-    /**
-     * 获取验证码
-     *
-     * @return
-     */
-    @Override
-    public String getSMSCode() {
-        return vcode.getText().toString().trim();
-    }
-
-    /**
-     * 验证成功
-     *
-     * @param data 返回信息
-     */
-    @Override
-    public void onVerifySuccess(Object... data) {
-        presenter.bindPhone();
-    }
-
-    /**
-     * 验证失败
-     *
-     * @param errorCode 错误码
-     * @param errorMsg  错误信息
-     */
-    @Override
-    public void onVerifyFail(String errorCode, String errorMsg) {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }

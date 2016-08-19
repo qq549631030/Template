@@ -83,7 +83,7 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         switch (view.getId()) {
             case R.id.forget_password:
                 if (FastClickUtils.isTimeToProcess(R.id.forget_password)) {
-                    //TODO implement
+                    startActivity(new Intent(LoginActivity.this, ResetPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
                 break;
             case R.id.login:

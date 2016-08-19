@@ -3,12 +3,10 @@ package com.hx.template.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.hx.template.Constant;
@@ -18,8 +16,8 @@ import com.hx.template.base.BaseStepFragment;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.BindEmailMvpView;
-import com.hx.template.presenter.impl.BindEmailPresenter;
+import com.hx.template.mvpview.impl.ResetPwdByEmailMvpView;
+import com.hx.template.presenter.impl.ResetPwdByEmailPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -30,38 +28,27 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * A simple {@link Fragment} subclass.
+ * 邮箱重置密码
  */
-public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpView {
-
+public class ResetPwdByEmailFragment extends BaseStepFragment implements ResetPwdByEmailMvpView {
 
     @Bind(R.id.email)
     EditText email;
-    @Bind(R.id.bind)
-    Button bind;
 
     UserModel userModel;
-    BindEmailPresenter presenter;
-
-    public BindEmailFragment() {
-    }
+    ResetPwdByEmailPresenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userModel = new BmobUserImpl();
-        presenter = new BindEmailPresenter(userModel);
-    }
-
-    @Override
-    protected String getFragmentTitle() {
-        return "绑定邮箱";
+        presenter = new ResetPwdByEmailPresenter(userModel);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bind_email, container, false);
+        View view = inflater.inflate(R.layout.fragment_reset_pwd_by_email, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -79,19 +66,36 @@ public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpV
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.bind)
+    public ResetPwdByEmailFragment() {
+    }
+
+    @Override
+    public boolean canBack() {
+        return false;
+    }
+
+    @Override
+    protected String getFragmentTitle() {
+        return super.getFragmentTitle();
+    }
+
+    @OnClick({R.id.confirm, R.id.reset_by_phone})
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
         }
         switch (view.getId()) {
-            case R.id.bind:
+            case R.id.confirm:
                 if (checkInput()) {
                     if (getActivity() instanceof BaseActivity) {
                         ((BaseActivity) getActivity()).showLoadingProgress("正在发送验证邮件");
                     }
-                    presenter.resetEmail();
+                    presenter.resetPasswordByEmail();
                 }
+                break;
+            case R.id.reset_by_phone:
+                setNextTarget(ResetPwdByPhoneFragment.class);
+                nextStepAction(new Bundle());
                 break;
         }
     }
@@ -109,7 +113,7 @@ public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpV
     }
 
     /**
-     * 获取请求的Email
+     * 获取邮箱
      *
      * @return
      */
@@ -119,25 +123,25 @@ public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpV
     }
 
     /**
-     * 请求成功
+     * 邮件发送成功
      */
     @Override
-    public void onRequestSuccess() {
+    public void sendSuccess() {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }
-        ToastUtils.showToast(getContext(), "邮件发送成功，请前往验证");
+        ToastUtils.showToast(getContext(), "请求验证邮件成功，请到" + getEmail() + "邮箱中进行激活。");
         finish();
     }
 
     /**
-     * 请求失败
+     * 邮件发送失败
      *
      * @param errorCode 错误码
      * @param errorMsg  错误信息
      */
     @Override
-    public void onRequestFail(String errorCode, String errorMsg) {
+    public void sendFail(String errorCode, String errorMsg) {
         if (getActivity() instanceof BaseActivity) {
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }

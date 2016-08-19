@@ -17,6 +17,7 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.entity.User;
+import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
@@ -173,7 +174,7 @@ public class VerifyPhoneFragment extends BaseStepFragment implements VerifyPhone
      */
     @Override
     public String getSMSTemplate() {
-        return "VER_PHONE";
+        return BmobSMSTemplate.TEMPLATE_VER_PHONE;
     }
 
 

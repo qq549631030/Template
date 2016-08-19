@@ -120,6 +120,10 @@
         <activity
             android:name=".ui.activity.BindEmailActivity"
             android:label="@string/title_activity_bind_email"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.ResetPwdActivity"
+            android:label="@string/title_activity_reset_pwd"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
