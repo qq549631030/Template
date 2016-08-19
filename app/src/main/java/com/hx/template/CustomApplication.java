@@ -14,11 +14,9 @@ import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
 import com.hx.template.http.bmob.BmobManager;
-import com.hx.template.listener.BmobDataChangeListener;
+import com.hx.template.http.bmob.BmobDataChangeListener;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.karumi.dexter.Dexter;
-
-import net.sqlcipher.database.SQLiteDatabase;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -168,6 +166,7 @@ public class CustomApplication extends Application {
     private static BmobDataChangeListener userListener;
 
     public static void startSyncUserInfo() {
+        HXLog.d("startSyncUserInfo");
         final User currentUser = User.getCurrentUser(User.class);
         if (currentUser != null) {
             if (userListener == null) {
@@ -176,18 +175,9 @@ public class CustomApplication extends Application {
                     public void onDataChange(JSONObject jsonObject) {
                         if (jsonObject != null) {
                             HXLog.d(jsonObject.toString());
-                            String appKey = jsonObject.optString("appKey");
-                            String tableName = jsonObject.optString("tableName");
-                            String objectId = jsonObject.optString("objectId");
-                            String action = jsonObject.optString("action");
-                            JSONObject data = jsonObject.optJSONObject("data");
-                            if (BmobManager.APP_KEY.equals(appKey)) {
-                                if ("_User".equals(tableName) && currentUser.getObjectId().equals(objectId) && BmobRealTimeData.ACTION_UPDATEROW.equals(action)) {
-                                    if (data != null) {
-                                        SharedPreferencesUtil.setParam(instance, "bmob_sp", "user", data.toString());
-                                        EventBus.getDefault().post(new UserInfoUpdateEvent());
-                                    }
-                                }
+                            if (jsonObject != null) {
+                                SharedPreferencesUtil.setParam(instance, "bmob_sp", "user", jsonObject.toString());
+                                EventBus.getDefault().post(new UserInfoUpdateEvent());
                             }
                         }
                     }
@@ -198,6 +188,7 @@ public class CustomApplication extends Application {
     }
 
     public static void stopSyncUserInfo() {
+        HXLog.d("stopSyncUserInfo");
         if (userListener != null) {
             BmobManager.unSubBmobDataChangeListener(userListener);
         }

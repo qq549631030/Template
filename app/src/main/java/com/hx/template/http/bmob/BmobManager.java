@@ -1,9 +1,9 @@
 package com.hx.template.http.bmob;
 
 import android.content.Context;
+import android.text.TextUtils;
 
-import com.hx.template.entity.User;
-import com.hx.template.listener.BmobDataChangeListener;
+import com.hx.template.global.HXLog;
 
 import org.json.JSONObject;
 
@@ -30,6 +30,7 @@ public class BmobManager {
     }
 
     public static void startRealTimeListener() {
+        HXLog.d("startRealTimeListener");
         if (bmobRealTimeData == null) {
             bmobRealTimeData = new BmobRealTimeData();
         }
@@ -37,17 +38,39 @@ public class BmobManager {
             bmobRealTimeData.start(new ValueEventListener() {
                 @Override
                 public void onConnectCompleted(Exception e) {
-                    for (BmobDataChangeListener listener : listeners) {
-                        if (!listener.isStarted()) {
-                            subListener(listener);
+                    HXLog.d("onConnectCompleted e = " + e);
+                    if (e != null) {
+                        e.printStackTrace();
+                    } else {
+                        for (BmobDataChangeListener listener : listeners) {
+                            if (!listener.isStarted()) {
+                                subListener(listener);
+                            }
                         }
                     }
                 }
 
                 @Override
                 public void onDataChange(JSONObject jsonObject) {
-                    for (BmobDataChangeListener listener : listeners) {
-                        listener.onDataChange(jsonObject);
+                    if (jsonObject != null) {
+                        String appKey = jsonObject.optString("appKey");
+                        String tableName = jsonObject.optString("tableName");
+                        String objectId = jsonObject.optString("objectId");
+                        String action = jsonObject.optString("action");
+                        JSONObject data = jsonObject.optJSONObject("data");
+                        if (APP_KEY.equals(appKey)) {
+                            for (BmobDataChangeListener listener : listeners) {
+                                if (!TextUtils.isEmpty(action) && action.equals(listener.getAction())) {
+                                    if (!TextUtils.isEmpty(listener.getTableName()) && !listener.getTableName().equals(tableName)) {
+                                        return;
+                                    }
+                                    if (!TextUtils.isEmpty(listener.getObjectId()) && !listener.getObjectId().equals(objectId)) {
+                                        return;
+                                    }
+                                    listener.onDataChange(data);
+                                }
+                            }
+                        }
                     }
                 }
             });
@@ -55,6 +78,7 @@ public class BmobManager {
     }
 
     private static void subListener(BmobDataChangeListener listener) {
+        HXLog.d("subListener");
         if (bmobRealTimeData.ACTION_UPDATETABLE.equals(listener.getAction())) {
             bmobRealTimeData.subTableUpdate(listener.getTableName());
         } else if (bmobRealTimeData.ACTION_UPDATEROW.equals(listener.getAction())) {
@@ -69,6 +93,7 @@ public class BmobManager {
 
 
     private static void unSubListener(BmobDataChangeListener listener) {
+        HXLog.d("unSubListener");
         if (bmobRealTimeData.ACTION_UPDATETABLE.equals(listener.getAction())) {
             bmobRealTimeData.unsubTableUpdate(listener.getTableName());
         } else if (bmobRealTimeData.ACTION_UPDATEROW.equals(listener.getAction())) {
@@ -87,6 +112,7 @@ public class BmobManager {
      * @param listener
      */
     public static void subBmobDataChangeListener(BmobDataChangeListener listener) {
+        HXLog.d("subBmobDataChangeListener");
         if (!listeners.contains(listener)) {
             listeners.add(listener);
         }
@@ -104,6 +130,7 @@ public class BmobManager {
      * @param listener
      */
     public static void unSubBmobDataChangeListener(BmobDataChangeListener listener) {
+        HXLog.d("unSubBmobDataChangeListener");
         listeners.remove(listener);
         if (bmobRealTimeData != null && bmobRealTimeData.isConnected()) {
             unSubListener(listener);
