@@ -6,10 +6,9 @@
 
 package com.hx.template.ui.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -20,33 +19,26 @@ import android.widget.EditText;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.database.ormlite.CustomDatabaseHelper;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.global.HXLog;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.LoginMvpView;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.LoginPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import java.sql.SQLException;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.huangx.common.utils.FileUtils;
 
-public class LoginActivity extends BaseActivity implements LoginMvpView {
+public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> implements LoginMvpView {
 
     @Bind(R.id.username)
     EditText username;
     @Bind(R.id.password)
     EditText password;
-
-    ProgressDialog mProgressDialog;
-
-    LoginPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +48,16 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("登录");
-        mProgressDialog = new ProgressDialog(this);
-        presenter = new LoginPresenter(new BmobUserImpl());
-        presenter.attachView(this);
+    }
+
+    @Override
+    public Loader<LoginPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader(this, new PresenterFactory<LoginPresenter>() {
+            @Override
+            public LoginPresenter create() {
+                return new LoginPresenter(new BmobUserImpl());
+            }
+        });
     }
 
     @Override
@@ -145,9 +144,4 @@ public class LoginActivity extends BaseActivity implements LoginMvpView {
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 
-    @Override
-    protected void onDestroy() {
-        presenter.detachView();
-        super.onDestroy();
-    }
 }

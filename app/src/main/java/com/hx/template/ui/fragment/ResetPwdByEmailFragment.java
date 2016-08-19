@@ -2,7 +2,7 @@ package com.hx.template.ui.fragment;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +14,11 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.ResetPwdByEmailMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.ResetPwdByEmailPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -30,19 +32,32 @@ import butterknife.OnClick;
 /**
  * 邮箱重置密码
  */
-public class ResetPwdByEmailFragment extends BaseStepFragment implements ResetPwdByEmailMvpView {
+public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPresenter, ResetPwdByEmailMvpView> implements ResetPwdByEmailMvpView {
 
     @Bind(R.id.email)
     EditText email;
 
-    UserModel userModel;
-    ResetPwdByEmailPresenter presenter;
+    public ResetPwdByEmailFragment() {
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userModel = new BmobUserImpl();
-        presenter = new ResetPwdByEmailPresenter(userModel);
+    protected String getFragmentTitle() {
+        return super.getFragmentTitle();
+    }
+
+    @Override
+    public boolean canBack() {
+        return false;
+    }
+
+    @Override
+    public Loader<ResetPwdByEmailPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(getContext(), new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new ResetPwdByEmailPresenter(new BmobUserImpl());
+            }
+        });
     }
 
     @Override
@@ -54,29 +69,9 @@ public class ResetPwdByEmailFragment extends BaseStepFragment implements ResetPw
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presenter.attachView(this);
-    }
-
-    @Override
     public void onDestroyView() {
-        presenter.detachView();
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    public ResetPwdByEmailFragment() {
-    }
-
-    @Override
-    public boolean canBack() {
-        return false;
-    }
-
-    @Override
-    protected String getFragmentTitle() {
-        return super.getFragmentTitle();
     }
 
     @OnClick({R.id.confirm, R.id.reset_by_phone})

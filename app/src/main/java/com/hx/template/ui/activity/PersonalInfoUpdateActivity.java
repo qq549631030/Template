@@ -1,10 +1,8 @@
 package com.hx.template.ui.activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -13,9 +11,11 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.PersonalInfoUpdateMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.PersonalInfoUpdatePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -25,8 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PersonalInfoUpdateActivity extends BaseActivity implements PersonalInfoUpdateMvpView {
-
+public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdatePresenter, PersonalInfoUpdateMvpView> implements PersonalInfoUpdateMvpView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -34,12 +33,6 @@ public class PersonalInfoUpdateActivity extends BaseActivity implements Personal
     EditText editText;
 
     int infoType = -1;
-
-    ProgressDialog mProgressDialog;
-
-    UserModel userModel;
-
-    PersonalInfoUpdatePresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +42,17 @@ public class PersonalInfoUpdateActivity extends BaseActivity implements Personal
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         infoType = getIntent().getIntExtra(User.INFO_TYPE, -1);
-        mProgressDialog = new ProgressDialog(this);
-        userModel = new BmobUserImpl();
-        presenter = new PersonalInfoUpdatePresenter(userModel);
-        presenter.attachView(this);
         refreshViews();
     }
 
     @Override
-    protected void onDestroy() {
-        presenter.detachView();
-        super.onDestroy();
+    public Loader<PersonalInfoUpdatePresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(this, new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new PersonalInfoUpdatePresenter(new BmobUserImpl());
+            }
+        });
     }
 
     private void refreshViews() {

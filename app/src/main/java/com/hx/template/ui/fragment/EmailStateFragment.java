@@ -4,6 +4,7 @@ package com.hx.template.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,14 @@ import android.widget.TextView;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.base.BaseFragment;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.BindEmailMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.BindEmailPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -34,7 +36,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EmailStateFragment extends BaseStepFragment implements BindEmailMvpView {
+public class EmailStateFragment extends BaseStepFragment<BindEmailPresenter, BindEmailMvpView> implements BindEmailMvpView {
 
 
     @Bind(R.id.email_state)
@@ -44,23 +46,22 @@ public class EmailStateFragment extends BaseStepFragment implements BindEmailMvp
     @Bind(R.id.rebind)
     Button rebind;
 
-    UserModel userModel;
-    BindEmailPresenter presenter;
-
     public EmailStateFragment() {
-        // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userModel = new BmobUserImpl();
-        presenter = new BindEmailPresenter(userModel);
     }
 
     @Override
     protected String getFragmentTitle() {
         return "绑定邮箱";
+    }
+
+    @Override
+    public Loader<BindEmailPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(getContext(), new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new BindEmailPresenter(new BmobUserImpl());
+            }
+        });
     }
 
     @Override
@@ -74,16 +75,22 @@ public class EmailStateFragment extends BaseStepFragment implements BindEmailMvp
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        presenter.attachView(this);
         refreshViews();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     private void refreshViews() {
         User user = User.getCurrentUser(User.class);
         if (user != null) {
             String email = user.getEmail();
-            boolean emailVerified = user.getEmailVerified();
-            if (!emailVerified) {
+            Boolean emailVerified = user.getEmailVerified();
+            boolean verified = emailVerified == null ? false : emailVerified.booleanValue();
+            if (!verified) {
                 resend.setVisibility(View.VISIBLE);
                 rebind.setVisibility(View.VISIBLE);
                 emailState.setText("您已设置邮箱:" + email + "，还未验证，请登录邮箱验证");
@@ -93,13 +100,6 @@ public class EmailStateFragment extends BaseStepFragment implements BindEmailMvp
                 emailState.setText("您已绑定邮箱：" + email);
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @OnClick({R.id.resend, R.id.rebind})

@@ -2,13 +2,12 @@ package com.hx.template.ui.fragment;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.hx.template.Constant;
@@ -17,9 +16,11 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.BindEmailMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.BindEmailPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -35,30 +36,28 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpView {
+public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, BindEmailMvpView> implements BindEmailMvpView {
 
 
     @Bind(R.id.email)
     EditText email;
-    @Bind(R.id.bind)
-    Button bind;
-
-    UserModel userModel;
-    BindEmailPresenter presenter;
 
     public BindEmailFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userModel = new BmobUserImpl();
-        presenter = new BindEmailPresenter(userModel);
+    protected String getFragmentTitle() {
+        return "绑定邮箱";
     }
 
     @Override
-    protected String getFragmentTitle() {
-        return "绑定邮箱";
+    public Loader onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader(getContext(), new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new BindEmailPresenter(new BmobUserImpl());
+            }
+        });
     }
 
     @Override
@@ -70,14 +69,7 @@ public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpV
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presenter.attachView(this);
-    }
-
-    @Override
     public void onDestroyView() {
-        presenter.detachView();
         super.onDestroyView();
         ButterKnife.unbind(this);
     }

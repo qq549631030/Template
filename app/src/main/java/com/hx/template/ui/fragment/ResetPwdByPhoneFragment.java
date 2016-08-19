@@ -3,7 +3,7 @@ package com.hx.template.ui.fragment;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +17,12 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
-import com.hx.template.model.SMSModel;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.ResetPwdByEmailMvpView;
 import com.hx.template.mvpview.impl.ResetPwdByPhoneMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.ResetPwdByPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -36,7 +36,7 @@ import butterknife.OnClick;
 /**
  * 手机号码重置密码
  */
-public class ResetPwdByPhoneFragment extends BaseStepFragment implements ResetPwdByPhoneMvpView {
+public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePresenter, ResetPwdByPhoneMvpView> implements ResetPwdByPhoneMvpView {
 
     @Bind(R.id.phone)
     EditText phone;
@@ -49,20 +49,34 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment implements ResetPw
     @Bind(R.id.confirm_password)
     EditText confirmPassword;
 
-    SMSModel smsModel;
-
-    UserModel userModel;
-
-    ResetPwdByPhonePresenter presenter;
-
     private CountDownTimer countDownTimer;
+
+    public ResetPwdByPhoneFragment() {
+    }
+
+    @Override
+    public boolean canBack() {
+        return false;
+    }
+
+    @Override
+    protected String getFragmentTitle() {
+        return super.getFragmentTitle();
+    }
+
+    @Override
+    public Loader<ResetPwdByPhonePresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(getContext(), new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new ResetPwdByPhonePresenter(new BmobSMSModel(), new BmobUserImpl());
+            }
+        });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        smsModel = new BmobSMSModel();
-        userModel = new BmobUserImpl();
-        presenter = new ResetPwdByPhonePresenter(smsModel, userModel);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -90,30 +104,9 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment implements ResetPw
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presenter.attachView(this);
-    }
-
-    @Override
     public void onDestroyView() {
-        presenter.detachView();
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-
-    public ResetPwdByPhoneFragment() {
-    }
-
-    @Override
-    public boolean canBack() {
-        return false;
-    }
-
-    @Override
-    protected String getFragmentTitle() {
-        return super.getFragmentTitle();
     }
 
     @OnClick({R.id.getvcode, R.id.confirm, R.id.reset_by_email})

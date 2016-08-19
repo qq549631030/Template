@@ -7,6 +7,7 @@ import com.hx.template.model.UserModel;
 import com.hx.template.mvpview.impl.BindPhoneMvpView;
 import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
 import com.hx.template.presenter.BasePresenter;
+import com.hx.template.presenter.Presenter;
 import com.hx.template.presenter.itf.IBindPhonePresenter;
 
 /**

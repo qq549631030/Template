@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +18,14 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.entity.User;
+import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
-import com.hx.template.model.SMSModel;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.BindPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -36,18 +39,12 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VerifyPhoneFragment extends BaseStepFragment implements VerifyPhoneMvpView {
+public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, VerifyPhoneMvpView> implements VerifyPhoneMvpView {
 
     @Bind(R.id.phone)
     EditText phone;
     @Bind(R.id.vcode)
     EditText vcode;
-
-    BindPhonePresenter presenter;
-
-    SMSModel smsModel;
-
-    UserModel userModel;
     @Bind(R.id.getvcode)
     TextView getvcode;
 
@@ -67,11 +64,18 @@ public class VerifyPhoneFragment extends BaseStepFragment implements VerifyPhone
     }
 
     @Override
+    public Loader<BindPhonePresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(getContext(), new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new BindPhonePresenter(new BmobSMSModel(), new BmobUserImpl());
+            }
+        });
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        smsModel = new BmobSMSModel();
-        userModel = new BmobUserImpl();
-        presenter = new BindPhonePresenter(smsModel, userModel);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -107,29 +111,39 @@ public class VerifyPhoneFragment extends BaseStepFragment implements VerifyPhone
             String mobile = currentUser.getMobilePhoneNumber();
             phone.setText(StringUtils.nullStrToEmpty(mobile));
         }
-        presenter.attachView(this);
     }
 
     @Override
     public void onDestroyView() {
-        presenter.detachView();
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
 
     @OnClick({R.id.getvcode, R.id.confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.getvcode:
                 if (checkPhone()) {
+                    if (!FastClickUtils.isTimeToProcess(view.getId())) {
+                        return;
+                    }
                     if (getActivity() instanceof BaseActivity) {
                         ((BaseActivity) getActivity()).showLoadingProgress("正在获取短信验证码...");
                     }
                     presenter.requestSMSCode();
                 }
                 break;
-            case R.id.bind:
-                nextStepAction(new Bundle());
+            case R.id.confirm:
+                if (checkInput()) {
+                    if (!FastClickUtils.isTimeToProcess(view.getId())) {
+                        return;
+                    }
+                    if (getActivity() instanceof BaseActivity) {
+                        ((BaseActivity) getActivity()).showLoadingProgress("正在验证短信验证码...");
+                    }
+                    presenter.verifySmsCode();
+                }
                 break;
         }
     }
@@ -234,7 +248,10 @@ public class VerifyPhoneFragment extends BaseStepFragment implements VerifyPhone
      */
     @Override
     public void onVerifySuccess(Object... data) {
-        presenter.bindPhone();
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).hideLoadingProgress();
+        }
+        nextStepAction(new Bundle());
     }
 
     /**

@@ -1,16 +1,18 @@
 package com.hx.template.ui.activity;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.ModifyPwdMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.ModifyPwdPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -19,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView {
+public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPwdMvpView> implements ModifyPwdMvpView {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -30,12 +32,6 @@ public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView 
     @Bind(R.id.confirm_password)
     EditText confirmPassword;
 
-    ProgressDialog mProgressDialog;
-
-    ModifyPwdPresenter presenter;
-
-    UserModel userModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +40,16 @@ public class ModifyPwdActivity extends BaseActivity implements ModifyPwdMvpView 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("修改密码");
-        mProgressDialog = new ProgressDialog(this);
-        userModel = new BmobUserImpl();
-        presenter = new ModifyPwdPresenter(userModel);
-        presenter.attachView(this);
     }
 
     @Override
-    protected void onDestroy() {
-        presenter.detachView();
-        super.onDestroy();
+    public Loader<ModifyPwdPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(this, new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new ModifyPwdPresenter(new BmobUserImpl());
+            }
+        });
     }
 
     @OnClick(R.id.confirm)

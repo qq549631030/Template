@@ -6,11 +6,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.hx.template.R;
+import com.hx.template.mvpview.MvpView;
+import com.hx.template.presenter.Presenter;
 
 /**
  * Created by huangx on 2016/5/13.
  */
-public class BaseStepFragment extends BaseFragment {
+public class BaseStepFragment<P extends Presenter<V>, V extends MvpView> extends BaseFragment<P, V> {
     /**
      * 是否是第一步
      */
@@ -61,7 +63,8 @@ public class BaseStepFragment extends BaseFragment {
     }
 
     /**
-     *  跳到下一步页面
+     * 跳到下一步页面
+     *
      * @param args 下一步Fragment初始化参数
      */
     protected void nextStepAction(Bundle args) {

@@ -11,19 +11,25 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.hx.template.global.SaveSceneUtils;
+import com.hx.template.mvpview.MvpView;
+import com.hx.template.presenter.Presenter;
 
 /**
  * Created by huangx on 2016/5/12.
  */
-public class BaseFragment extends Fragment implements LoaderManager.LoaderCallbacks{
+public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fragment implements LoaderManager.LoaderCallbacks<P> {
+
+    public final static int BASE_FRAGMENT_LOADER_ID = 200;
 
     protected boolean isViewCreated;
 
     protected boolean isVisable;
 
-    protected String getFragmentTitle() {
-        return null;
-    }
+    // boolean flag to avoid delivering the result twice. Calling initLoader in onActivityCreated makes
+    // onLoadFinished will be called twice during configuration change.
+    private boolean delivered = false;
+
+    protected P presenter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -41,15 +47,38 @@ public class BaseFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        isViewCreated = true;
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(BASE_FRAGMENT_LOADER_ID, null, this);
         SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        isViewCreated = true;
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (presenter != null) {
+            presenter.attachView((V) this);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (presenter != null) {
+            presenter.detachView();
+        }
+        super.onPause();
     }
 
     @Override
@@ -58,10 +87,8 @@ public class BaseFragment extends Fragment implements LoaderManager.LoaderCallba
         isViewCreated = false;
     }
 
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
+    protected String getFragmentTitle() {
+        return null;
     }
 
 
@@ -103,17 +130,20 @@ public class BaseFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
+    public Loader<P> onCreateLoader(int id, Bundle args) {
         return null;
     }
 
     @Override
-    public void onLoadFinished(Loader loader, Object data) {
-
+    public void onLoadFinished(Loader<P> loader, P data) {
+        if (!delivered) {
+            presenter = data;
+            delivered = true;
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader loader) {
-
+    public void onLoaderReset(Loader<P> loader) {
+        presenter = null;
     }
 }

@@ -6,12 +6,15 @@ import android.support.v4.content.Loader;
 /**
  * Created by huangx on 2016/8/19.
  */
-public class PresenterLoader<T extends Presenter> extends Loader {
+public class PresenterLoader<T extends Presenter> extends Loader<T> {
+
+    private final PresenterFactory<T> factory;
 
     private T presenter;
 
-    public PresenterLoader(Context context) {
+    public PresenterLoader(Context context, PresenterFactory factory) {
         super(context);
+        this.factory = factory;
     }
 
     @Override
@@ -25,11 +28,15 @@ public class PresenterLoader<T extends Presenter> extends Loader {
 
     @Override
     protected void onForceLoad() {
-        super.onForceLoad();
+        presenter = factory.create();
+        deliverResult(presenter);
     }
 
     @Override
     protected void onReset() {
-        super.onReset();
+        if (presenter != null) {
+            presenter.onDestroyed();
+        }
+        presenter = null;
     }
 }

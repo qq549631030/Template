@@ -19,6 +19,11 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
         mMvpView = null;
     }
 
+    @Override
+    public void onDestroyed() {
+
+    }
+
     public boolean isViewAttached() {
         return mMvpView != null;
     }

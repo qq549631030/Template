@@ -6,20 +6,22 @@
 
 package com.hx.template.ui.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.RegisterMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.RegisterPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -28,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity implements RegisterMvpView {
+public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMvpView> implements RegisterMvpView {
 
     @Bind(R.id.username)
     EditText username;
@@ -36,10 +38,6 @@ public class RegisterActivity extends BaseActivity implements RegisterMvpView {
     EditText password;
     @Bind(R.id.confirm_password)
     EditText confirmPassword;
-
-    ProgressDialog mProgressDialog;
-
-    RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,15 +48,16 @@ public class RegisterActivity extends BaseActivity implements RegisterMvpView {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("注册");
-        mProgressDialog = new ProgressDialog(this);
-        presenter = new RegisterPresenter(new BmobUserImpl());
-        presenter.attachView(this);
     }
 
     @Override
-    protected void onDestroy() {
-        presenter.detachView();
-        super.onDestroy();
+    public Loader<RegisterPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(this, new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new RegisterPresenter(new BmobUserImpl());
+            }
+        });
     }
 
     @OnClick({R.id.register, R.id.to_login})

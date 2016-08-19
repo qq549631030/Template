@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,11 +18,12 @@ import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
-import com.hx.template.model.FileModel;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobFileModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.PersonalInfoMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.PersonalInfoPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -44,7 +45,7 @@ import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
-public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMvpView {
+public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoMvpView> implements PersonalInfoMvpView {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
     private static final int REQUEST_CODE_CROP_IMAGE = 102;
@@ -64,10 +65,6 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
     @Bind(R.id.gender)
     TextView gender;
 
-    UserModel userModel;
-    FileModel fileModel;
-    PersonalInfoPresenter presenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,18 +73,23 @@ public class PersonalInfoActivity extends BaseActivity implements PersonalInfoMv
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("个人信息");
-        userModel = new BmobUserImpl();
-        fileModel = new BmobFileModel();
-        presenter = new PersonalInfoPresenter(userModel, fileModel);
-        presenter.attachView(this);
         EventBus.getDefault().register(this);
         refreshViews();
     }
 
     @Override
+    public Loader<PersonalInfoPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(this, new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new PersonalInfoPresenter(new BmobUserImpl(), new BmobFileModel());
+            }
+        });
+    }
+
+    @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
-        presenter.detachView();
         super.onDestroy();
     }
 

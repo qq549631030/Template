@@ -3,8 +3,8 @@ package com.hx.template.ui.fragment;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +18,13 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.http.bmob.BmobSMSTemplate;
-import com.hx.template.model.SMSModel;
-import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.BindPhoneMvpView;
+import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
+import com.hx.template.presenter.Presenter;
+import com.hx.template.presenter.PresenterFactory;
+import com.hx.template.presenter.PresenterLoader;
 import com.hx.template.presenter.impl.BindPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
@@ -38,7 +40,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpView {
+public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, VerifyPhoneMvpView> implements BindPhoneMvpView {
 
 
     @Bind(R.id.phone)
@@ -48,12 +50,6 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
     @Bind(R.id.getvcode)
     TextView getvcode;
 
-    BindPhonePresenter presenter;
-
-    SMSModel smsModel;
-
-    UserModel userModel;
-
     private CountDownTimer countDownTimer;
 
 
@@ -61,16 +57,8 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
     }
 
     @Override
-    protected String getFragmentTitle() {
-        return "绑定手机";
-    }
-
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        smsModel = new BmobSMSModel();
-        userModel = new BmobUserImpl();
-        presenter = new BindPhonePresenter(smsModel, userModel);
         countDownTimer = new CountDownTimer(60000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -98,16 +86,24 @@ public class BindPhoneFragment extends BaseStepFragment implements BindPhoneMvpV
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        presenter.attachView(this);
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     @Override
-    public void onDestroyView() {
-        presenter.detachView();
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    public Loader<BindPhonePresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(getContext(), new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return new BindPhonePresenter(new BmobSMSModel(), new BmobUserImpl());
+            }
+        });
+    }
+
+    @Override
+    protected String getFragmentTitle() {
+        return "绑定手机";
     }
 
     @OnClick({R.id.getvcode, R.id.bind})
