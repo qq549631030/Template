@@ -35,6 +35,9 @@ public class DecimalInputFilter implements InputFilter {
             }
         }
         String[] splitArray = mergedStr.split("\\.");
+        if (splitArray == null || splitArray.length <= 0) {
+            return null;
+        }
         String integerStr = splitArray[0];
         if (integerLength == 0) {//整数部份长度为0，表示只有0才符合
             if (integerStr.length() != 1 || !integerStr.equals("0")) {

@@ -1,9 +1,12 @@
 package com.hx.template.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -12,7 +15,7 @@ import com.hx.template.global.SaveSceneUtils;
 /**
  * Created by huangx on 2016/5/12.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment extends Fragment implements LoaderManager.LoaderCallbacks{
 
     protected boolean isViewCreated;
 
@@ -99,4 +102,18 @@ public class BaseFragment extends Fragment {
     }
 
 
+    @Override
+    public Loader onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader loader, Object data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+
+    }
 }

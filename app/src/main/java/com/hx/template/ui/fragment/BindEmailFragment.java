@@ -15,6 +15,7 @@ import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
+import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.UserModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
@@ -22,6 +23,8 @@ import com.hx.template.mvpview.impl.BindEmailMvpView;
 import com.hx.template.presenter.impl.BindEmailPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.regex.Pattern;
 
@@ -127,6 +130,7 @@ public class BindEmailFragment extends BaseStepFragment implements BindEmailMvpV
             ((BaseActivity) getActivity()).hideLoadingProgress();
         }
         ToastUtils.showToast(getContext(), "邮件发送成功，请前往验证");
+        EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
     }
 
