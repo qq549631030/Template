@@ -22,7 +22,6 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.mvpview.impl.LoginMvpView;
 import com.hx.template.presenter.PresenterFactory;
 import com.hx.template.presenter.PresenterLoader;
@@ -129,7 +128,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> im
         hideLoadingProgress();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
-        CustomApplication.startSyncUserInfo();
+        CustomApplication.reloadUserInfo();
         finish();
     }
 

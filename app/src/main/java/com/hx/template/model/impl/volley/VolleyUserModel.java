@@ -14,6 +14,7 @@ import com.hx.template.http.HttpParams;
 import com.hx.template.http.HttpParseUtils;
 import com.hx.template.http.HttpReturn;
 import com.hx.template.model.Callback;
+import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
 import org.json.JSONObject;
@@ -51,28 +52,28 @@ public class VolleyUserModel implements UserModel {
                 if (mReturn != null) {
                     if (mReturn.getStatus() == 1) {
                         User user = mReturn.getData();
-                        callback.onSuccess(user);
+                        callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
                     } else {
                         ErrorCode code = mReturn.getCode();
                         if (code != null) {
-                            callback.onFailure(mReturn.getCode().getId(), CustomApplication.getInstance().getString(mReturn.getCode().getRes()));
+                            callback.onFailure(TaskManager.TASK_ID_LOGIN, mReturn.getCode().getId(), CustomApplication.getInstance().getString(mReturn.getCode().getRes()));
                         } else {
                             String msg = mReturn.getMsg();
                             if (TextUtils.isEmpty(msg)) {
-                                callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                                callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                             } else {
-                                callback.onFailure("-1", msg);
+                                callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", msg);
                             }
                         }
                     }
                 } else {
-                    callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                    callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                 }
             }
 
             @Override
             public void onError(String ErrorMsg, int errorCode) {
-                callback.onFailure(Integer.toString(errorCode), ErrorMsg);
+                callback.onFailure(TaskManager.TASK_ID_LOGIN, Integer.toString(errorCode), ErrorMsg);
             }
         }, false);
     }
@@ -86,6 +87,17 @@ public class VolleyUserModel implements UserModel {
      */
     @Override
     public void modifyPwd(String oldPwd, String newPwd, Callback callback) {
+
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId   用户id
+     * @param callback 回调监听
+     */
+    @Override
+    public void getUserInfo(String userId, Callback callback) {
 
     }
 
@@ -113,7 +125,7 @@ public class VolleyUserModel implements UserModel {
 
     @Override
     public void resetPasswordBySMSCode(String code, String pwd, Callback callback) {
-        
+
     }
 
     /**
@@ -124,7 +136,7 @@ public class VolleyUserModel implements UserModel {
      */
     @Override
     public void resetPasswordByEmail(String email, Callback callback) {
-        
+
     }
 
 

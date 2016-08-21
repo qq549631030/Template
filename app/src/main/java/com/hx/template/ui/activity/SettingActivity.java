@@ -103,7 +103,6 @@ public class SettingActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         UserModel userModel = ModelManager.newUserModel();
                         userModel.logout();
-                        CustomApplication.stopSyncUserInfo();
                         startActivity(new Intent(SettingActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         GlobalActivityManager.finishAll();
                     }

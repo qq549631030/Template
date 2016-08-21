@@ -5,7 +5,7 @@
         android:id="@+id/main_menu_group"
         android:icon="@drawable/icon_plus"
         android:title="Main"
-        app:showAsAction="ifRoom|withText">
+        app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/main_menu_scan"

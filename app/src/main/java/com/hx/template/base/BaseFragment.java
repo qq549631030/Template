@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
 import com.hx.template.mvpview.MvpView;
 import com.hx.template.presenter.Presenter;
@@ -136,6 +137,7 @@ public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fra
 
     @Override
     public void onLoadFinished(Loader<P> loader, P data) {
+        HXLog.d("onLoadFinished delivered = " + delivered);
         if (!delivered) {
             presenter = data;
             delivered = true;
@@ -144,6 +146,7 @@ public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fra
 
     @Override
     public void onLoaderReset(Loader<P> loader) {
+        HXLog.d("onLoaderReset");
         presenter = null;
     }
 }

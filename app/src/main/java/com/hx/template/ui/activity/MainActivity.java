@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.hx.template.R;
+import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.components.MainTabItemView;
 import com.hx.template.qrcode.activity.CaptureActivity;
@@ -55,7 +56,7 @@ public class MainActivity extends BaseActivity {
     private FragmentManager mFragmentManager;
 
     private Fragment currentFragment;
-
+    @SaveInstanceAnnotation
     private int currentIndex;
 
     @Override
@@ -66,7 +67,9 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         mFragmentManager = getSupportFragmentManager();
         initViews();
-        currentIndex = getIntent().getIntExtra(PAGE_INDEX, 0);
+        if (savedInstanceState == null) {
+            currentIndex = getIntent().getIntExtra(PAGE_INDEX, 0);
+        }
         switchPage(currentIndex);
     }
 
@@ -92,7 +95,7 @@ public class MainActivity extends BaseActivity {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 String result = bundle.getString(CaptureActivity.EXTRA_RESULT);
-                ToastUtils.show(getApplicationContext(),result);
+                ToastUtils.show(getApplicationContext(), result);
             }
         }
     }

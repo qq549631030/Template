@@ -21,7 +21,9 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
 
     @Override
     public void onDestroyed() {
-
+        if (mMvpView != null) {
+            mMvpView = null;
+        }
     }
 
     public boolean isViewAttached() {

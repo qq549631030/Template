@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.CursorAdapter;
 
 import com.hx.template.global.GlobalActivityManager;
+import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
 import com.hx.template.mvpview.LoadingView;
 import com.hx.template.mvpview.MvpView;
@@ -156,11 +157,13 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
 
     @Override
     public void onLoadFinished(Loader<P> loader, P data) {
+        HXLog.d("onLoadFinished");
         presenter = data;
     }
 
     @Override
     public void onLoaderReset(Loader<P> loader) {
+        HXLog.d("onLoaderReset");
         presenter = null;
     }
 

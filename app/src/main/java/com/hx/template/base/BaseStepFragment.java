@@ -71,12 +71,12 @@ public class BaseStepFragment<P extends Presenter<V>, V extends MvpView> extends
         if (getActivity() == null) {
             return;
         }
-        if (isLastStep()) {//当前已经是
+        if (isLastStep()) {//当前已经是最后一步
             finish();
             return;
         }
         Class<? extends BaseStepFragment> clz = getNextTarget();
-        if (clz == null) {
+        if (clz == null) {//没有下一步
             finish();
             return;
         }

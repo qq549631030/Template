@@ -9,12 +9,19 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.stetho.Stetho;
+import com.hx.template.dagger2.AppComponent;
+import com.hx.template.dagger2.AppModule;
+import com.hx.template.dagger2.ComponentHolder;
+import com.hx.template.dagger2.DaggerAppComponent;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
 import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.http.bmob.BmobDataChangeListener;
+import com.hx.template.model.Callback;
+import com.hx.template.model.ModelManager;
+import com.hx.template.model.UserModel;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.karumi.dexter.Dexter;
 
@@ -24,6 +31,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import cn.bmob.v3.BmobRealTimeData;
+import cn.bmob.v3.helper.GsonUtil;
 
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
@@ -56,6 +64,7 @@ public class CustomApplication extends Application {
         //初始化加密ormlite数据库
 //        SQLiteDatabase.loadLibs(this);
         instance = this;
+        initDagger2();
         Dexter.initialize(instance);
         BmobManager.init(instance);
         initActivityManager();
@@ -122,6 +131,13 @@ public class CustomApplication extends Application {
             };
             registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         }
+    }
+
+    public static void initDagger2() {
+        AppComponent appComponent = DaggerAppComponent.builder()
+                .appModule(new AppModule(instance))
+                .build();
+        ComponentHolder.setAppComponent(appComponent);
     }
 
     /**
@@ -191,6 +207,37 @@ public class CustomApplication extends Application {
         HXLog.d("stopSyncUserInfo");
         if (userListener != null) {
             BmobManager.unSubBmobDataChangeListener(userListener);
+        }
+    }
+
+    public static void reloadUserInfo() {
+        reloadUserInfo(null);
+    }
+
+    public static void reloadUserInfo(Callback callback) {
+        User user = User.getCurrentUser(User.class);
+
+        if (user != null) {
+            UserModel userModel = ModelManager.newUserModel();
+            if (callback != null) {
+                userModel.getUserInfo(user.getObjectId(), callback);
+            } else {
+                userModel.getUserInfo(user.getObjectId(), new Callback() {
+                    @Override
+                    public void onSuccess(int taskId, Object... data) {
+                        if (data != null && data.length > 0 && data[0] instanceof User) {
+                            String userData = GsonUtil.toJson(data[0]);
+                            SharedPreferencesUtil.setParam(instance, "bmob_sp", "user", userData);
+                            EventBus.getDefault().post(new UserInfoUpdateEvent());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
+
+                    }
+                });
+            }
         }
     }
 }

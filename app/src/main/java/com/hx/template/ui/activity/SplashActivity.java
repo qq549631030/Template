@@ -72,8 +72,8 @@ public class SplashActivity extends BaseActivity {
         } else {
             User currentUser = User.getCurrentUser(User.class);
             if (currentUser != null) {
+                CustomApplication.reloadUserInfo();
                 mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
-                CustomApplication.startSyncUserInfo();
             } else {
                 mHandler.sendEmptyMessageDelayed(GO_TO_LOGIN, 1500);
             }

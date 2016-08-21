@@ -14,6 +14,7 @@ import com.hx.template.http.retrofit.ApiService;
 import com.hx.template.http.retrofit.RetrofitUtils;
 import com.hx.template.http.retrofit.mock.MockApiService;
 import com.hx.template.model.Callback;
+import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
 import retrofit2.Retrofit;
@@ -54,22 +55,22 @@ public class RetrofitUserModel implements UserModel {
                         if (loginReturn != null) {
                             if (loginReturn.getStatus() == 1) {
                                 User user = loginReturn.getData();
-                                callback.onSuccess(user);
+                                callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
                             } else {
                                 ErrorCode code = loginReturn.getCode();
                                 if (code != null) {
-                                    callback.onFailure(code.getId(), CustomApplication.getInstance().getString(code.getRes()));
+                                    callback.onFailure(TaskManager.TASK_ID_LOGIN, code.getId(), CustomApplication.getInstance().getString(code.getRes()));
                                 } else {
                                     String msg = loginReturn.getMsg();
                                     if (TextUtils.isEmpty(msg)) {
-                                        callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                                        callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                                     } else {
-                                        callback.onFailure("-1", msg);
+                                        callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", msg);
                                     }
                                 }
                             }
                         } else {
-                            callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                            callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                         }
                     }
 
@@ -80,7 +81,7 @@ public class RetrofitUserModel implements UserModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onFailure(CustomApplication.getInstance().getString(R.string.error_unknow));
+                        callback.onFailure(TaskManager.TASK_ID_LOGIN, CustomApplication.getInstance().getString(R.string.error_unknow));
                     }
                 });
     }
@@ -94,6 +95,17 @@ public class RetrofitUserModel implements UserModel {
      */
     @Override
     public void modifyPwd(String oldPwd, String newPwd, Callback callback) {
+
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId   用户id
+     * @param callback 回调监听
+     */
+    @Override
+    public void getUserInfo(String userId, Callback callback) {
 
     }
 
@@ -121,7 +133,7 @@ public class RetrofitUserModel implements UserModel {
 
     @Override
     public void resetPasswordBySMSCode(String code, String pwd, Callback callback) {
-        
+
     }
 
     /**
@@ -132,7 +144,7 @@ public class RetrofitUserModel implements UserModel {
      */
     @Override
     public void resetPasswordByEmail(String email, Callback callback) {
-        
+
     }
 
     @Override

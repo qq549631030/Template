@@ -2,11 +2,13 @@ package com.hx.template.model.impl.bmob;
 
 import com.hx.template.model.Callback;
 import com.hx.template.model.FileModel;
+import com.hx.template.model.TaskManager;
 
 import java.io.File;
 import java.util.List;
 
 import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UploadBatchListener;
 
 /**
@@ -25,7 +27,7 @@ public class BmobFileModel implements FileModel {
             @Override
             public void onSuccess(List<BmobFile> list, List<String> list1) {
                 if (list.size() == 1) {
-                    callback.onSuccess(list.get(0), list1.get(0));
+                    BmobCallBackDeliver.deliverSuccess(callback, TaskManager.TASK_ID_UPLOAD_FILE, list.get(0), list1.get(0));
                 }
             }
 
@@ -36,7 +38,7 @@ public class BmobFileModel implements FileModel {
 
             @Override
             public void onError(int i, String s) {
-                callback.onFailure(Integer.toString(i), s);
+                BmobCallBackDeliver.deliverFailure(callback, TaskManager.TASK_ID_UPLOAD_FILE, new BmobException(i, s));
             }
         });
     }

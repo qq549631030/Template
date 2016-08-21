@@ -2,6 +2,7 @@ package com.hx.template.model.impl.bmob;
 
 import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
+import com.hx.template.model.TaskManager;
 
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
@@ -24,11 +25,7 @@ public class BmobSMSModel implements SMSModel {
         BmobSMS.requestSMSCode(phoneNumber, template, new QueryListener<Integer>() {
             @Override
             public void done(Integer integer, BmobException e) {
-                if (e == null) {
-                    callback.onSuccess(integer);
-                } else {
-                    callback.onFailure(Integer.toString(e.getErrorCode()), e.toString());
-                }
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_REQUEST_SMS_CODE, e, integer);
             }
         });
     }
@@ -45,11 +42,7 @@ public class BmobSMSModel implements SMSModel {
         BmobSMS.verifySmsCode(phoneNumber, smsCode, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if (e == null) {
-                    callback.onSuccess();
-                } else {
-                    callback.onFailure(Integer.toString(e.getErrorCode()), e.toString());
-                }
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_VERIFY_SMS_CODE, e);
             }
         });
     }

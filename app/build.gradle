@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 //apply plugin: 'newlens'
 
 //用于获取当前时间
@@ -135,6 +136,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile "org.robolectric:robolectric:3.1.1"
+    testCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
+    androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
+    //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话
+
+
     //听云性能监测
     //    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.1.1"
 
@@ -175,4 +183,8 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:1.3.0'
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.android.support:support-v4:24.1.1'
+    //Dagger2
+    compile 'com.google.dagger:dagger:2.0.2'
+    compile 'javax.annotation:jsr250-api:1.0'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
 }

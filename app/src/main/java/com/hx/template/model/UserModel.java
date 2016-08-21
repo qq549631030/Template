@@ -9,29 +9,37 @@ public interface UserModel {
     /**
      * 注册
      *
-     * @param username
-     * @param password
-     * @param callback
+     * @param username 用户名
+     * @param password 密码
+     * @param callback 回调监听
      */
     void register(String username, String password, Callback callback);
 
     /**
      * 登录
      *
-     * @param username
-     * @param password
-     * @param callback
+     * @param username 用户名
+     * @param password 密码
+     * @param callback 回调监听
      */
     void login(String username, String password, Callback callback);
 
     /**
      * 修改密码
      *
-     * @param oldPwd
-     * @param newPwd
-     * @param callback
+     * @param oldPwd   旧密码
+     * @param newPwd   新密码
+     * @param callback 回调监听
      */
     void modifyPwd(String oldPwd, String newPwd, Callback callback);
+
+    /**
+     * 获取用户信息
+     *
+     * @param userId   用户id
+     * @param callback 回调监听
+     */
+    void getUserInfo(String userId, Callback callback);
 
     /**
      * 更新用户信息
