@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
  * Created by huangxiang on 16/8/20.
  */
 public class LoginPresenterTest {
+
     @Rule
     public MockitoRule daggerRule = MockitoJUnit.rule();
     @Mock

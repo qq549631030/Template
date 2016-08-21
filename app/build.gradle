@@ -137,11 +137,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile "org.robolectric:robolectric:3.1.1"
+    androidTestCompile "org.robolectric:robolectric:3.1.1"
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    androidTestCompile "org.robolectric:robolectric:3.1.1"
     testCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
     androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
     //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话
-
 
     //听云性能监测
     //    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.1.1"

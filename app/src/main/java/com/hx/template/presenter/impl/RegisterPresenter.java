@@ -1,6 +1,5 @@
 package com.hx.template.presenter.impl;
 
-import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
@@ -9,6 +8,8 @@ import com.hx.template.presenter.BasePresenter;
 import com.hx.template.presenter.itf.IRegisterPresenter;
 
 import javax.inject.Inject;
+
+import cn.huangx.common.utils.StringUtils;
 
 /**
  * Created by huangxiang on 16/8/12.
@@ -40,6 +41,7 @@ public class RegisterPresenter extends BasePresenter<RegisterMvpView> implements
             }
         }
     };
+
     @Inject
     public RegisterPresenter(UserModel userModel) {
         this.userModel = userModel;
@@ -62,6 +64,24 @@ public class RegisterPresenter extends BasePresenter<RegisterMvpView> implements
         if (!isViewAttached()) {
             return;
         }
-        userModel.register(getMvpView().getUserName(), getMvpView().getPassword(), callback);
+        if (checkInput()) {
+            userModel.register(getMvpView().getUserName(), getMvpView().getPassword(), callback);
+        }
+    }
+
+    private boolean checkInput() {
+        if (StringUtils.isEmpty(getMvpView().getUserName())) {
+            getMvpView().showError("用户名不能为空");
+            return false;
+        }
+        if (StringUtils.isEmpty(getMvpView().getPassword())) {
+            getMvpView().showError("密码不能为空");
+            return false;
+        }
+        if (getMvpView().getPassword().equals(getMvpView().getConfirmPassword())) {
+            getMvpView().showError("两次输入的密码不一致");
+            return false;
+        }
+        return true;
     }
 }

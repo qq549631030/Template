@@ -79,33 +79,17 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> im
 
     @OnClick({R.id.forget_password, R.id.login})
     public void onClick(View view) {
+        if (!FastClickUtils.isTimeToProcess(view.getId())) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.forget_password:
-                if (FastClickUtils.isTimeToProcess(R.id.forget_password)) {
-                    startActivity(new Intent(LoginActivity.this, ResetPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                }
+                startActivity(new Intent(LoginActivity.this, ResetPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.login:
-                if (checkInput()) {
-                    if (FastClickUtils.isTimeToProcess(R.id.login)) {
-                        showLoadingProgress("登录中...");
-                        presenter.login();
-                    }
-                }
+                presenter.login();
                 break;
         }
-    }
-
-    private boolean checkInput() {
-        if (TextUtils.isEmpty(getUserName())) {
-            ToastUtils.showToast(this, "用户名不能为空");
-            return false;
-        }
-        if (TextUtils.isEmpty(getPassword())) {
-            ToastUtils.showToast(this, "密码不能为空");
-            return false;
-        }
-        return true;
     }
 
     @Override
@@ -125,7 +109,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> im
      */
     @Override
     public void loginSuccess(User user) {
-        hideLoadingProgress();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         CustomApplication.reloadUserInfo();
@@ -140,7 +123,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> im
      */
     @Override
     public void loginFail(String errorCode, String errorMsg) {
-        hideLoadingProgress();
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 

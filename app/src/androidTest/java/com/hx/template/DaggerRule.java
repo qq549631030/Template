@@ -6,6 +6,7 @@ import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
 import com.hx.template.dagger2.ComponentHolder;
 
+
 import org.robolectric.RuntimeEnvironment;
 
 import it.cosenonjaviste.daggermock.DaggerMockRule;

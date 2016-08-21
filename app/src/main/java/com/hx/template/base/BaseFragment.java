@@ -18,7 +18,7 @@ import com.hx.template.presenter.Presenter;
 /**
  * Created by huangx on 2016/5/12.
  */
-public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fragment implements LoaderManager.LoaderCallbacks<P> {
+public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fragment implements MvpView, LoaderManager.LoaderCallbacks<P> {
 
     public final static int BASE_FRAGMENT_LOADER_ID = 200;
 
@@ -148,5 +148,34 @@ public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fra
     public void onLoaderReset(Loader<P> loader) {
         HXLog.d("onLoaderReset");
         presenter = null;
+    }
+
+    @Override
+    public void showError(String errorMsg) {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).showError(errorMsg);
+        }
+    }
+
+    /**
+     * 显示loading对话框
+     *
+     * @param msg
+     */
+    @Override
+    public void showLoadingProgress(String msg) {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).showLoadingProgress(msg);
+        }
+    }
+
+    /**
+     * 隐藏loading对话框
+     */
+    @Override
+    public void hideLoadingProgress() {
+        if (getActivity() instanceof BaseActivity) {
+            ((BaseActivity) getActivity()).hideLoadingProgress();
+        }
     }
 }

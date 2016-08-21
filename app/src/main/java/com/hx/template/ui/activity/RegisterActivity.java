@@ -63,38 +63,19 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMv
 
     @OnClick({R.id.register, R.id.to_login})
     public void onClick(View view) {
+        if (!FastClickUtils.isTimeToProcess(view.getId())) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.register:
-                if (checkInput()) {
-                    if (FastClickUtils.isTimeToProcess(R.id.register)) {
-                        presenter.register();
-                    }
-                }
+                presenter.register();
                 break;
             case R.id.to_login:
-                if (FastClickUtils.isTimeToProcess(R.id.to_login)) {
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 break;
         }
-    }
-
-    private boolean checkInput() {
-        if (TextUtils.isEmpty(getUserName())) {
-            ToastUtils.showToast(this, "用户名不能为空");
-            return false;
-        }
-        if (TextUtils.isEmpty(getPassword())) {
-            ToastUtils.showToast(this, "密码不能为空");
-            return false;
-        }
-        if (getPassword().equals(confirmPassword.getText().toString().trim())) {
-            ToastUtils.showToast(this, "两次输入的密码不一致");
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -118,11 +99,20 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMv
     }
 
     /**
+     * 获取再次输入的密码
+     *
+     * @return
+     */
+    @Override
+    public String getConfirmPassword() {
+        return confirmPassword.getText().toString().trim();
+    }
+
+    /**
      * 注册成功
      */
     @Override
     public void registerSuccess() {
-        hideLoadingProgress();
         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -136,7 +126,6 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMv
      */
     @Override
     public void registerFail(String errorCode, String errorMsg) {
-        hideLoadingProgress();
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

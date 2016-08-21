@@ -22,8 +22,9 @@ import com.hx.template.global.SaveSceneUtils;
 import com.hx.template.mvpview.LoadingView;
 import com.hx.template.mvpview.MvpView;
 import com.hx.template.presenter.Presenter;
+import com.hx.template.utils.ToastUtils;
 
-public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends AppCompatActivity implements LoadingView, LoaderManager.LoaderCallbacks<P> {
+public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends AppCompatActivity implements MvpView, LoaderManager.LoaderCallbacks<P> {
 
     public final static int BASE_ACTIVITY_LOADER_ID = 100;
 
@@ -167,4 +168,8 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
         presenter = null;
     }
 
+    @Override
+    public void showError(String errorMsg) {
+        ToastUtils.showToast(this, errorMsg);
+    }
 }

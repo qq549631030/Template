@@ -21,6 +21,14 @@ public interface RegisterMvpView extends MvpView {
      */
     String getPassword();
 
+
+    /**
+     * 获取再次输入的密码
+     *
+     * @return
+     */
+    String getConfirmPassword();
+
     /**
      * 注册成功
      */

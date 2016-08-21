@@ -4,11 +4,13 @@ import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
+import com.hx.template.mvpview.impl.LoginMvpView;
 import com.hx.template.presenter.BasePresenter;
 import com.hx.template.presenter.itf.IUserPresenter;
-import com.hx.template.mvpview.impl.LoginMvpView;
 
 import javax.inject.Inject;
+
+import cn.huangx.common.utils.StringUtils;
 
 /**
  * Created by huangxiang on 16/3/30.
@@ -22,6 +24,7 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> implements IUser
                 switch (taskId) {
                     case TaskManager.TASK_ID_LOGIN:
                         if (data.length > 0 && data[0] instanceof User) {
+                            getMvpView().hideLoadingProgress();
                             getMvpView().loginSuccess((User) data[0]);
                         }
                         break;
@@ -35,12 +38,14 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> implements IUser
                 String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
                 switch (taskId) {
                     case TaskManager.TASK_ID_LOGIN:
+                        getMvpView().hideLoadingProgress();
                         getMvpView().loginFail(errorCode, errorMsgStr);
                         break;
                 }
             }
         }
     };
+
     @Inject
     public LoginPresenter(UserModel userModel) {
         this.userModel = userModel;
@@ -63,6 +68,21 @@ public class LoginPresenter extends BasePresenter<LoginMvpView> implements IUser
         if (!isViewAttached()) {
             return;
         }
-        userModel.login(getMvpView().getUserName(), getMvpView().getPassword(), callback);
+        if (checkInput()) {
+            getMvpView().showLoadingProgress("登录中...");
+            userModel.login(getMvpView().getUserName(), getMvpView().getPassword(), callback);
+        }
+    }
+
+    private boolean checkInput() {
+        if (StringUtils.isEmpty(getMvpView().getUserName())) {
+            getMvpView().showError("用户名不能为空");
+            return false;
+        }
+        if (StringUtils.isEmpty(getMvpView().getPassword())) {
+            getMvpView().showError("密码不能为空");
+            return false;
+        }
+        return true;
     }
 }
