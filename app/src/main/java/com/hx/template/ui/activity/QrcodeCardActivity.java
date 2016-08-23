@@ -46,11 +46,11 @@ public class QrcodeCardActivity extends BaseActivity {
         User currentUser = User.getCurrentUser(User.class);
         if (currentUser != null) {
             nickname.setText(StringUtils.nullStrToEmpty(currentUser.getNickname()));
-            BmobFile avatarFile = currentUser.getAvatar();
-            if (avatarFile != null) {
-                ImageLoaderManager.getImageLoader(this).displayImage(avatarFile.getFileUrl(), avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar);
+            String avatarUrl = currentUser.getAvatar();
+            if (avatarUrl != null) {
+                ImageLoaderManager.getImageLoader(this).displayImage(avatarUrl, avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar);
             }
-            qrcode.setImageBitmap(QRCodeCreateUtil.createQRImage("null",600,600));
+            qrcode.setImageBitmap(QRCodeCreateUtil.createQRImage("null", 600, 600));
         }
     }
 

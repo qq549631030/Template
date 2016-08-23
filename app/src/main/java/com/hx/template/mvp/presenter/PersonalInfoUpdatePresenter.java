@@ -7,6 +7,9 @@ import com.hx.template.model.UserModel;
 import com.hx.template.mvp.contract.PersonalInfoUpdateContract;
 import com.hx.template.mvp.BasePresenter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 /**
@@ -28,10 +31,10 @@ public class PersonalInfoUpdatePresenter extends BasePresenter<PersonalInfoUpdat
         switch (infoType) {
             case User.INFO_TYPE_NICKNAME:
                 String nicknameNew = getMvpView().getNewData();
-                User user = new User();
-                user.setNickname(nicknameNew);
-                getMvpView().showError("修改中...");
-                userModel.updateUserInfo(user, this);
+                Map<String, Object> values = new HashMap<>();
+                values.put("nickname", nicknameNew);
+                getMvpView().showLoadingProgress("修改中...");
+                userModel.updateUserInfo(values, this);
                 break;
             default:
                 break;

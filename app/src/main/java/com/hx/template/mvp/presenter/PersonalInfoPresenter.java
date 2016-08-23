@@ -9,6 +9,8 @@ import com.hx.template.mvp.contract.PersonalInfoContract;
 import com.hx.template.mvp.BasePresenter;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -44,10 +46,10 @@ public class PersonalInfoPresenter extends BasePresenter<PersonalInfoContract.Vi
             switch (taskId) {
                 case TaskManager.TASK_ID_UPLOAD_FILE:
                     if (data != null && data.length > 0) {
-                        BmobFile bmobFile = (BmobFile) data[0];
-                        User user = new User();
-                        user.setAvatar(bmobFile);
-                        userModel.updateUserInfo(user, this);
+                        String avatar = (String) data[0];
+                        Map<String, Object> values = new HashMap<>();
+                        values.put("avatar", avatar);
+                        userModel.updateUserInfo(values, this);
                     }
                     break;
 

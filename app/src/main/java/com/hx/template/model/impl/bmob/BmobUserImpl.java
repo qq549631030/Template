@@ -1,12 +1,17 @@
 package com.hx.template.model.impl.bmob;
 
+import com.hx.template.entity.BbUser;
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
+import java.util.Map;
+
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.helper.GsonUtil;
 import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -18,7 +23,8 @@ import cn.bmob.v3.listener.UpdateListener;
 public class BmobUserImpl implements UserModel {
     @Override
     public void register(String username, String password, final Callback callback) {
-        User user = new User();
+
+        BmobUser user = new BmobUser();
         user.setUsername(username);
         user.setPassword(password);
         user.signUp(new SaveListener<User>() {
@@ -31,7 +37,7 @@ public class BmobUserImpl implements UserModel {
 
     @Override
     public void login(String username, String password, final Callback callback) {
-        User.loginByAccount(username, password, new LogInListener<User>() {
+        BmobUser.loginByAccount(username, password, new LogInListener<User>() {
             @Override
             public void done(User user, BmobException e) {
                 BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_LOGIN, e, user);
@@ -48,7 +54,7 @@ public class BmobUserImpl implements UserModel {
      */
     @Override
     public void modifyPwd(String oldPwd, String newPwd, final Callback callback) {
-        User.updateCurrentUserPassword(oldPwd, newPwd, new UpdateListener() {
+        BmobUser.updateCurrentUserPassword(oldPwd, newPwd, new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_MODIFY_PWD, e);
@@ -76,14 +82,18 @@ public class BmobUserImpl implements UserModel {
     /**
      * 更新用户信息
      *
-     * @param user     要更新的用户信息
+     * @param values   要更新的用户信息
      * @param callback 回调监听
      */
     @Override
-    public void updateUserInfo(User user, final Callback callback) {
+    public void updateUserInfo(Map<String, Object> values, final Callback callback) {
         User currentUser = User.getCurrentUser(User.class);
         if (currentUser != null) {
-            user.update(currentUser.getObjectId(), new UpdateListener() {
+            BbUser bbUser = new BbUser();
+            for (String key : values.keySet()) {
+                bbUser.setValue(key, values.get(key));
+            }
+            bbUser.update(currentUser.getObjectId(), new UpdateListener() {
                 @Override
                 public void done(BmobException e) {
                     BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_UPDATE_USER_INFO, e);
@@ -102,7 +112,7 @@ public class BmobUserImpl implements UserModel {
      */
     @Override
     public void requestEmailVerify(String email, final Callback callback) {
-        User.requestEmailVerify(email, new UpdateListener() {
+        BmobUser.requestEmailVerify(email, new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY, e);
@@ -119,7 +129,7 @@ public class BmobUserImpl implements UserModel {
      */
     @Override
     public void resetPasswordBySMSCode(String code, String pwd, final Callback callback) {
-        User.resetPasswordBySMSCode(code, pwd, new UpdateListener() {
+        BmobUser.resetPasswordBySMSCode(code, pwd, new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE, e);
@@ -135,7 +145,7 @@ public class BmobUserImpl implements UserModel {
      */
     @Override
     public void resetPasswordByEmail(String email, final Callback callback) {
-        User.resetPasswordByEmail(email, new UpdateListener() {
+        BmobUser.resetPasswordByEmail(email, new UpdateListener() {
             @Override
             public void done(BmobException e) {
                 BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_RESET_PASSWORD_BY_EMAIL, e);
@@ -148,6 +158,6 @@ public class BmobUserImpl implements UserModel {
      */
     @Override
     public void logout() {
-        User.logOut();
+        BmobUser.logOut();
     }
 }

@@ -16,7 +16,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
@@ -25,7 +24,6 @@ import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
 import com.hx.template.utils.DataCleanManager;
 import com.hx.template.utils.StringUtils;
 

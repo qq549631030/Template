@@ -103,9 +103,9 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
             username.setText(StringUtils.nullStrToEmpty(currentUser.getUsername()));
             mobilePhone.setText(StringUtils.nullStrToEmpty(currentUser.getMobilePhoneNumber()));
             email.setText(StringUtils.nullStrToEmpty(currentUser.getEmail()));
-            BmobFile avatarFile = currentUser.getAvatar();
-            if (avatarFile != null) {
-                ImageLoaderManager.getImageLoader(this).displayImage(avatarFile.getFileUrl(), avatar, R.drawable.default_avatar, R.drawable.default_avatar, 0);
+            String avatarUrl = currentUser.getAvatar();
+            if (avatarUrl != null) {
+                ImageLoaderManager.getImageLoader(this).displayImage(avatarUrl, avatar, R.drawable.default_avatar, R.drawable.default_avatar, 0);
             }
             Gender genderObj = Gender.getInstanceByCode(currentUser.getGender());
             gender.setText(StringUtils.nullStrToEmpty(genderObj == null ? "" : genderObj.getValue()));

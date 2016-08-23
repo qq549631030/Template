@@ -64,9 +64,9 @@ public class PersonalCenterFragment extends BaseFragment {
         if (currentUser != null) {
             nickname.setText(StringUtils.nullStrToEmpty(currentUser.getNickname()));
             username.setText(StringUtils.nullStrToEmpty(currentUser.getUsername()));
-            BmobFile avatarFile = currentUser.getAvatar();
-            if (avatarFile != null) {
-                ImageLoaderManager.getImageLoader(getContext()).displayImage(avatarFile.getFileUrl(), avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar);
+            String avatarUrl = currentUser.getAvatar();
+            if (avatarUrl != null) {
+                ImageLoaderManager.getImageLoader(getContext()).displayImage(avatarUrl, avatar, R.drawable.default_avatar, R.drawable.default_avatar, R.drawable.default_avatar);
             }
         }
     }

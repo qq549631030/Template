@@ -5,16 +5,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.http.bmob.BmobSMSTemplate;
@@ -28,8 +25,6 @@ import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

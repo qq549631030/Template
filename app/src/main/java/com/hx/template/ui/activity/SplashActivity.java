@@ -12,7 +12,11 @@ import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
+import com.hx.template.global.GsonUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +74,13 @@ public class SplashActivity extends BaseActivity {
         if (isFirst) {
             mHandler.sendEmptyMessageDelayed(GO_TO_GUIDE, 1500);
         } else {
+            String userStr = (String) SharedPreferencesUtil.getParam(this, "bmob_sp", "user", "");
+            try {
+                JSONObject userObj = new JSONObject(userStr);
+                User.setCurrent(userObj);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             User currentUser = User.getCurrentUser(User.class);
             if (currentUser != null) {
                 CustomApplication.reloadUserInfo();

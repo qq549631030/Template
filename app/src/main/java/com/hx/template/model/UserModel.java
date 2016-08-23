@@ -2,6 +2,8 @@ package com.hx.template.model;
 
 import com.hx.template.entity.User;
 
+import java.util.Map;
+
 /**
  * Created by huangxiang on 16/3/9.
  */
@@ -44,10 +46,10 @@ public interface UserModel {
     /**
      * 更新用户信息
      *
-     * @param user     要更新的用户信息
+     * @param values   要更新的用户信息
      * @param callback 回调监听
      */
-    void updateUserInfo(User user, Callback callback);
+    void updateUserInfo(Map<String, Object> values, Callback callback);
 
     /**
      * 请求验证Email

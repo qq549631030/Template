@@ -9,6 +9,8 @@ import com.hx.template.mvp.contract.BindEmailContract;
 import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -31,10 +33,10 @@ public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> im
     public void resetEmail() {
         checkViewAttached();
         if (checkInput()) {
-            User user = new User();
-            user.setEmail(getMvpView().getEmail());
+            Map<String, Object> values = new HashMap<>();
+            values.put("email", getMvpView().getEmail());
             getMvpView().showLoadingProgress("正在发送验证邮件...");
-            userModel.updateUserInfo(user, this);
+            userModel.updateUserInfo(values, this);
         }
     }
 

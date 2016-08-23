@@ -95,13 +95,32 @@ android {
     }
     //渠道
     productFlavors {
-        baidu {
+        mock {
+            applicationIdSuffix = ".mock"
+        }
+        prod{
+            
         }
         productFlavors.all {
                 //设UMENG_CHANNEL_VALUE的值为对应的渠道名(wandoujia、baidu、u360、tencent)
             flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
     }
+    // Remove mockRelease as it's not needed.
+    android.variantFilter { variant ->
+        if (variant.buildType.name.equals('release')
+                && variant.getFlavors().get(0).name.equals('mock')) {
+            variant.setIgnore(true);
+        }
+    }
+
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
+
     //打包时忽略以下文件
     packagingOptions {
         exclude '.readme'
@@ -141,6 +160,7 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.5"
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
     testCompile "org.powermock:powermock-classloading-xstream:1.6.5"
+    testCompile "org.robolectric:robolectric:3.1.1"
     androidTestCompile "org.robolectric:robolectric:3.1.1"
     androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
     //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话

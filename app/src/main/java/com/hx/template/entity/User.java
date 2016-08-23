@@ -1,14 +1,15 @@
 package com.hx.template.entity;
 
-import com.j256.ormlite.field.DatabaseField;
+import com.hx.template.global.GsonUtils;
 
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BmobFile;
+import java.lang.reflect.Field;
+
+import cn.bmob.v3.helper.GsonUtil;
 
 /**
  * Created by huangxiang on 15/10/20.
  */
-public class User extends BmobUser {
+public class User extends BaseUser {
 
     public static final String INFO_TYPE = "info_type";
 
@@ -16,7 +17,7 @@ public class User extends BmobUser {
 
     private String nickname;
 
-    private BmobFile avatar;
+    private String avatar;
 
     private String gender;
 
@@ -28,11 +29,11 @@ public class User extends BmobUser {
         this.nickname = nickname;
     }
 
-    public BmobFile getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(BmobFile avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -42,5 +43,25 @@ public class User extends BmobUser {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public void setValue(String fieldName, Object value) {
+        Field[] fields = User.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals(fieldName)) {
+                field.setAccessible(true);
+                try {
+                    field.set(this, value);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static User fromBbUser(BbUser bbUser) {
+        String userStr = GsonUtils.toJson(bbUser);
+        User user = (User) GsonUtil.toObject(userStr, User.class);
+        return user;
     }
 }
