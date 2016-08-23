@@ -6,15 +6,15 @@ import com.hx.template.model.FileModel;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.UserModel;
-import com.hx.template.presenter.impl.BindEmailPresenter;
-import com.hx.template.presenter.impl.BindPhonePresenter;
-import com.hx.template.presenter.impl.LoginPresenter;
-import com.hx.template.presenter.impl.ModifyPwdPresenter;
-import com.hx.template.presenter.impl.PersonalInfoPresenter;
-import com.hx.template.presenter.impl.PersonalInfoUpdatePresenter;
-import com.hx.template.presenter.impl.RegisterPresenter;
-import com.hx.template.presenter.impl.ResetPwdByEmailPresenter;
-import com.hx.template.presenter.impl.ResetPwdByPhonePresenter;
+import com.hx.template.mvp.presenter.LoginPresenter;
+import com.hx.template.mvp.presenter.BindEmailPresenter;
+import com.hx.template.mvp.presenter.BindPhonePresenter;
+import com.hx.template.mvp.presenter.ModifyPwdPresenter;
+import com.hx.template.mvp.presenter.PersonalInfoPresenter;
+import com.hx.template.mvp.presenter.PersonalInfoUpdatePresenter;
+import com.hx.template.mvp.presenter.RegisterPresenter;
+import com.hx.template.mvp.presenter.ResetPwdByEmailPresenter;
+import com.hx.template.mvp.presenter.ResetPwdByPhonePresenter;
 
 import javax.inject.Singleton;
 

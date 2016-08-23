@@ -8,7 +8,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
@@ -19,13 +18,11 @@ import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobFileModel;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.PersonalInfoMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.PersonalInfoPresenter;
+import com.hx.template.mvp.contract.PersonalInfoContract;
+import com.hx.template.mvp.presenter.PersonalInfoPresenter;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.utils.UriUtils;
@@ -46,7 +43,7 @@ import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
-public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoMvpView> implements PersonalInfoMvpView {
+public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoContract.View> implements PersonalInfoContract.View {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
     private static final int REQUEST_CODE_CROP_IMAGE = 102;
@@ -184,10 +181,9 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
                     .setQuality(75)
                     .setCompressFormat(Bitmap.CompressFormat.JPEG)
                     .build().compressToFile(new File(path));
-            showLoadingProgress("正在修改");
             presenter.updateAvatar(compressedImageFile);
         } else if (resultCode == Crop.RESULT_ERROR) {
-            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast(this, Crop.getError(result).getMessage());
         }
     }
 
@@ -196,7 +192,6 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
      */
     @Override
     public void avatarUpdateSuccess() {
-        hideLoadingProgress();
         EventBus.getDefault().post(new UserInfoUpdateEvent());
     }
 
@@ -208,7 +203,6 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
      */
     @Override
     public void avatarUpdateFail(String errorCode, String errorMsg) {
-        hideLoadingProgress();
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

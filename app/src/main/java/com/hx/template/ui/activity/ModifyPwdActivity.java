@@ -9,12 +9,11 @@ import android.widget.EditText;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.ModifyPwdMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.ModifyPwdPresenter;
+import com.hx.template.mvp.contract.ModifyPwdContract;
+import com.hx.template.mvp.presenter.ModifyPwdPresenter;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -22,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPwdMvpView> implements ModifyPwdMvpView {
+public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPwdContract.View> implements ModifyPwdContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -56,7 +55,6 @@ public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPw
     @OnClick(R.id.confirm)
     public void onClick() {
         if (checkInput()) {
-            showLoadingProgress("正在修改...");
             presenter.modifyPwd();
         }
     }
@@ -88,11 +86,20 @@ public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPw
     }
 
     /**
+     * 获取新密码
+     *
+     * @return
+     */
+    @Override
+    public String getConfirmPwd() {
+        return confirmPassword.getText().toString().trim();
+    }
+
+    /**
      * 修改成功
      */
     @Override
     public void modifySuccess() {
-        hideLoadingProgress();
         ToastUtils.showToast(this, "修改成功");
         finish();
     }
@@ -105,7 +112,6 @@ public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPw
      */
     @Override
     public void modifyFail(String errorCode, String errorMsg) {
-        hideLoadingProgress();
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

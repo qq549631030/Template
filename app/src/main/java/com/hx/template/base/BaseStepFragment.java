@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.hx.template.R;
-import com.hx.template.mvpview.MvpView;
-import com.hx.template.presenter.Presenter;
+import com.hx.template.mvp.MvpView;
+import com.hx.template.mvp.Presenter;
 
 /**
  * Created by huangx on 2016/5/13.

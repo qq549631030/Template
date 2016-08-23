@@ -1,10 +1,13 @@
 package com.hx.template.presenter.impl;
 
+import com.hx.template.CustomRule;
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
-import com.hx.template.mvpview.impl.LoginMvpView;
+import com.hx.template.mvp.contract.LoginContract;
+import com.hx.template.mvp.presenter.LoginPresenter;
+import com.hx.template.mvp.BasePresenter;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -19,6 +22,7 @@ import org.mockito.stubbing.Answer;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,9 +32,11 @@ import static org.mockito.Mockito.when;
 public class LoginPresenterTest {
 
     @Rule
+    public CustomRule customRule = new CustomRule();
+    @Rule
     public MockitoRule daggerRule = MockitoJUnit.rule();
     @Mock
-    LoginMvpView loginMvpView;
+    LoginContract.View loginMvpView;
     @Mock
     UserModel userModel;
     @InjectMocks
@@ -58,21 +64,61 @@ public class LoginPresenterTest {
         }).when(userModel).login(anyString(), anyString(), any(Callback.class));
     }
 
-    @Test
-    public void testOnDestroyed() throws Exception {
+    @Test(expected = IllegalArgumentException.class)
+    public void testUserModelNull() throws Exception {
+        presenter = new LoginPresenter(null);
+    }
 
+    @Test(expected = BasePresenter.MvpViewNotAttachedException.class)
+    public void testViewNotAttach() throws Exception {
+        presenter.login();
     }
 
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin_Normal() throws Exception {
         presenter.attachView(loginMvpView);
         when(loginMvpView.getUserName()).thenReturn("huangxiang");
         when(loginMvpView.getPassword()).thenReturn("123456");
         presenter.login();
         verify(loginMvpView).loginSuccess(any(User.class));
+    }
+
+    @Test
+    public void testLogin_incorrect_username() throws Exception {
+        presenter.attachView(loginMvpView);
+        when(loginMvpView.getUserName()).thenReturn("huangxiang1");
+        when(loginMvpView.getPassword()).thenReturn("123456");
+        presenter.login();
+        verify(loginMvpView).loginFail("10001", "用户名或密码错误");
+    }
+
+    @Test
+    public void testLogin_incorrect_password() throws Exception {
+        presenter.attachView(loginMvpView);
         when(loginMvpView.getUserName()).thenReturn("huangxiang");
         when(loginMvpView.getPassword()).thenReturn("1234567");
         presenter.login();
         verify(loginMvpView).loginFail("10001", "用户名或密码错误");
+    }
+
+
+    @Test
+    public void testLogin_username_empty() throws Exception {
+        presenter.attachView(loginMvpView);
+        when(loginMvpView.getUserName()).thenReturn("");
+        when(loginMvpView.getPassword()).thenReturn("123456");
+        presenter.login();
+        verify(loginMvpView, never()).showLoadingProgress(anyString());
+        verify(userModel, never()).login(anyString(), anyString(), any(Callback.class));
+    }
+
+    @Test
+    public void testLogin_password_empty() throws Exception {
+        presenter.attachView(loginMvpView);
+        when(loginMvpView.getUserName()).thenReturn("huangxiang");
+        when(loginMvpView.getPassword()).thenReturn("");
+        presenter.login();
+        verify(loginMvpView, never()).showLoadingProgress(anyString());
+        verify(userModel, never()).login(anyString(), anyString(), any(Callback.class));
     }
 }

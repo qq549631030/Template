@@ -4,31 +4,24 @@ package com.hx.template.ui.fragment;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobSMSModel;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.ResetPwdByPhoneMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.ResetPwdByPhonePresenter;
+import com.hx.template.mvp.contract.ResetPwdByPhoneContract;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
+import com.hx.template.mvp.presenter.ResetPwdByPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
-
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +30,7 @@ import butterknife.OnClick;
 /**
  * 手机号码重置密码
  */
-public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePresenter, ResetPwdByPhoneMvpView> implements ResetPwdByPhoneMvpView {
+public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePresenter, ResetPwdByPhoneContract.View> implements ResetPwdByPhoneContract.View {
 
     @Bind(R.id.phone)
     EditText phone;
@@ -117,20 +110,10 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
         }
         switch (view.getId()) {
             case R.id.getvcode:
-                if (checkPhone()) {
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在获取短信验证码...");
-                    }
-                    presenter.requestSMSCode();
-                }
+                presenter.requestSMSCode();
                 break;
             case R.id.confirm:
-                if (checkInput()) {
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在重置...");
-                    }
-                    presenter.resetPasswordBySMSCode();
-                }
+                presenter.resetPasswordBySMSCode();
                 break;
             case R.id.reset_by_email:
                 setNextTarget(ResetPwdByEmailFragment.class);
@@ -139,36 +122,6 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
         }
     }
 
-    private boolean checkPhone() {
-        if (TextUtils.isEmpty(getRequestPhoneNumber())) {
-            ToastUtils.showToast(getContext(), "手机号码不能为空");
-            return false;
-        }
-        if (!(Pattern.matches(Constant.phoneFormat, getRequestPhoneNumber()))) {
-            ToastUtils.showToast(getContext(), "手机号码有误");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkInput() {
-        if (!checkPhone()) {
-            return false;
-        }
-        if (TextUtils.isEmpty(getSMSCode())) {
-            ToastUtils.showToast(getContext(), "验证码不能为空");
-            return false;
-        }
-        if (TextUtils.isEmpty(getPassword())) {
-            ToastUtils.showToast(getContext(), "密码不能为空");
-            return false;
-        }
-        if (getPassword().equals(confirmPassword.getText().toString().trim())) {
-            ToastUtils.showToast(getContext(), "两次输入的密码不一致");
-            return false;
-        }
-        return true;
-    }
 
     /**
      * 获取验证码
@@ -191,13 +144,20 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
     }
 
     /**
+     * 获取再次确认密码
+     *
+     * @return
+     */
+    @Override
+    public String getConfirmPassword() {
+        return confirmPassword.getText().toString().trim();
+    }
+
+    /**
      * 重置成功
      */
     @Override
     public void resetSuccess() {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), "重置成功");
         finish();
     }
@@ -210,9 +170,6 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
      */
     @Override
     public void resetFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 
@@ -243,9 +200,6 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
      */
     @Override
     public void onRequestSuccess(Object... data) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), "验证码获取成功");
         getvcode.setEnabled(false);
         countDownTimer.start();
@@ -259,9 +213,6 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
      */
     @Override
     public void onRequestFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 }

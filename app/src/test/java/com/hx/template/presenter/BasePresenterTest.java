@@ -1,8 +1,11 @@
 package com.hx.template.presenter;
 
-import com.hx.template.mvpview.MvpView;
+import com.hx.template.CustomRule;
+import com.hx.template.mvp.BasePresenter;
+import com.hx.template.mvp.MvpView;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -13,6 +16,10 @@ import static org.junit.Assert.*;
  * Created by huangxiang on 16/8/20.
  */
 public class BasePresenterTest {
+
+    @Rule
+    public CustomRule customRule = new CustomRule();
+    
     @Mock
     MvpView mvpView;
 
@@ -44,25 +51,38 @@ public class BasePresenterTest {
     @Test
     public void testOnDestroyed() throws Exception {
         presenter.onDestroyed();
-        assertNull(presenter.getMvpView());
     }
 
     @Test
-    public void testIsViewAttached() throws Exception {
+    public void testIsViewAttached_Attached() throws Exception {
         assertFalse(presenter.isViewAttached());
         presenter.attachView(mvpView);
         assertTrue(presenter.isViewAttached());
     }
 
     @Test
-    public void testGetMvpView() throws Exception {
-        assertNull(presenter.getMvpView());
-        presenter.attachView(mvpView);
-        assertSame(mvpView, presenter.getMvpView());
+    public void testIsViewAttached_Not_Attached() throws Exception {
+        assertFalse(presenter.isViewAttached());
     }
 
     @Test
-    public void testCheckViewAttached() throws Exception {
+    public void testGetMvpView() throws Exception {
+        assertNull(presenter.getMvpView());
+        presenter.attachView(mvpView);
+        assertNotNull(presenter.getMvpView());
+        assertSame(mvpView, presenter.getMvpView());
+    }
 
+    @Test(expected = BasePresenter.MvpViewNotAttachedException.class)
+    public void testCheckViewAttached() throws Exception {
+        assertNull(presenter.getMvpView());
+        presenter.checkViewAttached();
+    }
+
+    @Test
+    public void testCheckViewAttached_Attached() throws Exception {
+        assertNull(presenter.getMvpView());
+        presenter.attachView(mvpView);
+        presenter.checkViewAttached();
     }
 }

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +21,10 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.ModelManager;
-import com.hx.template.mvpview.impl.LoginMvpView;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.LoginPresenter;
+import com.hx.template.mvp.contract.LoginContract;
+import com.hx.template.mvp.presenter.LoginPresenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -33,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity<LoginPresenter, LoginMvpView> implements LoginMvpView {
+public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
 
     @Bind(R.id.username)
     EditText username;

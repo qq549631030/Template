@@ -19,14 +19,11 @@ import com.hx.template.base.BaseStepFragment;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobSMSModel;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.BindPhoneMvpView;
-import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.BindPhonePresenter;
+import com.hx.template.mvp.contract.BindPhoneContract;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
+import com.hx.template.mvp.presenter.BindPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -41,7 +38,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, VerifyPhoneMvpView> implements BindPhoneMvpView {
+public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, BindPhoneContract.View> implements BindPhoneContract.View {
 
 
     @Bind(R.id.phone)
@@ -111,45 +108,12 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.getvcode:
-                if (checkPhone()) {
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在获取短信验证码...");
-                    }
-                    presenter.requestSMSCode();
-                }
+                presenter.requestSMSCode();
                 break;
             case R.id.bind:
-                if (checkInput()) {
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在绑定...");
-                    }
-                    presenter.verifySmsCode();
-                }
+                presenter.verifySmsCode();
                 break;
         }
-    }
-
-    private boolean checkPhone() {
-        if (TextUtils.isEmpty(getRequestPhoneNumber())) {
-            ToastUtils.showToast(getContext(), "手机号码不能为空");
-            return false;
-        }
-        if (!(Pattern.matches(Constant.phoneFormat, getRequestPhoneNumber()))) {
-            ToastUtils.showToast(getContext(), "手机号码有误");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkInput() {
-        if (!checkPhone()) {
-            return false;
-        }
-        if (TextUtils.isEmpty(getSMSCode())) {
-            ToastUtils.showToast(getContext(), "验证码不能为空");
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -157,9 +121,6 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
      */
     @Override
     public void bindSuccess() {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), "绑定成功");
         EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
@@ -173,9 +134,6 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
      */
     @Override
     public void bindFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 
@@ -207,9 +165,6 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
      */
     @Override
     public void onRequestSuccess(Object... data) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), "验证码获取成功");
         getvcode.setEnabled(false);
         countDownTimer.start();
@@ -223,9 +178,6 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
      */
     @Override
     public void onRequestFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 
@@ -256,7 +208,7 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
      */
     @Override
     public void onVerifySuccess(Object... data) {
-        presenter.bindPhone();
+        //nop
     }
 
     /**
@@ -267,9 +219,6 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Veri
      */
     @Override
     public void onVerifyFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 }

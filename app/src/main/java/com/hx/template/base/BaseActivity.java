@@ -3,10 +3,8 @@ package com.hx.template.base;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.LoaderManager;
@@ -14,14 +12,12 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.CursorAdapter;
 
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
-import com.hx.template.mvpview.LoadingView;
-import com.hx.template.mvpview.MvpView;
-import com.hx.template.presenter.Presenter;
+import com.hx.template.mvp.MvpView;
+import com.hx.template.mvp.Presenter;
 import com.hx.template.utils.ToastUtils;
 
 public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends AppCompatActivity implements MvpView, LoaderManager.LoaderCallbacks<P> {

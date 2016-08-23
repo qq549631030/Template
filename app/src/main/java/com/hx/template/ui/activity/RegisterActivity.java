@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
@@ -18,12 +17,11 @@ import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.RegisterMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.RegisterPresenter;
+import com.hx.template.mvp.contract.RegisterContract;
+import com.hx.template.mvp.presenter.RegisterPresenter;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -31,7 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterMvpView> implements RegisterMvpView {
+public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View {
 
     @Bind(R.id.username)
     EditText username;

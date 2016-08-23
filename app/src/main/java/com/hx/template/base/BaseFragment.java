@@ -1,7 +1,6 @@
 package com.hx.template.base;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +11,8 @@ import android.view.View;
 
 import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
-import com.hx.template.mvpview.MvpView;
-import com.hx.template.presenter.Presenter;
+import com.hx.template.mvp.MvpView;
+import com.hx.template.mvp.Presenter;
 
 /**
  * Created by huangx on 2016/5/12.

@@ -12,12 +12,11 @@ import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.PersonalInfoUpdateMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.PersonalInfoUpdatePresenter;
+import com.hx.template.mvp.contract.PersonalInfoUpdateContract;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
+import com.hx.template.mvp.presenter.PersonalInfoUpdatePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
@@ -26,7 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdatePresenter, PersonalInfoUpdateMvpView> implements PersonalInfoUpdateMvpView {
+public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdatePresenter, PersonalInfoUpdateContract.View> implements PersonalInfoUpdateContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -82,7 +81,6 @@ public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdateP
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.save:
-                showLoadingProgress("正在修改...");
                 presenter.updateInfo();
                 return true;
         }
@@ -104,7 +102,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdateP
      */
     @Override
     public void updateSuccess() {
-        hideLoadingProgress();
+        ToastUtils.showToast(this, "修改成功");
         EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
     }
@@ -117,7 +115,6 @@ public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdateP
      */
     @Override
     public void updateFail(String errorCode, String errorMsg) {
-        hideLoadingProgress();
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
 }

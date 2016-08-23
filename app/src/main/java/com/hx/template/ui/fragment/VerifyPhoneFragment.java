@@ -6,32 +6,25 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseStepFragment;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.impl.bmob.BmobSMSModel;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.mvpview.impl.VerifyPhoneMvpView;
-import com.hx.template.presenter.Presenter;
-import com.hx.template.presenter.PresenterFactory;
-import com.hx.template.presenter.PresenterLoader;
-import com.hx.template.presenter.impl.BindPhonePresenter;
+import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
+import com.hx.template.mvp.contract.VerifyPhoneContract;
+import com.hx.template.mvp.presenter.VerifyPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
-
-import java.util.regex.Pattern;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,7 +33,7 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, VerifyPhoneMvpView> implements VerifyPhoneMvpView {
+public class VerifyPhoneFragment extends BaseStepFragment<VerifyPhonePresenter, VerifyPhoneContract.View> implements VerifyPhoneContract.View {
 
     @Bind(R.id.phone)
     EditText phone;
@@ -65,11 +58,11 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
     }
 
     @Override
-    public Loader<BindPhonePresenter> onCreateLoader(int id, Bundle args) {
+    public Loader<VerifyPhonePresenter> onCreateLoader(int id, Bundle args) {
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindPhonePresenter(ModelManager.newSMSModel(), ModelManager.newUserModel());
+                return new VerifyPhonePresenter(ModelManager.newSMSModel());
             }
         });
     }
@@ -123,53 +116,17 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
 
     @OnClick({R.id.getvcode, R.id.confirm})
     public void onClick(View view) {
+        if (!FastClickUtils.isTimeToProcess(view.getId())) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.getvcode:
-                if (checkPhone()) {
-                    if (!FastClickUtils.isTimeToProcess(view.getId())) {
-                        return;
-                    }
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在获取短信验证码...");
-                    }
-                    presenter.requestSMSCode();
-                }
+                presenter.requestSMSCode();
                 break;
             case R.id.confirm:
-                if (checkInput()) {
-                    if (!FastClickUtils.isTimeToProcess(view.getId())) {
-                        return;
-                    }
-                    if (getActivity() instanceof BaseActivity) {
-                        ((BaseActivity) getActivity()).showLoadingProgress("正在验证短信验证码...");
-                    }
-                    presenter.verifySmsCode();
-                }
+                presenter.verifySmsCode();
                 break;
         }
-    }
-
-    private boolean checkPhone() {
-        if (TextUtils.isEmpty(getRequestPhoneNumber())) {
-            ToastUtils.showToast(getContext(), "手机号码不能为空");
-            return false;
-        }
-        if (!(Pattern.matches(Constant.phoneFormat, getRequestPhoneNumber()))) {
-            ToastUtils.showToast(getContext(), "手机号码有误");
-            return false;
-        }
-        return true;
-    }
-
-    private boolean checkInput() {
-        if (!checkPhone()) {
-            return false;
-        }
-        if (TextUtils.isEmpty(getSMSCode())) {
-            ToastUtils.showToast(getContext(), "验证码不能为空");
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -200,9 +157,6 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
      */
     @Override
     public void onRequestSuccess(Object... data) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), "验证码获取成功");
         getvcode.setEnabled(false);
         countDownTimer.start();
@@ -216,9 +170,6 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
      */
     @Override
     public void onRequestFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 
@@ -249,9 +200,6 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
      */
     @Override
     public void onVerifySuccess(Object... data) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         nextStepAction(new Bundle());
     }
 
@@ -263,9 +211,6 @@ public class VerifyPhoneFragment extends BaseStepFragment<BindPhonePresenter, Ve
      */
     @Override
     public void onVerifyFail(String errorCode, String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
-        }
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
     }
 }
