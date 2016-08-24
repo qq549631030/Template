@@ -27,7 +27,7 @@ public class BmobFileModel implements FileModel {
             @Override
             public void onSuccess(List<BmobFile> list, List<String> list1) {
                 if (list.size() == 1) {
-                    BmobCallBackDeliver.deliverSuccess(callback, TaskManager.TASK_ID_UPLOAD_FILE, list.get(0), list1.get(0));
+                    BmobCallBackDeliver.deliverSuccess(callback, TaskManager.TASK_ID_UPLOAD_FILE, list1.get(0));
                 }
             }
 

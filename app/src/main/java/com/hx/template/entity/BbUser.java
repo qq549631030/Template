@@ -1,6 +1,12 @@
 package com.hx.template.entity;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hx.template.global.GsonUtils;
+
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.helper.GsonUtil;
@@ -40,9 +46,14 @@ public class BbUser extends BmobUser {
         this.gender = gender;
     }
 
-    public static BbUser fromUser(User user) {
-        String userStr = GsonUtils.toJson(user);
-        BbUser bbUser = (BbUser) GsonUtil.toObject(userStr, BbUser.class);
-        return bbUser;
+    public User toUser() {
+        JSONObject current = getCurrentData();
+        if (current == null) {
+            return null;
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<User>() {
+        }.getType();
+        return gson.fromJson(current.toString(), type);
     }
 }

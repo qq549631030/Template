@@ -1,10 +1,12 @@
 package com.hx.template.entity;
 
-import com.hx.template.global.GsonUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
-
-import cn.bmob.v3.helper.GsonUtil;
+import java.lang.reflect.Type;
 
 /**
  * Created by huangxiang on 15/10/20.
@@ -59,9 +61,19 @@ public class User extends BaseUser {
         }
     }
 
-    public static User fromBbUser(BbUser bbUser) {
-        String userStr = GsonUtils.toJson(bbUser);
-        User user = (User) GsonUtil.toObject(userStr, User.class);
-        return user;
+    public static User getCurrentUser(Object... data) {
+        try {
+            JSONObject current = getCurrent();
+            if (current == null) {
+                return null;
+            }
+            Gson gson = new Gson();
+            Type type = new TypeToken<User>() {
+            }.getType();
+            return gson.fromJson(current.toString(), type);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

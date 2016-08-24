@@ -84,14 +84,4 @@ public class BaseUser extends BaseEntity {
         BaseUser.current = current;
     }
 
-    public static User getCurrentUser(Object... data) {
-        JSONObject current = getCurrent();
-        if (current == null) {
-            return null;
-        }
-        Gson gson = new Gson();
-        Type type = new TypeToken<User>() {
-        }.getType();
-        return gson.fromJson(current.toString(), type);
-    }
 }

@@ -11,7 +11,6 @@ import java.util.Map;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.helper.GsonUtil;
 import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -27,20 +26,20 @@ public class BmobUserImpl implements UserModel {
         BmobUser user = new BmobUser();
         user.setUsername(username);
         user.setPassword(password);
-        user.signUp(new SaveListener<User>() {
+        user.signUp(new SaveListener<BbUser>() {
             @Override
-            public void done(User user, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_REGISTER, e, user);
+            public void done(BbUser bbUser, BmobException e) {
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_REGISTER, e, bbUser.toUser());
             }
         });
     }
 
     @Override
     public void login(String username, String password, final Callback callback) {
-        BmobUser.loginByAccount(username, password, new LogInListener<User>() {
+        BmobUser.loginByAccount(username, password, new LogInListener<BbUser>() {
             @Override
-            public void done(User user, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_LOGIN, e, user);
+            public void done(BbUser bbUser, BmobException e) {
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_LOGIN, e, bbUser.toUser());
             }
         });
     }
@@ -70,11 +69,11 @@ public class BmobUserImpl implements UserModel {
      */
     @Override
     public void getUserInfo(String userId, final Callback callback) {
-        BmobQuery<User> query = new BmobQuery<User>();
-        query.getObject(userId, new QueryListener<User>() {
+        BmobQuery<BbUser> query = new BmobQuery<BbUser>();
+        query.getObject(userId, new QueryListener<BbUser>() {
             @Override
-            public void done(User user, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO, e, user);
+            public void done(BbUser bbUser, BmobException e) {
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO, e, bbUser.toUser());
             }
         });
     }
