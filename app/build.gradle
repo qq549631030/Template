@@ -161,6 +161,7 @@ dependencies {
     testCompile "org.powermock:powermock-api-mockito:1.6.5"
     testCompile "org.powermock:powermock-classloading-xstream:1.6.5"
     testCompile "org.robolectric:robolectric:3.1.1"
+    testCompile "org.robolectric:shadows-multidex:3.0"
     androidTestCompile "org.robolectric:robolectric:3.1.1"
     androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
     //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话

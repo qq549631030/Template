@@ -56,8 +56,12 @@ public class CustomApplication extends Application {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
+        try {
+            super.attachBaseContext(base);
+            MultiDex.install(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -5,9 +5,9 @@ import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
+import com.hx.template.mvp.BasePresenter;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
-import com.hx.template.mvp.BasePresenter;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,7 +34,7 @@ public class LoginPresenterTest {
     @Rule
     public CustomRule customRule = new CustomRule();
     @Rule
-    public MockitoRule daggerRule = MockitoJUnit.rule();
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Mock
     LoginContract.View loginMvpView;
     @Mock
