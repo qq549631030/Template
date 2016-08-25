@@ -99,7 +99,7 @@ android {
             applicationIdSuffix = ".mock"
         }
         prod{
-            
+
         }
         productFlavors.all {
                 //设UMENG_CHANNEL_VALUE的值为对应的渠道名(wandoujia、baidu、u360、tencent)

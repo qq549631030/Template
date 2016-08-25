@@ -1,6 +1,6 @@
 /**
  * Copyright &copy; 2014-2016  All rights reserved.
- * <p/>
+ * <p>
  * Licensed under the 深圳中盟燧石科技 License, Version 1.0 (the "License");
  */
 package com.hx.template;
@@ -27,6 +27,7 @@ public class Constant {
      * SharedPreference存储字段名
      */
     public static final String pref_lastLaunchVersion = "lastLaunchVersion";// 上一次使用时候的版本
+    public static final String pref_currentUser = "currentUser";// 当前用户
 
     public static final String crop_image_name = "crop.jpg";
     public static final String camera_image_name = "camera.jpg";
