@@ -2,6 +2,7 @@ package com.hx.template.dagger2;
 
 import android.content.Context;
 
+import com.hx.template.domain.usecase.UseCaseManager;
 import com.hx.template.model.FileModel;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.SMSModel;
@@ -57,8 +58,8 @@ public class AppModule {
     }
 
     @Provides
-    public LoginPresenter provideLoginPresenter(UserModel userModel) {
-        return new LoginPresenter(userModel);
+    public LoginPresenter provideLoginPresenter() {
+        return new LoginPresenter(UseCaseManager.provideLoginCase());
     }
 
     @Provides

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.domain.usecase.UseCaseManager;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GsonUtils;
@@ -54,7 +55,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
 
     @Override
     protected LoginPresenter onCreatePresenter() {
-        return new LoginPresenter(ModelManager.newUserModel());
+        return new LoginPresenter(UseCaseManager.provideLoginCase());
     }
 
     @Override
