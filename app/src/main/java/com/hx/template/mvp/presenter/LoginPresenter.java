@@ -1,5 +1,7 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.user.LoginCase;
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
@@ -14,17 +16,14 @@ import cn.huangx.common.utils.StringUtils;
 /**
  * Created by huangxiang on 16/3/30.
  */
-public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.MvpPresenter, Callback {
-    
-    private UserModel userModel;
+public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.MvpPresenter {
 
-    @Inject
-    public LoginPresenter(UserModel userModel) {
-        this.userModel = userModel;
-        if (userModel == null) {
-            throw new IllegalArgumentException("userModel can't be null");
-        }
+    private final LoginCase loginCase;
+
+    public LoginPresenter(LoginCase loginCase) {
+        this.loginCase = loginCase;
     }
+
 
     /**
      * 登录
@@ -34,7 +33,25 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         checkViewAttached();
         if (checkInput()) {
             getMvpView().showLoadingProgress("登录中...");
-            userModel.login(getMvpView().getUserName(), getMvpView().getPassword(), this);
+            LoginCase.RequestValues requestValues = new LoginCase.RequestValues(getMvpView().getUserName(), getMvpView().getPassword());
+            loginCase.setUseCaseCallback(new UseCase.UseCaseCallback<LoginCase.ResponseValue>() {
+                @Override
+                public void onSuccess(LoginCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().loginSuccess(response.getUser());
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, Object... errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().loginFail(errorCode, errorMsg.toString());
+                    }
+                }
+            });
+            loginCase.executeUseCase(requestValues);
         }
     }
 
@@ -48,32 +65,5 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            switch (taskId) {
-                case TaskManager.TASK_ID_LOGIN:
-                    if (data.length > 0 && data[0] instanceof User) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().loginSuccess((User) data[0]);
-                    }
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_LOGIN:
-                    getMvpView().hideLoadingProgress();
-                    getMvpView().loginFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

@@ -18,6 +18,8 @@ import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
 import com.hx.template.mvp.MvpView;
 import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.ToastUtils;
 
 public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends AppCompatActivity implements MvpView, LoaderManager.LoaderCallbacks<P> {
@@ -144,7 +146,12 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
 
     @Override
     public Loader<P> onCreateLoader(int id, Bundle args) {
-        return null;
+        return new PresenterLoader(this, new PresenterFactory<P>() {
+            @Override
+            public P create() {
+                return onCreatePresenter();
+            }
+        });
     }
 
     @Override
@@ -162,5 +169,9 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
     @Override
     public void showError(String errorMsg) {
         ToastUtils.showToast(this, errorMsg);
+    }
+
+    protected P onCreatePresenter() {
+        return null;
     }
 }

@@ -53,13 +53,8 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
     }
 
     @Override
-    public Loader<LoginPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader(this, new PresenterFactory<LoginPresenter>() {
-            @Override
-            public LoginPresenter create() {
-                return new LoginPresenter(ModelManager.newUserModel());
-            }
-        });
+    protected LoginPresenter onCreatePresenter() {
+        return new LoginPresenter(ModelManager.newUserModel());
     }
 
     @Override
