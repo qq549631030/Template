@@ -50,7 +50,7 @@ public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPre
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ResetPwdByEmailPresenter(ModelManager.newUserModel());
+                return new ResetPwdByEmailPresenter(ModelManager.provideUserModel());
             }
         });
     }

@@ -50,7 +50,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdateP
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new PersonalInfoUpdatePresenter(ModelManager.newUserModel());
+                return new PersonalInfoUpdatePresenter(ModelManager.provideUserModel());
             }
         });
     }

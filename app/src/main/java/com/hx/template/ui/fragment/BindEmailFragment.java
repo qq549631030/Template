@@ -50,7 +50,7 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
         return new PresenterLoader(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindEmailPresenter(ModelManager.newUserModel());
+                return new BindEmailPresenter(ModelManager.provideUserModel());
             }
         });
     }

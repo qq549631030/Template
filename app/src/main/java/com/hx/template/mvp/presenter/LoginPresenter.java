@@ -34,6 +34,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         if (checkInput()) {
             getMvpView().showLoadingProgress("登录中...");
             LoginCase.RequestValues requestValues = new LoginCase.RequestValues(getMvpView().getUserName(), getMvpView().getPassword());
+            loginCase.setRequestValues(requestValues);
             loginCase.setUseCaseCallback(new UseCase.UseCaseCallback<LoginCase.ResponseValue>() {
                 @Override
                 public void onSuccess(LoginCase.ResponseValue response) {
@@ -51,7 +52,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     }
                 }
             });
-            loginCase.executeUseCase(requestValues);
+            loginCase.run();
         }
     }
 

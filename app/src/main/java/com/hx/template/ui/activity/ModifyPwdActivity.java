@@ -47,7 +47,7 @@ public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPw
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ModifyPwdPresenter(ModelManager.newUserModel());
+                return new ModifyPwdPresenter(ModelManager.provideUserModel());
             }
         });
     }

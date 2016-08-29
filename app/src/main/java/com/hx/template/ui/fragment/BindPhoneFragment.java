@@ -89,7 +89,7 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindPhonePresenter(ModelManager.newSMSModel(), ModelManager.newUserModel());
+                return new BindPhonePresenter(ModelManager.provideSMSModel(), ModelManager.provideUserModel());
             }
         });
     }

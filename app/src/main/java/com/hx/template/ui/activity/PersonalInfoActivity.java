@@ -38,7 +38,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bmob.v3.datatype.BmobFile;
 import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
@@ -80,7 +79,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new PersonalInfoPresenter(ModelManager.newUserModel(), ModelManager.newFileModel());
+                return new PersonalInfoPresenter(ModelManager.provideUserModel(), ModelManager.provideFileModel());
             }
         });
     }

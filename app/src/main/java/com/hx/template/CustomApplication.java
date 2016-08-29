@@ -9,7 +9,6 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.stetho.Stetho;
-import com.google.gson.Gson;
 import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
 import com.hx.template.dagger2.ComponentHolder;
@@ -23,7 +22,6 @@ import com.hx.template.http.bmob.BmobDataChangeListener;
 import com.hx.template.model.Callback;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
-import com.hx.template.utils.JSONUtil;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.karumi.dexter.Dexter;
 
@@ -223,7 +221,7 @@ public class CustomApplication extends Application {
     public static void reloadUserInfo(Callback callback) {
         User user = User.getCurrentUser();
         if (user != null) {
-            UserModel userModel = ModelManager.newUserModel();
+            UserModel userModel = ModelManager.provideUserModel();
             if (callback != null) {
                 userModel.getUserInfo(user.getObjectId(), callback);
             } else {

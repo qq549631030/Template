@@ -54,7 +54,7 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new EmailStatePresenter(ModelManager.newUserModel());
+                return new EmailStatePresenter(ModelManager.provideUserModel());
             }
         });
     }

@@ -63,7 +63,7 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ResetPwdByPhonePresenter(ModelManager.newSMSModel(), ModelManager.newUserModel());
+                return new ResetPwdByPhonePresenter(ModelManager.provideSMSModel(), ModelManager.provideUserModel());
             }
         });
     }

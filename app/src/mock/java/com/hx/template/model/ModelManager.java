@@ -1,11 +1,5 @@
 package com.hx.template.model;
 
-import com.hx.template.model.impl.bmob.BmobFileModel;
-import com.hx.template.model.impl.bmob.BmobSMSModel;
-import com.hx.template.model.impl.bmob.BmobUserImpl;
-import com.hx.template.model.impl.retrofit.RetrofitUserModel;
-import com.hx.template.model.impl.volley.VolleyUserModel;
-
 /**
  * Created by huangxiang on 16/8/20.
  */
@@ -21,8 +15,8 @@ public class ModelManager {
      *
      * @return
      */
-    public static UserModel newUserModel() {
-        return newUserModel(DEFAULT_MODEL_TYPE);
+    public static UserModel provideUserModel() {
+        return provideUserModel(DEFAULT_MODEL_TYPE);
     }
 
     /**
@@ -31,7 +25,7 @@ public class ModelManager {
      * @param modelType 实现类型
      * @return
      */
-    public static UserModel newUserModel(int modelType) {
+    public static UserModel provideUserModel(int modelType) {
         switch (modelType) {
             case MODEL_TYPE_VOLLEY:
                 return new FakeUserModel();
@@ -49,8 +43,8 @@ public class ModelManager {
      *
      * @return
      */
-    public static SMSModel newSMSModel() {
-        return newSMSModel(DEFAULT_MODEL_TYPE);
+    public static SMSModel provideSMSModel() {
+        return provideSMSModel(DEFAULT_MODEL_TYPE);
     }
 
     /**
@@ -59,7 +53,7 @@ public class ModelManager {
      * @param modelType 实现类型
      * @return
      */
-    public static SMSModel newSMSModel(int modelType) {
+    public static SMSModel provideSMSModel(int modelType) {
         switch (modelType) {
             case MODEL_TYPE_VOLLEY:
                 return new FakeSMSModel();
@@ -77,8 +71,8 @@ public class ModelManager {
      *
      * @return
      */
-    public static FileModel newFileModel() {
-        return newFileModel(DEFAULT_MODEL_TYPE);
+    public static FileModel provideFileModel() {
+        return provideFileModel(DEFAULT_MODEL_TYPE);
     }
 
     /**
@@ -87,7 +81,7 @@ public class ModelManager {
      * @param modelType 实现类型
      * @return
      */
-    public static FileModel newFileModel(int modelType) {
+    public static FileModel provideFileModel(int modelType) {
         switch (modelType) {
             case MODEL_TYPE_VOLLEY:
                 return new FakeFileModel();

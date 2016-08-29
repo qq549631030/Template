@@ -62,7 +62,7 @@ public class VerifyPhoneFragment extends BaseStepFragment<VerifyPhonePresenter, 
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new VerifyPhonePresenter(ModelManager.newSMSModel());
+                return new VerifyPhonePresenter(ModelManager.provideSMSModel());
             }
         });
     }

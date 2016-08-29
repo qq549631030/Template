@@ -99,7 +99,7 @@ public class SettingActivity extends BaseActivity {
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        UserModel userModel = ModelManager.newUserModel();
+                        UserModel userModel = ModelManager.provideUserModel();
                         userModel.logout();
                         startActivity(new Intent(SettingActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         GlobalActivityManager.finishAll();

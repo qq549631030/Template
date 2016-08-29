@@ -3,6 +3,7 @@ package com.hx.template.dagger2;
 import android.content.Context;
 
 import com.hx.template.domain.usecase.UseCaseManager;
+import com.hx.template.domain.usercase.user.RegisterCase;
 import com.hx.template.model.FileModel;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.SMSModel;
@@ -42,19 +43,19 @@ public class AppModule {
     @Provides
     @Singleton
     public UserModel provideUserModel() {
-        return ModelManager.newUserModel();
+        return ModelManager.provideUserModel();
     }
 
     @Provides
     @Singleton
     public SMSModel provideSMSModel() {
-        return ModelManager.newSMSModel();
+        return ModelManager.provideSMSModel();
     }
 
     @Provides
     @Singleton
     public FileModel provideFileModel() {
-        return ModelManager.newFileModel();
+        return ModelManager.provideFileModel();
     }
 
     @Provides
@@ -63,8 +64,8 @@ public class AppModule {
     }
 
     @Provides
-    public RegisterPresenter provideRegisterPresenter(UserModel userModel) {
-        return new RegisterPresenter(userModel);
+    public RegisterPresenter provideRegisterPresenter() {
+        return new RegisterPresenter(UseCaseManager.provideRegisterCase());
     }
 
     @Provides

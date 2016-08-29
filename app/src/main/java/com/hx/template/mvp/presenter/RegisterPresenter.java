@@ -1,5 +1,7 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.user.RegisterCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
@@ -13,16 +15,13 @@ import cn.huangx.common.utils.StringUtils;
 /**
  * Created by huangxiang on 16/8/12.
  */
-public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements RegisterContract.MvpPresenter, Callback {
+public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements RegisterContract.MvpPresenter {
 
-    private UserModel userModel;
+    private final RegisterCase registerCase;
 
     @Inject
-    public RegisterPresenter(UserModel userModel) {
-        this.userModel = userModel;
-        if (userModel == null) {
-            throw new IllegalArgumentException("userModel can't be null");
-        }
+    public RegisterPresenter(RegisterCase registerCase) {
+        this.registerCase = registerCase;
     }
 
     /**
@@ -33,7 +32,26 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
         checkViewAttached();
         if (checkInput()) {
             getMvpView().showLoadingProgress("注册中...");
-            userModel.register(getMvpView().getUserName(), getMvpView().getPassword(), this);
+            RegisterCase.RequestValues requestValues = new RegisterCase.RequestValues(getMvpView().getUserName(), getMvpView().getPassword());
+            registerCase.setRequestValues(requestValues);
+            registerCase.setUseCaseCallback(new UseCase.UseCaseCallback<RegisterCase.ResponseValue>() {
+                @Override
+                public void onSuccess(RegisterCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().registerSuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, Object... errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().registerFail(errorCode, errorMsg.toString());
+                    }
+                }
+            });
+            registerCase.run();
         }
     }
 
@@ -51,30 +69,5 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_REGISTER:
-                    getMvpView().registerSuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_REGISTER:
-                    getMvpView().registerFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

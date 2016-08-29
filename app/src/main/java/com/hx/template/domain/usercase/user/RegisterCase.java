@@ -9,14 +9,14 @@ import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
 /**
- * 功能说明：登录用例
- * 作者：huangx on 2016/8/26 17:14
+ * 功能说明：注册用例
+ * 作者：huangx on 2016/8/29 9:10
  * 邮箱：huangx@pycredit.cn
  */
-public class LoginCase extends UseCase<LoginCase.RequestValues, LoginCase.ResponseValue> {
+public class RegisterCase extends UseCase<RegisterCase.RequestValues, RegisterCase.ResponseValue> {
     private final UserModel userModel;
 
-    public LoginCase(@NonNull UserModel userModel) {
+    public RegisterCase(UserModel userModel) {
         this.userModel = userModel;
     }
 
@@ -24,10 +24,10 @@ public class LoginCase extends UseCase<LoginCase.RequestValues, LoginCase.Respon
     public void executeUseCase(RequestValues requestValues) {
         String username = requestValues.getUsername();
         String password = requestValues.getPassword();
-        userModel.login(username, password, new Callback() {
+        userModel.register(username, password, new Callback() {
             @Override
             public void onSuccess(int taskId, Object... data) {
-                if (TaskManager.TASK_ID_LOGIN == taskId) {
+                if (TaskManager.TASK_ID_REGISTER == taskId) {
                     if (data != null && data.length > 0 && data[0] instanceof User) {
                         getUseCaseCallback().onSuccess(new ResponseValue((User) data[0]));
                     }
@@ -36,11 +36,12 @@ public class LoginCase extends UseCase<LoginCase.RequestValues, LoginCase.Respon
 
             @Override
             public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-                if (TaskManager.TASK_ID_LOGIN == taskId) {
+                if (TaskManager.TASK_ID_REGISTER == taskId) {
                     getUseCaseCallback().onError(errorCode, errorMsg);
                 }
             }
         });
+
     }
 
     public static final class RequestValues implements UseCase.RequestValues {

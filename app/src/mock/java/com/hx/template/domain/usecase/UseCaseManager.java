@@ -1,8 +1,8 @@
 package com.hx.template.domain.usecase;
 
 import com.hx.template.domain.usercase.user.LoginCase;
+import com.hx.template.domain.usercase.user.RegisterCase;
 import com.hx.template.model.ModelManager;
-import com.hx.template.model.UserModel;
 
 /**
  * 功能说明：com.hx.template.domain.usecase
@@ -11,6 +11,10 @@ import com.hx.template.model.UserModel;
  */
 public class UseCaseManager {
     public static LoginCase provideLoginCase() {
-        return new LoginCase(ModelManager.newUserModel());
+        return new LoginCase(ModelManager.provideUserModel());
+    }
+
+    public static RegisterCase provideRegisterCase() {
+        return new RegisterCase(ModelManager.provideUserModel());
     }
 }
