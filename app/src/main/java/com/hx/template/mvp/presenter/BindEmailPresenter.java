@@ -1,6 +1,8 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.user.UpdateUserInfoCase;
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
@@ -18,12 +20,11 @@ import javax.inject.Inject;
 /**
  * Created by huangxiang on 16/8/17.
  */
-public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> implements BindEmailContract.MvpPresenter, Callback {
-    UserModel userModel;
+public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> implements BindEmailContract.MvpPresenter {
+    UpdateUserInfoCase updateUserInfoCase;
 
-    @Inject
-    public BindEmailPresenter(UserModel userModel) {
-        this.userModel = userModel;
+    public BindEmailPresenter(UpdateUserInfoCase updateUserInfoCase) {
+        this.updateUserInfoCase = updateUserInfoCase;
     }
 
     /**
@@ -36,7 +37,26 @@ public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> im
             Map<String, Object> values = new HashMap<>();
             values.put("email", getMvpView().getEmail());
             getMvpView().showLoadingProgress("正在发送验证邮件...");
-            userModel.updateUserInfo(values, this);
+            UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues(values);
+            updateUserInfoCase.setRequestValues(requestValues);
+            updateUserInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
+                @Override
+                public void onSuccess(UpdateUserInfoCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestSuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, Object... errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestFail(errorCode, errorMsg.toString());
+                    }
+                }
+            });
+            updateUserInfoCase.run();
         }
     }
 
@@ -50,30 +70,5 @@ public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> im
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_UPDATE_USER_INFO:
-                    getMvpView().onRequestSuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_UPDATE_USER_INFO:
-                    getMvpView().onRequestFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }
