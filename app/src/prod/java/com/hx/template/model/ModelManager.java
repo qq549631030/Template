@@ -21,8 +21,8 @@ public class ModelManager {
      *
      * @return
      */
-    public static UserModel newUserModel() {
-        return newUserModel(DEFAULT_MODEL_TYPE);
+    public static UserModel provideUserModel() {
+        return provideUserModel(DEFAULT_MODEL_TYPE);
     }
 
     /**
@@ -31,7 +31,7 @@ public class ModelManager {
      * @param modelType 实现类型
      * @return
      */
-    public static UserModel newUserModel(int modelType) {
+    public static UserModel provideUserModel(int modelType) {
         switch (modelType) {
             case MODEL_TYPE_VOLLEY:
                 return new VolleyUserModel();
@@ -49,8 +49,8 @@ public class ModelManager {
      *
      * @return
      */
-    public static SMSModel newSMSModel() {
-        return newSMSModel(DEFAULT_MODEL_TYPE);
+    public static SMSModel provideSMSModel() {
+        return provideSMSModel(DEFAULT_MODEL_TYPE);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ModelManager {
      * @param modelType 实现类型
      * @return
      */
-    public static SMSModel newSMSModel(int modelType) {
+    public static SMSModel provideSMSModel(int modelType) {
         switch (modelType) {
             case MODEL_TYPE_VOLLEY:
                 return new BmobSMSModel();
@@ -77,8 +77,8 @@ public class ModelManager {
      *
      * @return
      */
-    public static FileModel newFileModel() {
-        return newFileModel(DEFAULT_MODEL_TYPE);
+    public static FileModel provideFileModel() {
+        return provideFileModel(DEFAULT_MODEL_TYPE);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ModelManager {
      * @param modelType 实现类型
      * @return
      */
-    public static FileModel newFileModel(int modelType) {
+    public static FileModel provideFileModel(int modelType) {
         switch (modelType) {
             case MODEL_TYPE_VOLLEY:
                 return new BmobFileModel();

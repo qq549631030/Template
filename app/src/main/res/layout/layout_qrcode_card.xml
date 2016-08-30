@@ -15,7 +15,8 @@
             android:layout_height="80dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/default_avatar" />
+            android:src="@drawable/default_avatar"
+            android:transitionName="avatar" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -30,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lines="1"
+                android:transitionName="nickname"
                 tools:text="nickname" />
 
             <TextView
@@ -49,7 +51,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/base_size_20dp"
         android:scaleType="centerInside"
-        android:src="@drawable/default_image" />
+        android:src="@drawable/default_image"
+        android:transitionName="qrcode" />
 
     <TextView
         android:id="@+id/tips"

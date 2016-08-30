@@ -2,9 +2,12 @@ package com.hx.template.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hx.template.R;
@@ -25,7 +28,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * 个人中心
@@ -38,6 +40,8 @@ public class PersonalCenterFragment extends BaseFragment {
     TextView nickname;
     @Bind(R.id.username)
     TextView username;
+    @Bind(R.id.qrcode)
+    ImageView qrcode;
 
     @Override
     protected String getFragmentTitle() {
@@ -93,7 +97,9 @@ public class PersonalCenterFragment extends BaseFragment {
         }
         switch (view.getId()) {
             case R.id.personal_into_layout:
-                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                final Pair<View, String>[] pairs = new Pair[]{new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(username, "username"), new Pair(qrcode, "qrcode")};
+                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pairs);
+                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
                 break;
             case R.id.qrcode:
                 break;

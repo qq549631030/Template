@@ -45,7 +45,9 @@
                         android:layout_height="80dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/default_avatar" />
+                        android:src="@drawable/default_avatar"
+
+                        android:transitionName="avatar" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -68,7 +70,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:transitionName="nickname" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -91,7 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"
+                        android:transitionName="username" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -161,7 +165,8 @@
                         android:layout_height="32dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/icon_qrcode" />
+                        android:src="@drawable/icon_qrcode"
+                        android:transitionName="qrcode" />
                 </RelativeLayout>
 
                 <RelativeLayout

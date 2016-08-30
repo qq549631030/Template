@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.Loader;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hx.template.R;
@@ -18,11 +21,11 @@ import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
-import com.hx.template.mvp.contract.PersonalInfoContract;
-import com.hx.template.mvp.presenter.PersonalInfoPresenter;
 import com.hx.template.mvp.Presenter;
 import com.hx.template.mvp.PresenterFactory;
 import com.hx.template.mvp.PresenterLoader;
+import com.hx.template.mvp.contract.PersonalInfoContract;
+import com.hx.template.mvp.presenter.PersonalInfoPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.utils.UriUtils;
@@ -61,6 +64,8 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
     TextView email;
     @Bind(R.id.gender)
     TextView gender;
+    @Bind(R.id.qrcode)
+    ImageView qrcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +133,9 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
             case R.id.username_layout:
                 break;
             case R.id.qrcode_layout:
-                startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                final Pair<View, String>[] pairs = new Pair[]{new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")};
+                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(PersonalInfoActivity.this, pairs);
+                startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
                 break;
             case R.id.gender_layout:
                 break;
