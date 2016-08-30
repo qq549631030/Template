@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseStepFragment;
+import com.hx.template.dagger2.ComponentHolder;
+import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.model.ModelManager;
@@ -89,7 +91,7 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindPhonePresenter(ModelManager.provideSMSModel(), ModelManager.provideUserModel());
+                return ComponentHolder.getAppComponent().bindPhonePresenter();
             }
         });
     }
@@ -106,7 +108,10 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
                 presenter.requestSMSCode();
                 break;
             case R.id.bind:
-                presenter.verifySmsCode();
+                User currentUser = User.getCurrentUser(User.class);
+                if (currentUser != null) {
+                    presenter.bindPhone(currentUser.getObjectId());
+                }
                 break;
         }
     }

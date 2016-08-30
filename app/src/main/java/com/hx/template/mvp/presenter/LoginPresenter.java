@@ -1,11 +1,7 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.user.LoginCase;
-import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.domain.usercase.single.user.LoginCase;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.BasePresenter;
 
@@ -20,6 +16,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     private final LoginCase loginCase;
 
+    @Inject
     public LoginPresenter(LoginCase loginCase) {
         this.loginCase = loginCase;
     }
@@ -45,10 +42,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 }
 
                 @Override
-                public void onError(String errorCode, Object... errorMsg) {
+                public void onError(String errorCode, String errorMsg) {
                     if (isViewAttached()) {
                         getMvpView().hideLoadingProgress();
-                        getMvpView().loginFail(errorCode, errorMsg.toString());
+                        getMvpView().loginFail(errorCode, errorMsg);
                     }
                 }
             });

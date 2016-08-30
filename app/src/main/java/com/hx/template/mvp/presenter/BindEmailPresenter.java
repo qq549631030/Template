@@ -2,11 +2,7 @@ package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
 import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.user.UpdateUserInfoCase;
-import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.domain.usercase.single.user.UpdateUserInfoCase;
 import com.hx.template.mvp.contract.BindEmailContract;
 import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
@@ -21,8 +17,9 @@ import javax.inject.Inject;
  * Created by huangxiang on 16/8/17.
  */
 public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> implements BindEmailContract.MvpPresenter {
-    UpdateUserInfoCase updateUserInfoCase;
+    private final UpdateUserInfoCase updateUserInfoCase;
 
+    @Inject
     public BindEmailPresenter(UpdateUserInfoCase updateUserInfoCase) {
         this.updateUserInfoCase = updateUserInfoCase;
     }
@@ -31,13 +28,13 @@ public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> im
      * 重新设置验证邮箱
      */
     @Override
-    public void resetEmail() {
+    public void resetEmail(String userId) {
         checkViewAttached();
         if (checkInput()) {
             Map<String, Object> values = new HashMap<>();
             values.put("email", getMvpView().getEmail());
             getMvpView().showLoadingProgress("正在发送验证邮件...");
-            UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues(values);
+            UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues(userId, values);
             updateUserInfoCase.setRequestValues(requestValues);
             updateUserInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
                 @Override
@@ -49,10 +46,10 @@ public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> im
                 }
 
                 @Override
-                public void onError(String errorCode, Object... errorMsg) {
+                public void onError(String errorCode, String errorMsg) {
                     if (isViewAttached()) {
                         getMvpView().hideLoadingProgress();
-                        getMvpView().onRequestFail(errorCode, errorMsg.toString());
+                        getMvpView().onRequestFail(errorCode, errorMsg);
                     }
                 }
             });

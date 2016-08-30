@@ -13,6 +13,9 @@ import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.dagger2.DaggerAppComponent;
+import com.hx.template.dagger2.ModelModule;
+import com.hx.template.dagger2.PresenterModule;
+import com.hx.template.dagger2.UseCaseModule;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.GlobalActivityManager;
@@ -139,7 +142,7 @@ public class CustomApplication extends Application {
 
     public static void initDagger2() {
         AppComponent appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(instance))
+                .appModule(new AppModule(instance)).modelModule(new ModelModule()).presenterModule(new PresenterModule()).useCaseModule(new UseCaseModule())
                 .build();
         ComponentHolder.setAppComponent(appComponent);
     }
@@ -222,6 +225,7 @@ public class CustomApplication extends Application {
         User user = User.getCurrentUser();
         if (user != null) {
             UserModel userModel = ModelManager.provideUserModel();
+
             if (callback != null) {
                 userModel.getUserInfo(user.getObjectId(), callback);
             } else {
@@ -236,7 +240,7 @@ public class CustomApplication extends Application {
                     }
 
                     @Override
-                    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
+                    public void onFailure(int taskId, String errorCode, String errorMsg) {
 
                     }
                 });

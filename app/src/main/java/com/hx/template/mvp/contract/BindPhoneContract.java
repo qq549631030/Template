@@ -31,13 +31,8 @@ public interface BindPhoneContract {
         void requestSMSCode();
 
         /**
-         * 验证短信验证码
-         */
-        void verifySmsCode();
-
-        /**
          * 绑定手机号码
          */
-        void bindPhone();
+        void bindPhone(String userId);
     }
 }

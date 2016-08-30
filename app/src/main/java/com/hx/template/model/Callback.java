@@ -6,5 +6,5 @@ package com.hx.template.model;
 public interface Callback {
     void onSuccess(int taskId, Object... data);
 
-    void onFailure(int taskId, String errorCode, Object... errorMsg);
+    void onFailure(int taskId, String errorCode, String errorMsg);
 }

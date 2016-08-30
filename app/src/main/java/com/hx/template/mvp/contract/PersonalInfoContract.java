@@ -28,8 +28,9 @@ public interface PersonalInfoContract {
         /**
          * 修改头像
          *
+         * @param userId
          * @param file
          */
-        void updateAvatar(File file);
+        void updateAvatar(String userId, File file);
     }
 }

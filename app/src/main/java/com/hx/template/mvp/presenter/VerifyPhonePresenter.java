@@ -1,6 +1,9 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
+import com.hx.template.domain.usercase.single.sms.VerifySmsCodeCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.TaskManager;
@@ -10,15 +13,21 @@ import com.hx.template.utils.StringUtils;
 
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 /**
  * Created by huangx on 2016/8/22.
  */
-public class VerifyPhonePresenter extends BasePresenter<VerifyPhoneContract.View> implements VerifyPhoneContract.MvpPresenter, Callback {
-    private SMSModel smsModel;
+public class VerifyPhonePresenter extends BasePresenter<VerifyPhoneContract.View> implements VerifyPhoneContract.MvpPresenter {
+    private final RequestSMSCodeCase requestSMSCodeCase;
+    private final VerifySmsCodeCase verifySmsCodeCase;
 
-    public VerifyPhonePresenter(SMSModel smsModel) {
-        this.smsModel = smsModel;
+    @Inject
+    public VerifyPhonePresenter(RequestSMSCodeCase requestSMSCodeCase, VerifySmsCodeCase verifySmsCodeCase) {
+        this.requestSMSCodeCase = requestSMSCodeCase;
+        this.verifySmsCodeCase = verifySmsCodeCase;
     }
+
 
     /**
      * 获取短信验证码
@@ -28,7 +37,26 @@ public class VerifyPhonePresenter extends BasePresenter<VerifyPhoneContract.View
         checkViewAttached();
         if (checkPhone()) {
             getMvpView().showLoadingProgress("正在获取短信验证码...");
-            smsModel.requestSMSCode(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate(), this);
+            RequestSMSCodeCase.RequestValues requestValues = new RequestSMSCodeCase.RequestValues(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate());
+            requestSMSCodeCase.setRequestValues(requestValues);
+            requestSMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
+                @Override
+                public void onSuccess(RequestSMSCodeCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestSuccess(response.getSmsId());
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            requestSMSCodeCase.run();
         }
     }
 
@@ -40,7 +68,26 @@ public class VerifyPhonePresenter extends BasePresenter<VerifyPhoneContract.View
         checkViewAttached();
         if (checkInput()) {
             getMvpView().showLoadingProgress("正在验证短信验证码...");
-            smsModel.verifySmsCode(getMvpView().getVerifyPhoneNumber(), getMvpView().getSMSCode(), this);
+            VerifySmsCodeCase.RequestValues requestValues = new VerifySmsCodeCase.RequestValues(getMvpView().getVerifyPhoneNumber(), getMvpView().getSMSCode());
+            verifySmsCodeCase.setRequestValues(requestValues);
+            verifySmsCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<VerifySmsCodeCase.ResponseValue>() {
+                @Override
+                public void onSuccess(VerifySmsCodeCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onVerifySuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onVerifyFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            verifySmsCodeCase.run();
         }
     }
 
@@ -66,36 +113,5 @@ public class VerifyPhonePresenter extends BasePresenter<VerifyPhoneContract.View
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_SMS_CODE:
-                    getMvpView().onRequestSuccess(data);
-                    break;
-                case TaskManager.TASK_ID_VERIFY_SMS_CODE:
-                    getMvpView().onVerifySuccess(data);
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_SMS_CODE:
-                    getMvpView().onRequestFail(errorCode, errorMsgStr);
-                    break;
-                case TaskManager.TASK_ID_VERIFY_SMS_CODE:
-                    getMvpView().onVerifyFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

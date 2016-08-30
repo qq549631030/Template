@@ -1,9 +1,11 @@
-package com.hx.template.domain.usercase.user;
+package com.hx.template.domain.usercase.single.user;
 
 import com.hx.template.domain.usercase.UseCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
+
+import javax.inject.Inject;
 
 /**
  * Created by huangxiang on 16/8/29.
@@ -11,6 +13,7 @@ import com.hx.template.model.UserModel;
 public class ResetPwdBySMSCodeCase extends UseCase<ResetPwdBySMSCodeCase.RequestValues, ResetPwdBySMSCodeCase.ResponseValue> {
     private final UserModel userModel;
 
+    @Inject
     public ResetPwdBySMSCodeCase(UserModel userModel) {
         this.userModel = userModel;
     }
@@ -28,9 +31,9 @@ public class ResetPwdBySMSCodeCase extends UseCase<ResetPwdBySMSCodeCase.Request
             }
 
             @Override
-            public void onFailure(int taskId, String errorCode, Object... errorMsg) {
+            public void onFailure(int taskId, String errorCode, String errorMsg) {
                 if (taskId == TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE) {
-                    getUseCaseCallback().onError(errorCode, errorMsg.toString());
+                    getUseCaseCallback().onError(errorCode, errorMsg);
                 }
             }
         });

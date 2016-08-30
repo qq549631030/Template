@@ -1,36 +1,39 @@
-package com.hx.template.domain.usercase.sms;
+package com.hx.template.domain.usercase.single.sms;
 
 import com.hx.template.domain.usercase.UseCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.TaskManager;
 
+import javax.inject.Inject;
+
 /**
  * Created by huangxiang on 16/8/29.
  */
-public class RequestSMSCodeCase extends UseCase<RequestSMSCodeCase.RequestValues, RequestSMSCodeCase.ResponseValue> {
+public class VerifySmsCodeCase extends UseCase<VerifySmsCodeCase.RequestValues, VerifySmsCodeCase.ResponseValue> {
     private final SMSModel smsModel;
 
-    public RequestSMSCodeCase(SMSModel smsModel) {
+    @Inject
+    public VerifySmsCodeCase(SMSModel smsModel) {
         this.smsModel = smsModel;
     }
 
     @Override
     public void executeUseCase(RequestValues requestValues) {
         String phoneNumber = requestValues.getPhoneNumber();
-        String template = requestValues.getTemplate();
-        smsModel.requestSMSCode(phoneNumber, template, new Callback() {
+        String smsCode = requestValues.getSmsCode();
+        smsModel.verifySmsCode(phoneNumber, smsCode, new Callback() {
             @Override
             public void onSuccess(int taskId, Object... data) {
-                if (taskId == TaskManager.TASK_ID_REQUEST_SMS_CODE) {
+                if (taskId == TaskManager.TASK_ID_VERIFY_SMS_CODE) {
                     getUseCaseCallback().onSuccess(new ResponseValue());
                 }
             }
 
             @Override
-            public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-                if (taskId == TaskManager.TASK_ID_REQUEST_SMS_CODE) {
-                    getUseCaseCallback().onError(errorCode, errorMsg.toString());
+            public void onFailure(int taskId, String errorCode, String errorMsg) {
+                if (taskId == TaskManager.TASK_ID_VERIFY_SMS_CODE) {
+                    getUseCaseCallback().onError(errorCode, errorMsg);
                 }
             }
         });
@@ -38,19 +41,19 @@ public class RequestSMSCodeCase extends UseCase<RequestSMSCodeCase.RequestValues
 
     public static final class RequestValues implements UseCase.RequestValues {
         private final String phoneNumber;
-        private final String template;
+        private final String smsCode;
 
-        public RequestValues(String phoneNumber, String template) {
+        public RequestValues(String phoneNumber, String smsCode) {
             this.phoneNumber = phoneNumber;
-            this.template = template;
+            this.smsCode = smsCode;
         }
 
         public String getPhoneNumber() {
             return phoneNumber;
         }
 
-        public String getTemplate() {
-            return template;
+        public String getSmsCode() {
+            return smsCode;
         }
     }
 

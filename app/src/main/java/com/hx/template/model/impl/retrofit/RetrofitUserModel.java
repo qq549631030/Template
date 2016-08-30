@@ -83,7 +83,7 @@ public class RetrofitUserModel implements UserModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        callback.onFailure(TaskManager.TASK_ID_LOGIN, CustomApplication.getInstance().getString(R.string.error_unknow));
+                        callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                     }
                 });
     }
@@ -118,8 +118,8 @@ public class RetrofitUserModel implements UserModel {
      * @param callback 回调监听
      */
     @Override
-    public void updateUserInfo(Map<String, Object> values, Callback callback) {
-        
+    public void updateUserInfo(String userId, Map<String, Object> values, Callback callback) {
+
     }
 
     /**

@@ -33,6 +33,6 @@ public interface BindEmailContract {
         /**
          * 重新设置验证邮箱
          */
-        void resetEmail();
+        void resetEmail(String userId);
     }
 }

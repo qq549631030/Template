@@ -108,7 +108,7 @@ public class VolleyUserModel implements UserModel {
      * @param callback 回调监听
      */
     @Override
-    public void updateUserInfo(Map<String, Object> values, Callback callback) {
+    public void updateUserInfo(String userId,Map<String, Object> values, Callback callback) {
         
     }
 

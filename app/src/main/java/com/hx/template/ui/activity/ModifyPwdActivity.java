@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.model.ModelManager;
+import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.mvp.contract.ModifyPwdContract;
 import com.hx.template.mvp.presenter.ModifyPwdPresenter;
 import com.hx.template.mvp.Presenter;
@@ -47,7 +47,7 @@ public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPw
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ModifyPwdPresenter(ModelManager.provideUserModel());
+                return ComponentHolder.getAppComponent().modifyPwdPresenter();
             }
         });
     }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseStepFragment;
+import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
@@ -62,7 +63,7 @@ public class VerifyPhoneFragment extends BaseStepFragment<VerifyPhonePresenter, 
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new VerifyPhonePresenter(ModelManager.provideSMSModel());
+                return ComponentHolder.getAppComponent().verifyPhonePresenter();
             }
         });
     }

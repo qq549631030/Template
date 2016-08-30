@@ -1,6 +1,9 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.complex.BindPhoneCase;
+import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
 import com.hx.template.entity.User;
 import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
@@ -19,15 +22,15 @@ import javax.inject.Inject;
 /**
  * Created by huangxiang on 16/8/13.
  */
-public class BindPhonePresenter extends BasePresenter<BindPhoneContract.View> implements BindPhoneContract.MvpPresenter, Callback {
+public class BindPhonePresenter extends BasePresenter<BindPhoneContract.View> implements BindPhoneContract.MvpPresenter {
 
-    private SMSModel smsModel;
-    private UserModel userModel;
+    private final RequestSMSCodeCase requestSMSCodeCase;
+    private final BindPhoneCase bindPhoneCase;
 
     @Inject
-    public BindPhonePresenter(SMSModel smsModel, UserModel userModel) {
-        this.smsModel = smsModel;
-        this.userModel = userModel;
+    public BindPhonePresenter(RequestSMSCodeCase requestSMSCodeCase, BindPhoneCase bindPhoneCase) {
+        this.requestSMSCodeCase = requestSMSCodeCase;
+        this.bindPhoneCase = bindPhoneCase;
     }
 
     /**
@@ -38,33 +41,60 @@ public class BindPhonePresenter extends BasePresenter<BindPhoneContract.View> im
         checkViewAttached();
         if (checkPhone()) {
             getMvpView().showLoadingProgress("正在获取短信验证码...");
-            smsModel.requestSMSCode(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate(), this);
-        }
-    }
+            RequestSMSCodeCase.RequestValues requestValues = new RequestSMSCodeCase.RequestValues(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate());
+            requestSMSCodeCase.setRequestValues(requestValues);
+            requestSMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
+                @Override
+                public void onSuccess(RequestSMSCodeCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestSuccess(response.getSmsId());
+                    }
+                }
 
-    /**
-     * 验证短信验证码
-     */
-    @Override
-    public void verifySmsCode() {
-        checkViewAttached();
-        if (checkInput()) {
-            getMvpView().showLoadingProgress("正在验证短信验证码...");
-            smsModel.verifySmsCode(getMvpView().getVerifyPhoneNumber(), getMvpView().getSMSCode(), this);
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            requestSMSCodeCase.run();
         }
     }
 
     /**
      * 绑定手机号码
+     *
+     * @param userId
      */
     @Override
-    public void bindPhone() {
+    public void bindPhone(String userId) {
         checkViewAttached();
-        Map<String, Object> values = new HashMap<>();
-        values.put("mobilePhoneNumber", getMvpView().getVerifyPhoneNumber());
-        values.put("mobilePhoneNumberVerified", Boolean.TRUE);
-        getMvpView().showLoadingProgress("正在绑定...");
-        userModel.updateUserInfo(values, this);
+        if (checkInput()) {
+            getMvpView().showLoadingProgress("正在绑定...");
+            BindPhoneCase.RequestValues requestValues = new BindPhoneCase.RequestValues(getMvpView().getVerifyPhoneNumber(), getMvpView().getSMSCode(), userId);
+            bindPhoneCase.setRequestValues(requestValues);
+            bindPhoneCase.setUseCaseCallback(new UseCase.UseCaseCallback<BindPhoneCase.ResponseValue>() {
+                @Override
+                public void onSuccess(BindPhoneCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().bindSuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().bindFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            bindPhoneCase.run();
+        }
     }
 
 
@@ -89,43 +119,5 @@ public class BindPhonePresenter extends BasePresenter<BindPhoneContract.View> im
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_SMS_CODE:
-                    getMvpView().onRequestSuccess(data);
-                    break;
-                case TaskManager.TASK_ID_VERIFY_SMS_CODE:
-                    getMvpView().onVerifySuccess(data);
-                    bindPhone();
-                    break;
-                case TaskManager.TASK_ID_UPDATE_USER_INFO:
-                    getMvpView().bindSuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_SMS_CODE:
-                    getMvpView().onRequestFail(errorCode, errorMsgStr);
-                    break;
-                case TaskManager.TASK_ID_VERIFY_SMS_CODE:
-                    getMvpView().onVerifyFail(errorCode, errorMsgStr);
-                    break;
-                case TaskManager.TASK_ID_UPDATE_USER_INFO:
-                    getMvpView().bindFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

@@ -12,12 +12,12 @@ import android.widget.TextView;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.components.CircleImageView;
+import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
-import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.PersonalInfoContract;
 import com.hx.template.mvp.presenter.PersonalInfoPresenter;
 import com.hx.template.mvp.Presenter;
@@ -79,7 +79,7 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new PersonalInfoPresenter(ModelManager.provideUserModel(), ModelManager.provideFileModel());
+                return ComponentHolder.getAppComponent().personalInfoPresenter();
             }
         });
     }
@@ -180,7 +180,10 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
                     .setQuality(75)
                     .setCompressFormat(Bitmap.CompressFormat.JPEG)
                     .build().compressToFile(new File(path));
-            presenter.updateAvatar(compressedImageFile);
+            User currentUser = User.getCurrentUser(User.class);
+            if (currentUser != null) {
+                presenter.updateAvatar(currentUser.getObjectId(), compressedImageFile);
+            }
         } else if (resultCode == Crop.RESULT_ERROR) {
             ToastUtils.showToast(this, Crop.getError(result).getMessage());
         }

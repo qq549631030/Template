@@ -11,6 +11,8 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseStepFragment;
+import com.hx.template.dagger2.ComponentHolder;
+import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.model.ModelManager;
@@ -50,7 +52,7 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
         return new PresenterLoader(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new BindEmailPresenter(ModelManager.provideUserModel());
+                return ComponentHolder.getAppComponent().bindEmailPresenter();
             }
         });
     }
@@ -76,7 +78,10 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
         }
         switch (view.getId()) {
             case R.id.bind:
-                presenter.resetEmail();
+                User currentUser = User.getCurrentUser(User.class);
+                if (currentUser != null) {
+                    presenter.resetEmail(currentUser.getObjectId());
+                }
                 break;
         }
     }

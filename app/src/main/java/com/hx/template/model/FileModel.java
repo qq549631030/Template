@@ -12,5 +12,5 @@ public interface FileModel {
      * @param file
      * @param callback
      */
-    void uploadFile(File file, Callback callback);
+    void uploadFile(File file, FileUploadCallback callback);
 }

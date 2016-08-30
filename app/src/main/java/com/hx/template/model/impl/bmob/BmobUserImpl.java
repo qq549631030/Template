@@ -85,22 +85,17 @@ public class BmobUserImpl implements UserModel {
      * @param callback 回调监听
      */
     @Override
-    public void updateUserInfo(Map<String, Object> values, final Callback callback) {
-        User currentUser = User.getCurrentUser(User.class);
-        if (currentUser != null) {
-            BbUser bbUser = new BbUser();
-            for (String key : values.keySet()) {
-                bbUser.setValue(key, values.get(key));
-            }
-            bbUser.update(currentUser.getObjectId(), new UpdateListener() {
-                @Override
-                public void done(BmobException e) {
-                    BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_UPDATE_USER_INFO, e);
-                }
-            });
-        } else {
-            BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_UPDATE_USER_INFO, new BmobException(1001, "未登录"));
+    public void updateUserInfo(String userId, Map<String, Object> values, final Callback callback) {
+        BbUser bbUser = new BbUser();
+        for (String key : values.keySet()) {
+            bbUser.setValue(key, values.get(key));
         }
+        bbUser.update(userId, new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_UPDATE_USER_INFO, e);
+            }
+        });
     }
 
     /**

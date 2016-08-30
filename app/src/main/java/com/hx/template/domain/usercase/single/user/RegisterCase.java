@@ -1,4 +1,4 @@
-package com.hx.template.domain.usercase.user;
+package com.hx.template.domain.usercase.single.user;
 
 import android.support.annotation.NonNull;
 
@@ -8,6 +8,8 @@ import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
+import javax.inject.Inject;
+
 /**
  * 功能说明：注册用例
  * 作者：huangx on 2016/8/29 9:10
@@ -16,6 +18,7 @@ import com.hx.template.model.UserModel;
 public class RegisterCase extends UseCase<RegisterCase.RequestValues, RegisterCase.ResponseValue> {
     private final UserModel userModel;
 
+    @Inject
     public RegisterCase(UserModel userModel) {
         this.userModel = userModel;
     }
@@ -35,7 +38,7 @@ public class RegisterCase extends UseCase<RegisterCase.RequestValues, RegisterCa
             }
 
             @Override
-            public void onFailure(int taskId, String errorCode, Object... errorMsg) {
+            public void onFailure(int taskId, String errorCode, String errorMsg) {
                 if (TaskManager.TASK_ID_REGISTER == taskId) {
                     getUseCaseCallback().onError(errorCode, errorMsg);
                 }

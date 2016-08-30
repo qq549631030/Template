@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.model.ModelManager;
@@ -50,7 +51,7 @@ public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdateP
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new PersonalInfoUpdatePresenter(ModelManager.provideUserModel());
+                return ComponentHolder.getAppComponent().personalInfoUpdatePresenter();
             }
         });
     }

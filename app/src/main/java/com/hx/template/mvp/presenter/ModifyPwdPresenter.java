@@ -1,5 +1,7 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.single.user.ModifyPwdCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
@@ -12,13 +14,13 @@ import javax.inject.Inject;
 /**
  * Created by huangxiang on 16/8/13.
  */
-public class ModifyPwdPresenter extends BasePresenter<ModifyPwdContract.View> implements ModifyPwdContract.MvpPresenter, Callback {
+public class ModifyPwdPresenter extends BasePresenter<ModifyPwdContract.View> implements ModifyPwdContract.MvpPresenter {
 
-    private UserModel userModel;
+    private final ModifyPwdCase modifyPwdCase;
 
     @Inject
-    public ModifyPwdPresenter(UserModel userModel) {
-        this.userModel = userModel;
+    public ModifyPwdPresenter(ModifyPwdCase modifyPwdCase) {
+        this.modifyPwdCase = modifyPwdCase;
     }
 
     /**
@@ -29,10 +31,28 @@ public class ModifyPwdPresenter extends BasePresenter<ModifyPwdContract.View> im
         checkViewAttached();
         if (checkInput()) {
             getMvpView().showLoadingProgress("修改中...");
-            userModel.modifyPwd(getMvpView().getOldPwd(), getMvpView().getNewPwd(), this);
+            ModifyPwdCase.RequestValues requestValues = new ModifyPwdCase.RequestValues(getMvpView().getOldPwd(), getMvpView().getNewPwd());
+            modifyPwdCase.setRequestValues(requestValues);
+            modifyPwdCase.setUseCaseCallback(new UseCase.UseCaseCallback<ModifyPwdCase.ResponseValue>() {
+                @Override
+                public void onSuccess(ModifyPwdCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().modifySuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().modifyFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            modifyPwdCase.run();
         }
     }
-
 
     private boolean checkInput() {
         if (StringUtils.isEmpty(getMvpView().getOldPwd())) {
@@ -48,30 +68,5 @@ public class ModifyPwdPresenter extends BasePresenter<ModifyPwdContract.View> im
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_MODIFY_PWD:
-                    getMvpView().modifySuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_MODIFY_PWD:
-                    getMvpView().modifyFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

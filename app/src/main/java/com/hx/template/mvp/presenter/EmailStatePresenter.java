@@ -1,6 +1,8 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.single.user.RequestEmailVerifyCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
@@ -10,15 +12,18 @@ import com.hx.template.utils.StringUtils;
 
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 /**
  * Created by huangx on 2016/8/23.
  */
-public class EmailStatePresenter extends BasePresenter<EmailStateContract.View> implements EmailStateContract.MvpPresenter, Callback {
+public class EmailStatePresenter extends BasePresenter<EmailStateContract.View> implements EmailStateContract.MvpPresenter {
 
-    UserModel userModel;
+    private final RequestEmailVerifyCase requestEmailVerifyCase;
 
-    public EmailStatePresenter(UserModel userModel) {
-        this.userModel = userModel;
+    @Inject
+    public EmailStatePresenter(RequestEmailVerifyCase requestEmailVerifyCase) {
+        this.requestEmailVerifyCase = requestEmailVerifyCase;
     }
 
     /**
@@ -28,7 +33,27 @@ public class EmailStatePresenter extends BasePresenter<EmailStateContract.View> 
     public void requestEmailVerify() {
         checkViewAttached();
         if (checkInput()) {
-            userModel.requestEmailVerify(getMvpView().getEmail(), this);
+            getMvpView().showLoadingProgress("正在发送验证邮件...");
+            RequestEmailVerifyCase.RequestValues requestValues = new RequestEmailVerifyCase.RequestValues(getMvpView().getEmail());
+            requestEmailVerifyCase.setRequestValues(requestValues);
+            requestEmailVerifyCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestEmailVerifyCase.ResponseValue>() {
+                @Override
+                public void onSuccess(RequestEmailVerifyCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestSuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            requestEmailVerifyCase.run();
         }
     }
 
@@ -42,30 +67,5 @@ public class EmailStatePresenter extends BasePresenter<EmailStateContract.View> 
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY:
-                    getMvpView().onRequestSuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY:
-                    getMvpView().onRequestFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

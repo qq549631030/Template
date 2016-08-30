@@ -46,10 +46,11 @@ public interface UserModel {
     /**
      * 更新用户信息
      *
+     * @param userId   用户id
      * @param values   要更新的用户信息
      * @param callback 回调监听
      */
-    void updateUserInfo(Map<String, Object> values, Callback callback);
+    void updateUserInfo(String userId, Map<String, Object> values, Callback callback);
 
     /**
      * 请求验证Email

@@ -23,7 +23,7 @@ public class FakeFileModel implements FileModel {
      * @param callback
      */
     @Override
-    public void uploadFile(final File file, final Callback callback) {
+    public void uploadFile(final File file, final FileUploadCallback callback) {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -31,4 +31,5 @@ public class FakeFileModel implements FileModel {
             }
         }, 2000);
     }
+
 }

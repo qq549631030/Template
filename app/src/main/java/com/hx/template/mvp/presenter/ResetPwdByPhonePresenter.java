@@ -1,6 +1,9 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
+import com.hx.template.domain.usercase.single.user.ResetPwdBySMSCodeCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.TaskManager;
@@ -16,14 +19,14 @@ import javax.inject.Inject;
 /**
  * Created by huangx on 2016/8/19.
  */
-public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContract.View> implements ResetPwdByPhoneContract.MvpPresenter, Callback {
-    SMSModel smsModel;
-    UserModel userModel;
+public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContract.View> implements ResetPwdByPhoneContract.MvpPresenter {
+    private final RequestSMSCodeCase requestSMSCodeCase;
+    private final ResetPwdBySMSCodeCase resetPwdBySMSCodeCase;
 
     @Inject
-    public ResetPwdByPhonePresenter(SMSModel smsModel, UserModel userModel) {
-        this.smsModel = smsModel;
-        this.userModel = userModel;
+    public ResetPwdByPhonePresenter(RequestSMSCodeCase requestSMSCodeCase, ResetPwdBySMSCodeCase resetPwdBySMSCodeCase) {
+        this.requestSMSCodeCase = requestSMSCodeCase;
+        this.resetPwdBySMSCodeCase = resetPwdBySMSCodeCase;
     }
 
     /**
@@ -33,7 +36,26 @@ public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContr
     public void requestSMSCode() {
         checkViewAttached();
         if (checkPhone()) {
-            smsModel.requestSMSCode(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate(), this);
+            RequestSMSCodeCase.RequestValues requestValues = new RequestSMSCodeCase.RequestValues(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate());
+            requestSMSCodeCase.setRequestValues(requestValues);
+            requestSMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
+                @Override
+                public void onSuccess(RequestSMSCodeCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestSuccess(response.getSmsId());
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().onRequestFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            requestSMSCodeCase.run();
         }
     }
 
@@ -44,7 +66,26 @@ public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContr
     public void resetPasswordBySMSCode() {
         checkViewAttached();
         if (checkInput()) {
-            userModel.resetPasswordBySMSCode(getMvpView().getSMSCode(), getMvpView().getPassword(), this);
+            ResetPwdBySMSCodeCase.RequestValues requestValues = new ResetPwdBySMSCodeCase.RequestValues(getMvpView().getSMSCode(), getMvpView().getPassword());
+            resetPwdBySMSCodeCase.setRequestValues(requestValues);
+            resetPwdBySMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<ResetPwdBySMSCodeCase.ResponseValue>() {
+                @Override
+                public void onSuccess(ResetPwdBySMSCodeCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().resetSuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().hideLoadingProgress();
+                        getMvpView().resetFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            resetPwdBySMSCodeCase.run();
         }
     }
 
@@ -77,37 +118,5 @@ public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContr
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_SMS_CODE:
-                    getMvpView().onRequestSuccess(data);
-                    break;
-                case TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE:
-                    getMvpView().resetSuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_REQUEST_SMS_CODE:
-                    getMvpView().onRequestFail(errorCode, errorMsgStr);
-                    break;
-                case TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE:
-                    getMvpView().resetFail(errorCode, errorMsgStr);
-
-                    break;
-            }
-        }
     }
 }

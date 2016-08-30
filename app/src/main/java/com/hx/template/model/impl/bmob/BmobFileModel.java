@@ -2,6 +2,7 @@ package com.hx.template.model.impl.bmob;
 
 import com.hx.template.model.Callback;
 import com.hx.template.model.FileModel;
+import com.hx.template.model.FileUploadCallback;
 import com.hx.template.model.TaskManager;
 
 import java.io.File;
@@ -22,7 +23,7 @@ public class BmobFileModel implements FileModel {
      * @param callback
      */
     @Override
-    public void uploadFile(File file, final Callback callback) {
+    public void uploadFile(File file, final FileUploadCallback callback) {
         BmobFile.uploadBatch(new String[]{file.getAbsolutePath()}, new UploadBatchListener() {
             @Override
             public void onSuccess(List<BmobFile> list, List<String> list1) {

@@ -15,9 +15,8 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.domain.usecase.UseCaseManager;
+import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.RegisterContract;
 import com.hx.template.mvp.presenter.RegisterPresenter;
 import com.hx.template.mvp.Presenter;
@@ -55,7 +54,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterCo
         return new PresenterLoader<>(this, new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new RegisterPresenter(UseCaseManager.provideRegisterCase());
+                return ComponentHolder.getAppComponent().registerPresenter();
             }
         });
     }

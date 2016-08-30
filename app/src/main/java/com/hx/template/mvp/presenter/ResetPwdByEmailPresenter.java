@@ -1,6 +1,8 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.Constant;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.single.user.ResetPwdByEmailCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
@@ -15,13 +17,13 @@ import javax.inject.Inject;
 /**
  * Created by huangx on 2016/8/19.
  */
-public class ResetPwdByEmailPresenter extends BasePresenter<ResetPwdByEmailContract.View> implements ResetPwdByEmailContract.MvpPresenter, Callback {
+public class ResetPwdByEmailPresenter extends BasePresenter<ResetPwdByEmailContract.View> implements ResetPwdByEmailContract.MvpPresenter {
 
-    UserModel userModel;
+    private final ResetPwdByEmailCase resetPwdByEmailCase;
 
     @Inject
-    public ResetPwdByEmailPresenter(UserModel userModel) {
-        this.userModel = userModel;
+    public ResetPwdByEmailPresenter(ResetPwdByEmailCase resetPwdByEmailCase) {
+        this.resetPwdByEmailCase = resetPwdByEmailCase;
     }
 
     /**
@@ -32,7 +34,24 @@ public class ResetPwdByEmailPresenter extends BasePresenter<ResetPwdByEmailContr
         checkViewAttached();
         if (checkInput()) {
             getMvpView().showLoadingProgress("正在重置...");
-            userModel.resetPasswordByEmail(getMvpView().getEmail(), this);
+            ResetPwdByEmailCase.RequestValues requestValues = new ResetPwdByEmailCase.RequestValues(getMvpView().getEmail());
+            resetPwdByEmailCase.setRequestValues(requestValues);
+            resetPwdByEmailCase.setUseCaseCallback(new UseCase.UseCaseCallback<ResetPwdByEmailCase.ResponseValue>() {
+                @Override
+                public void onSuccess(ResetPwdByEmailCase.ResponseValue response) {
+                    if (isViewAttached()) {
+                        getMvpView().sendSuccess();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode, String errorMsg) {
+                    if (isViewAttached()) {
+                        getMvpView().sendFail(errorCode, errorMsg);
+                    }
+                }
+            });
+            resetPwdByEmailCase.run();
         }
     }
 
@@ -46,30 +65,5 @@ public class ResetPwdByEmailPresenter extends BasePresenter<ResetPwdByEmailContr
             return false;
         }
         return true;
-    }
-
-    @Override
-    public void onSuccess(int taskId, Object... data) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            switch (taskId) {
-                case TaskManager.TASK_ID_RESET_PASSWORD_BY_EMAIL:
-                    getMvpView().sendSuccess();
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(int taskId, String errorCode, Object... errorMsg) {
-        if (isViewAttached()) {
-            getMvpView().hideLoadingProgress();
-            String errorMsgStr = (errorMsg != null && errorMsg.length > 0) ? errorMsg[0].toString() : "";
-            switch (taskId) {
-                case TaskManager.TASK_ID_RESET_PASSWORD_BY_EMAIL:
-                    getMvpView().sendFail(errorCode, errorMsgStr);
-                    break;
-            }
-        }
     }
 }

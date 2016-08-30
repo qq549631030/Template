@@ -139,7 +139,7 @@ public class FakeUserModel implements UserModel {
      * @param callback 回调监听
      */
     @Override
-    public void updateUserInfo(final Map<String, Object> values, final Callback callback) {
+    public void updateUserInfo(String userId, final Map<String, Object> values, final Callback callback) {
         if (currentUser != null) {
             handler.postDelayed(new Runnable() {
                 @Override

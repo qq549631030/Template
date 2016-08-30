@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseStepFragment;
+import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
-import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.ResetPwdByPhoneContract;
 import com.hx.template.mvp.Presenter;
 import com.hx.template.mvp.PresenterFactory;
@@ -63,7 +63,7 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
         return new PresenterLoader<>(getContext(), new PresenterFactory() {
             @Override
             public Presenter create() {
-                return new ResetPwdByPhonePresenter(ModelManager.provideSMSModel(), ModelManager.provideUserModel());
+                return ComponentHolder.getAppComponent().resetPwdByPhonePresenter();
             }
         });
     }

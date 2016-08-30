@@ -1,10 +1,7 @@
 package com.hx.template.mvp.presenter;
 
 import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.user.RegisterCase;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.domain.usercase.single.user.RegisterCase;
 import com.hx.template.mvp.contract.RegisterContract;
 import com.hx.template.mvp.BasePresenter;
 
@@ -44,10 +41,10 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
                 }
 
                 @Override
-                public void onError(String errorCode, Object... errorMsg) {
+                public void onError(String errorCode, String errorMsg) {
                     if (isViewAttached()) {
                         getMvpView().hideLoadingProgress();
-                        getMvpView().registerFail(errorCode, errorMsg.toString());
+                        getMvpView().registerFail(errorCode, errorMsg);
                     }
                 }
             });

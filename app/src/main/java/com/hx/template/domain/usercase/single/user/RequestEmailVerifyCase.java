@@ -1,9 +1,11 @@
-package com.hx.template.domain.usercase.user;
+package com.hx.template.domain.usercase.single.user;
 
 import com.hx.template.domain.usercase.UseCase;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
+
+import javax.inject.Inject;
 
 /**
  * Created by huangxiang on 16/8/29.
@@ -11,6 +13,7 @@ import com.hx.template.model.UserModel;
 public class RequestEmailVerifyCase extends UseCase<RequestEmailVerifyCase.RequestValues, RequestEmailVerifyCase.ResponseValue> {
     private final UserModel userModel;
 
+    @Inject
     public RequestEmailVerifyCase(UserModel userModel) {
         this.userModel = userModel;
     }
@@ -27,9 +30,9 @@ public class RequestEmailVerifyCase extends UseCase<RequestEmailVerifyCase.Reque
             }
 
             @Override
-            public void onFailure(int taskId, String errorCode, Object... errorMsg) {
+            public void onFailure(int taskId, String errorCode, String errorMsg) {
                 if (taskId == TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY) {
-                    getUseCaseCallback().onError(errorCode, errorMsg.toString());
+                    getUseCaseCallback().onError(errorCode, errorMsg);
                 }
             }
         });

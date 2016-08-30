@@ -8,29 +8,24 @@ package com.hx.template.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.domain.usecase.UseCaseManager;
+import com.hx.template.dagger2.ComponentHolder;
+import com.hx.template.domain.usercase.single.user.LoginCase;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GsonUtils;
 import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
-
-import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,7 +50,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
 
     @Override
     protected LoginPresenter onCreatePresenter() {
-        return new LoginPresenter(UseCaseManager.provideLoginCase());
+        return ComponentHolder.getAppComponent().loginPresenter();
     }
 
     @Override
