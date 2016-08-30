@@ -128,14 +128,16 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
                 MultiImageSelector.create().count(1).single().showCamera(true).start(this, REQUEST_CODE_SELECT_IMAGE);
                 break;
             case R.id.nickname_layout:
-                startActivity(new Intent(PersonalInfoActivity.this, PersonalInfoUpdateActivity.class).putExtra(User.INFO_TYPE, User.INFO_TYPE_NICKNAME).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                final Pair<View, String>[] pairs = new Pair[]{new Pair(nickname, "editText")};
+                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(PersonalInfoActivity.this, pairs);
+                startActivity(new Intent(PersonalInfoActivity.this, PersonalInfoUpdateActivity.class).putExtra(User.INFO_TYPE, User.INFO_TYPE_NICKNAME).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
                 break;
             case R.id.username_layout:
                 break;
             case R.id.qrcode_layout:
-                final Pair<View, String>[] pairs = new Pair[]{new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")};
-                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(PersonalInfoActivity.this, pairs);
-                startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
+                final Pair<View, String>[] pairs2 = new Pair[]{new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")};
+                ActivityOptionsCompat transitionActivityOptions2 = ActivityOptionsCompat.makeSceneTransitionAnimation(PersonalInfoActivity.this, pairs2);
+                startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions2.toBundle());
                 break;
             case R.id.gender_layout:
                 break;

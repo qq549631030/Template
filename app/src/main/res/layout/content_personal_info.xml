@@ -46,7 +46,6 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/default_avatar"
-
                         android:transitionName="avatar" />
                 </RelativeLayout>
 
