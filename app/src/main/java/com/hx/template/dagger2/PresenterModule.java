@@ -9,8 +9,6 @@ import com.hx.template.domain.usercase.single.user.RegisterCase;
 import com.hx.template.domain.usercase.single.user.ResetPwdByEmailCase;
 import com.hx.template.domain.usercase.single.user.ResetPwdBySMSCodeCase;
 import com.hx.template.domain.usercase.single.user.UpdateUserInfoCase;
-import com.hx.template.model.SMSModel;
-import com.hx.template.model.UserModel;
 import com.hx.template.mvp.presenter.BindEmailPresenter;
 import com.hx.template.mvp.presenter.BindPhonePresenter;
 import com.hx.template.mvp.presenter.LoginPresenter;

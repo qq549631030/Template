@@ -1,5 +1,7 @@
 package com.hx.template.dagger2;
 
+import com.hx.template.domain.usercase.complex.BindPhoneCase;
+import com.hx.template.domain.usercase.complex.UpdateAvatarCase;
 import com.hx.template.domain.usercase.single.file.UploadFileCase;
 import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
 import com.hx.template.domain.usercase.single.sms.VerifySmsCodeCase;
@@ -80,7 +82,16 @@ public class UseCaseModule {
     public static UploadFileCase provideUploadFileCase(FileModel fileModel) {
         return new UploadFileCase(fileModel);
     }
+
     //==============complex============//
-    
-    
+
+    @Provides
+    public static BindPhoneCase provideBindPhoneCase(UserModel userModel, SMSModel smsModel) {
+        return new BindPhoneCase(userModel, smsModel);
+    }
+
+    @Provides
+    public static UpdateAvatarCase provideUpdateAvatarCase(FileModel fileModel, UserModel userModel) {
+        return new UpdateAvatarCase(fileModel, userModel);
+    }
 }
