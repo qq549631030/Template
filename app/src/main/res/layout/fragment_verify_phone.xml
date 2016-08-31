@@ -40,7 +40,8 @@
                     android:hint="请输入已绑定的手机号码"
                     android:inputType="phone"
                     android:paddingLeft="10dp"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:transitionName="bindPhone" />
             </LinearLayout>
 
             <LinearLayout

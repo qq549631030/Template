@@ -10,6 +10,7 @@
         android:id="@+id/email_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="bindEmail"
         android:layout_marginTop="@dimen/base_padding_20dp"
         tools:text="您已设置邮箱xxx，还未验证，请登录邮箱验证" />
 

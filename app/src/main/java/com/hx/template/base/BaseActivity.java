@@ -65,17 +65,6 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
         GlobalActivityManager.remove(this);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
     public void finishForever() {
         super.finish();
     }
@@ -91,6 +80,12 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     /**

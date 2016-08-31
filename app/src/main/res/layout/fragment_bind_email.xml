@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/base_padding_size"
-        android:hint="请输入要绑定的邮箱" />
+        android:hint="请输入要绑定的邮箱"
+        android:transitionName="bindEmail" />
 
     <Button
         android:id="@+id/bind"

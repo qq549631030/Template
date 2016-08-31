@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -90,10 +92,14 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(SettingActivity.this, ModifyPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.bind_phone_layout:
-                startActivity(new Intent(SettingActivity.this, BindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                final Pair<View, String>[] pairs = new Pair[]{new Pair(bindPhone, "bindPhone")};
+                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(SettingActivity.this, pairs);
+                startActivity(new Intent(SettingActivity.this, BindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
                 break;
             case R.id.bind_email_layout:
-                startActivity(new Intent(SettingActivity.this, BindEmailActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                final Pair<View, String>[] pairs2 = new Pair[]{new Pair(bindEmail, "bindEmail")};
+                ActivityOptionsCompat transitionActivityOptions2 = ActivityOptionsCompat.makeSceneTransitionAnimation(SettingActivity.this, pairs2);
+                startActivity(new Intent(SettingActivity.this, BindEmailActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions2.toBundle());
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {
