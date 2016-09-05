@@ -23,7 +23,7 @@
                 android:background="@color/app_base_white"
                 android:padding="@dimen/base_padding_size">
 
-                <com.hx.template.components.CircleImageView
+                <com.hx.template.widget.CircleImageView
                     android:id="@+id/avatar"
                     android:layout_width="80dp"
                     android:layout_height="80dp"

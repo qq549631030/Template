@@ -31,25 +31,25 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <com.hx.template.components.MainTabItemView
+        <com.hx.template.widget.MainTabItemView
             android:id="@+id/main_menu_item_1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <com.hx.template.components.MainTabItemView
+        <com.hx.template.widget.MainTabItemView
             android:id="@+id/main_menu_item_2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <com.hx.template.components.MainTabItemView
+        <com.hx.template.widget.MainTabItemView
             android:id="@+id/main_menu_item_3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <com.hx.template.components.MainTabItemView
+        <com.hx.template.widget.MainTabItemView
             android:id="@+id/main_menu_item_4"
             android:layout_width="0dp"
             android:layout_height="match_parent"

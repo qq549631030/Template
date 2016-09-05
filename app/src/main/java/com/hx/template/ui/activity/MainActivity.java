@@ -22,7 +22,7 @@ import android.widget.FrameLayout;
 import com.hx.template.R;
 import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.components.MainTabItemView;
+import com.hx.template.widget.MainTabItemView;
 import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.ui.fragment.FavoriteFragment;
 import com.hx.template.ui.fragment.GroupFragment;

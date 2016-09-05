@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
-import com.hx.template.components.CircleImageView;
+import com.hx.template.widget.CircleImageView;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.Gender;

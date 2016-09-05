@@ -39,7 +39,7 @@
                         android:layout_centerVertical="true"
                         android:text="头像" />
 
-                    <com.hx.template.components.CircleImageView
+                    <com.hx.template.widget.CircleImageView
                         android:id="@+id/avatar"
                         android:layout_width="80dp"
                         android:layout_height="80dp"

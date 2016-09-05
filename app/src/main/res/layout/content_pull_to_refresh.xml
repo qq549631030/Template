@@ -12,7 +12,7 @@
     tools:context="com.hx.template.demo.PullToRefreshActivity"
     tools:showIn="@layout/activity_pull_to_refresh">
 
-    <com.hx.template.components.PullToRefreshView
+    <com.hx.template.widget.PullToRefreshView
         android:id="@+id/pullToRefreshView"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -27,5 +27,5 @@
             android:dividerHeight="10dp"
             android:listSelector="#00000000" />
 
-    </com.hx.template.components.PullToRefreshView>
+    </com.hx.template.widget.PullToRefreshView>
 </RelativeLayout>

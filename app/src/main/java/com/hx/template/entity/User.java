@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+import io.realm.RealmModel;
+
 /**
  * Created by huangxiang on 15/10/20.
  */

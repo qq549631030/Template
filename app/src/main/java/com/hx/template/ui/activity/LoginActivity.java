@@ -30,6 +30,7 @@ import com.hx.template.utils.ToastUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
 
@@ -103,6 +104,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
     @Override
     public void loginSuccess(User user) {
         User.setCurrent(GsonUtils.toJsonObj(user));
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.createObject(User.class);
+            }
+        });
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

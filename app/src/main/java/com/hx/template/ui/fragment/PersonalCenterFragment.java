@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseFragment;
-import com.hx.template.components.CircleImageView;
+import com.hx.template.widget.CircleImageView;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;

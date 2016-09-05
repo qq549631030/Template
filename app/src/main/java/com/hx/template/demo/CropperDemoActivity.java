@@ -11,15 +11,13 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
 import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.utils.ToastUtils;
-import com.hx.template.components.CircleImageView;
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.hx.template.widget.CircleImageView;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
