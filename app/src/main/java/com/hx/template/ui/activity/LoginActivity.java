@@ -104,13 +104,13 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
     @Override
     public void loginSuccess(User user) {
         User.setCurrent(GsonUtils.toJsonObj(user));
-        Realm realm = Realm.getDefaultInstance();
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.createObject(User.class);
-            }
-        });
+//        Realm realm = Realm.getDefaultInstance();
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                realm.createObject(User.class);
+//            }
+//        });
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

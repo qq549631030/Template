@@ -26,6 +26,7 @@ import com.hx.template.mvp.PresenterFactory;
 import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.mvp.contract.PersonalInfoContract;
 import com.hx.template.mvp.presenter.PersonalInfoPresenter;
+import com.hx.template.utils.ActivityOptionsHelper;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.utils.UriUtils;
@@ -133,9 +134,8 @@ public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, Pe
             case R.id.username_layout:
                 break;
             case R.id.qrcode_layout:
-                final Pair<View, String>[] pairs = new Pair[]{new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")};
-                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(PersonalInfoActivity.this, pairs);
-                startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
+                startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP),
+                        ActivityOptionsHelper.makeSceneTransitionAnimationBundle(PersonalInfoActivity.this, true, new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")));
                 break;
             case R.id.gender_layout:
                 break;

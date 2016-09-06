@@ -26,6 +26,7 @@ import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
+import com.hx.template.utils.ActivityOptionsHelper;
 import com.hx.template.utils.DataCleanManager;
 import com.hx.template.utils.StringUtils;
 
@@ -92,14 +93,10 @@ public class SettingActivity extends BaseActivity {
                 startActivity(new Intent(SettingActivity.this, ModifyPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.bind_phone_layout:
-                final Pair<View, String>[] pairs = new Pair[]{new Pair(bindPhone, "bindPhone")};
-                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(SettingActivity.this, pairs);
-                startActivity(new Intent(SettingActivity.this, BindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
+                startActivity(new Intent(SettingActivity.this, BindPhoneActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), ActivityOptionsHelper.makeSceneTransitionAnimationBundle(SettingActivity.this, true, new Pair(bindPhone, "bindPhone")));
                 break;
             case R.id.bind_email_layout:
-                final Pair<View, String>[] pairs2 = new Pair[]{new Pair(bindEmail, "bindEmail")};
-                ActivityOptionsCompat transitionActivityOptions2 = ActivityOptionsCompat.makeSceneTransitionAnimation(SettingActivity.this, pairs2);
-                startActivity(new Intent(SettingActivity.this, BindEmailActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions2.toBundle());
+                startActivity(new Intent(SettingActivity.this, BindEmailActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), ActivityOptionsHelper.makeSceneTransitionAnimationBundle(SettingActivity.this, true, new Pair(bindEmail, "bindEmail")));
                 break;
             case R.id.logout:
                 new AlertDialog.Builder(SettingActivity.this).setMessage("确认要退出登录吗?").setPositiveButton("确定", new DialogInterface.OnClickListener() {

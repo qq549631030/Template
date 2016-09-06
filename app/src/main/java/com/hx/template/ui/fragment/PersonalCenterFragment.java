@@ -19,6 +19,7 @@ import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.ui.activity.PersonalInfoActivity;
 import com.hx.template.ui.activity.SettingActivity;
+import com.hx.template.utils.ActivityOptionsHelper;
 import com.hx.template.utils.StringUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -97,9 +98,7 @@ public class PersonalCenterFragment extends BaseFragment {
         }
         switch (view.getId()) {
             case R.id.personal_into_layout:
-                final Pair<View, String>[] pairs = new Pair[]{new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(username, "username"), new Pair(qrcode, "qrcode")};
-                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pairs);
-                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), transitionActivityOptions.toBundle());
+                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), ActivityOptionsHelper.makeSceneTransitionAnimationBundle(getActivity(), true, new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(username, "username"), new Pair(qrcode, "qrcode")));
                 break;
             case R.id.qrcode:
                 break;

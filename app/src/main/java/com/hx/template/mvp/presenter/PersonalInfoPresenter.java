@@ -2,21 +2,12 @@ package com.hx.template.mvp.presenter;
 
 import com.hx.template.domain.usercase.UseCase;
 import com.hx.template.domain.usercase.complex.UpdateAvatarCase;
-import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
-import com.hx.template.model.FileModel;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
-import com.hx.template.mvp.contract.PersonalInfoContract;
 import com.hx.template.mvp.BasePresenter;
+import com.hx.template.mvp.contract.PersonalInfoContract;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Inject;
-
-import cn.bmob.v3.datatype.BmobFile;
 
 /**
  * Created by huangxiang on 16/8/14.
