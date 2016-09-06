@@ -2,12 +2,16 @@ package com.hx.template.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ListView;
 
+import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
+import com.aspsine.swipetoloadlayout.OnRefreshListener;
+import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.hx.template.R;
 
@@ -16,11 +20,12 @@ import com.hx.template.R;
  * 作者：huangx on 2016/9/6 9:19
  * 邮箱：huangx@pycredit.cn
  */
-public class BaseListFragment extends BaseFragment implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
+public class BaseListFragment extends BaseFragment implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener, OnRefreshListener, OnLoadMoreListener {
 
     public static final String EXTRA_REFRESH_ENABLE = "_extra_refresh_enable";
 
-    private CanRefreshLayout refreshLayout;
+    private CanRefreshLayout canRefreshLayout;
+    private SwipeToLoadLayout swipeToLoadLayout;
     private View refreshHeader;
     private View refreshFooter;
     private ListView listView;
@@ -31,7 +36,7 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
     private boolean refreshEnable = true;
 
     protected int getLayoutRes() {
-        return R.layout.layout_base_list;
+        return R.layout.layout_base_list_2;
     }
 
     protected int getEmptyRes() {
@@ -63,12 +68,19 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
         }
         View view = inflater.inflate(getLayoutRes(), null);
         initRefreshLayout(view);
-        if (refreshLayout != null) {
-            refreshLayout.setStyle(CanRefreshLayout.UPPER, CanRefreshLayout.CLASSIC);
-            refreshLayout.setOnRefreshListener(this);
-            refreshLayout.setOnLoadMoreListener(this);
-            refreshLayout.setRefreshEnabled(refreshEnable);
-            refreshLayout.setLoadMoreEnabled(refreshEnable);
+        if (canRefreshLayout != null) {
+            canRefreshLayout.setStyle(CanRefreshLayout.UPPER, CanRefreshLayout.CLASSIC);
+            canRefreshLayout.setOnRefreshListener(this);
+            canRefreshLayout.setOnLoadMoreListener(this);
+            canRefreshLayout.setRefreshEnabled(refreshEnable);
+            canRefreshLayout.setLoadMoreEnabled(refreshEnable);
+        }
+        if (swipeToLoadLayout != null) {
+            swipeToLoadLayout.setSwipeStyle(SwipeToLoadLayout.STYLE.CLASSIC);
+            swipeToLoadLayout.setOnRefreshListener(this);
+            swipeToLoadLayout.setOnLoadMoreListener(this);
+            swipeToLoadLayout.setRefreshEnabled(refreshEnable);
+            swipeToLoadLayout.setLoadMoreEnabled(refreshEnable);
         }
         initListView(view);
         if (listView == null) {
@@ -93,9 +105,16 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
      * @param parent
      */
     protected void initRefreshLayout(View parent) {
-        refreshLayout = (CanRefreshLayout) parent.findViewById(R.id.refresh);
-        refreshHeader = parent.findViewById(R.id.can_refresh_header);
-        refreshFooter = parent.findViewById(R.id.can_refresh_footer);
+        canRefreshLayout = (CanRefreshLayout) parent.findViewById(R.id.refresh);
+        if (canRefreshLayout != null) {
+            refreshHeader = parent.findViewById(R.id.can_refresh_header);
+            refreshFooter = parent.findViewById(R.id.can_refresh_footer);
+        }
+        swipeToLoadLayout = (SwipeToLoadLayout) parent.findViewById(R.id.swipeToLoadLayout);
+        if (swipeToLoadLayout != null) {
+            refreshHeader = parent.findViewById(R.id.swipe_refresh_header);
+            refreshFooter = parent.findViewById(R.id.swipe_load_more_footer);
+        }
     }
 
     /**
@@ -104,7 +123,12 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
      * @param parent
      */
     protected void initListView(View parent) {
-        listView = (ListView) parent.findViewById(R.id.can_content_view);
+        if (canRefreshLayout != null) {
+            listView = (ListView) parent.findViewById(R.id.can_content_view);
+        }
+        if (swipeToLoadLayout != null) {
+            listView = (ListView) parent.findViewById(R.id.swipe_target);
+        }
     }
 
     /**
@@ -137,8 +161,8 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
         }
     }
 
-    public CanRefreshLayout getRefreshLayout() {
-        return refreshLayout;
+    public CanRefreshLayout getCanRefreshLayout() {
+        return canRefreshLayout;
     }
 
     public ListView getListView() {

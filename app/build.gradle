@@ -157,22 +157,24 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile "org.powermock:powermock-module-junit4:1.6.4"
-    testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
-    testCompile "org.powermock:powermock-api-mockito:1.6.4"
-    testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
-    testCompile "org.robolectric:robolectric:3.1.1"
-    testCompile "org.robolectric:shadows-multidex:3.0"
-    androidTestCompile "org.robolectric:robolectric:3.1.1"
+    testCompile 'org.powermock:powermock-module-junit4:1.6.4'
+    testCompile 'org.powermock:powermock-module-junit4-rule:1.6.4'
+    testCompile 'org.powermock:powermock-api-mockito:1.6.4'
+    testCompile 'org.powermock:powermock-classloading-xstream:1.6.4'
+    testCompile 'org.robolectric:robolectric:3.1.1'
+    testCompile 'org.robolectric:shadows-multidex:3.0'
+    androidTestCompile 'org.robolectric:robolectric:3.1.1'
     androidTestCompile 'com.github.fabioCollini:DaggerMock:0.6.2'
     //如果你需要在Instrumentation、Espresso、UiAutomator里面使用的话
 
     //听云性能监测
+
     //    compile "com.networkbench.newlens.agent.android:nbs.newlens.agent:2.4.1.1"
 
     //数据库加密
     compile project(':ormlite-sqlcipher')
     //bmob
+
     //常用工具工程
     compile project(':commonutils')
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
@@ -211,6 +213,6 @@ dependencies {
     compile 'com.google.dagger:dagger:2.0.2'
     compile 'javax.annotation:jsr250-api:1.0'
     apt 'com.google.dagger:dagger-compiler:2.0.2'
-    
     compile 'com.canyinghao:canrefresh:1.0.4'
+    compile project(':swipetoloadlayout')
 }
