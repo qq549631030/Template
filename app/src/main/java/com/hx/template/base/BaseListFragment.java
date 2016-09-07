@@ -2,17 +2,12 @@ package com.hx.template.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ListView;
 
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
-import com.canyinghao.canrefresh.CanRefreshLayout;
 import com.hx.template.R;
 
 /**
@@ -20,23 +15,14 @@ import com.hx.template.R;
  * 作者：huangx on 2016/9/6 9:19
  * 邮箱：huangx@pycredit.cn
  */
-public class BaseListFragment extends BaseFragment implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener, OnRefreshListener, OnLoadMoreListener {
+public class BaseListFragment extends BaseFragment {
 
-    public static final String EXTRA_REFRESH_ENABLE = "_extra_refresh_enable";
-
-    private CanRefreshLayout canRefreshLayout;
-    private SwipeToLoadLayout swipeToLoadLayout;
-    private View refreshHeader;
-    private View refreshFooter;
-    private ListView listView;
+    protected ListView listView;
     private ViewStub empty;
     private ViewStub progress;
-    private View noMore;
-
-    private boolean refreshEnable = true;
 
     protected int getLayoutRes() {
-        return R.layout.layout_base_list_2;
+        return R.layout.layout_base_list;
     }
 
     protected int getEmptyRes() {
@@ -47,19 +33,6 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
         return R.layout.layout_base_progress;
     }
 
-    protected int getNoMoreRes() {
-        return R.layout.layout_base_no_more;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-            refreshEnable = args.getBoolean(EXTRA_REFRESH_ENABLE, true);
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,21 +40,7 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
             throw new IllegalArgumentException("layout error");
         }
         View view = inflater.inflate(getLayoutRes(), null);
-        initRefreshLayout(view);
-        if (canRefreshLayout != null) {
-            canRefreshLayout.setStyle(CanRefreshLayout.UPPER, CanRefreshLayout.CLASSIC);
-            canRefreshLayout.setOnRefreshListener(this);
-            canRefreshLayout.setOnLoadMoreListener(this);
-            canRefreshLayout.setRefreshEnabled(refreshEnable);
-            canRefreshLayout.setLoadMoreEnabled(refreshEnable);
-        }
-        if (swipeToLoadLayout != null) {
-            swipeToLoadLayout.setSwipeStyle(SwipeToLoadLayout.STYLE.CLASSIC);
-            swipeToLoadLayout.setOnRefreshListener(this);
-            swipeToLoadLayout.setOnLoadMoreListener(this);
-            swipeToLoadLayout.setRefreshEnabled(refreshEnable);
-            swipeToLoadLayout.setLoadMoreEnabled(refreshEnable);
-        }
+        initView(view);
         initListView(view);
         if (listView == null) {
             throw new IllegalArgumentException("listView must be not null");
@@ -91,30 +50,16 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
             listView.setEmptyView(empty);
         }
         initProgress(view);
-        if (getLayoutRes() > 0) {
-            View noMoreView = inflater.inflate(getNoMoreRes(), null);
-            noMore = noMoreView.findViewById(R.id.no_more_layout);
-            listView.addFooterView(noMoreView);
-        }
         return view;
     }
 
     /**
-     * 初始化下拉刷新控件
+     * 初始化View
      *
      * @param parent
      */
-    protected void initRefreshLayout(View parent) {
-        canRefreshLayout = (CanRefreshLayout) parent.findViewById(R.id.refresh);
-        if (canRefreshLayout != null) {
-            refreshHeader = parent.findViewById(R.id.can_refresh_header);
-            refreshFooter = parent.findViewById(R.id.can_refresh_footer);
-        }
-        swipeToLoadLayout = (SwipeToLoadLayout) parent.findViewById(R.id.swipeToLoadLayout);
-        if (swipeToLoadLayout != null) {
-            refreshHeader = parent.findViewById(R.id.swipe_refresh_header);
-            refreshFooter = parent.findViewById(R.id.swipe_load_more_footer);
-        }
+    protected void initView(View parent) {
+
     }
 
     /**
@@ -123,12 +68,7 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
      * @param parent
      */
     protected void initListView(View parent) {
-        if (canRefreshLayout != null) {
-            listView = (ListView) parent.findViewById(R.id.can_content_view);
-        }
-        if (swipeToLoadLayout != null) {
-            listView = (ListView) parent.findViewById(R.id.swipe_target);
-        }
+        listView = (ListView) parent.findViewById(R.id.listView);
     }
 
     /**
@@ -161,22 +101,8 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
         }
     }
 
-    public CanRefreshLayout getCanRefreshLayout() {
-        return canRefreshLayout;
-    }
-
     public ListView getListView() {
         return listView;
-    }
-
-    @Override
-    public void onRefresh() {
-
-    }
-
-    @Override
-    public void onLoadMore() {
-
     }
 
     /**
@@ -194,26 +120,6 @@ public class BaseListFragment extends BaseFragment implements CanRefreshLayout.O
     public void hideProgress() {
         if (progress != null && getProgressRes() > 0) {
             progress.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * 显示无更多数据
-     */
-    public void showNoMore() {
-        if (noMore != null) {
-            noMore.setVisibility(View.VISIBLE);
-            noMore.setPadding(0, 0, 0, 0);
-        }
-    }
-
-    /**
-     * 隐藏无更多数据
-     */
-    public void hideNoMore() {
-        if (noMore != null) {
-            noMore.setVisibility(View.GONE);
-            noMore.setPadding(0, -1 * noMore.getHeight(), 0, 0);
         }
     }
 }
