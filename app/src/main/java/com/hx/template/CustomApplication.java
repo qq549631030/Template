@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
+import com.dodola.rocoofix.RocooFix;
 import com.facebook.stetho.Stetho;
 import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
@@ -59,6 +60,8 @@ public class CustomApplication extends Application {
     protected void attachBaseContext(Context base) {
         try {
             super.attachBaseContext(base);
+            RocooFix.init(this);
+            RocooFix.initPathFromAssets(this, "patch.jar");
             MultiDex.install(this);
         } catch (Exception e) {
             e.printStackTrace();

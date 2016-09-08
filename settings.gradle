@@ -1,1 +1,1 @@
-include ':app', ':ormlite-sqlcipher', ':commonutils', ':nuwaplugin', 'swipetoloadlayout'
+include ':app', ':ormlite-sqlcipher', ':commonutils','swipetoloadlayout'

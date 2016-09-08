@@ -17,6 +17,7 @@
 #}
 -dontwarn
 -printmapping mapping.txt
+-ignorewarnings
 
 ##### support.v7
 -dontwarn android.support.v7.**
@@ -81,3 +82,11 @@
 -keepclassmembers enum com.j256.** { *; }
 -keep interface com.j256.**
 -keepclassmembers interface com.j256.** { *; }
+
+##### RoCooFix
+-keep class com.dodola.rocoofix.** {*;}
+-keep class com.lody.legend.** {*;}
+-keepclassmembers class com.hx.template.** {
+  public <init>(); ##保留init,和include package保持一致
+}
+
