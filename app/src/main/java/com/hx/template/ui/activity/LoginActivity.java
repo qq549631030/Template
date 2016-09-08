@@ -30,7 +30,6 @@ import com.hx.template.utils.ToastUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
 
 public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
 

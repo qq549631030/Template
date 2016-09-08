@@ -61,7 +61,7 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
 //            }
 //        });
         showProgress();
-       fetchData();
+        fetchData();
     }
 
     @Override
@@ -95,13 +95,13 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
                 if (isLoadingMore()) {
                     setLoadingMore(false);
                 }
-                if (list.size() > 120) {
+                if (list.size() >= 120) {
                     showNoMore();
                 } else {
                     hideNoMore();
                 }
                 hideProgress();
             }
-        }, 2000);
+        }, 1000);
     }
 }

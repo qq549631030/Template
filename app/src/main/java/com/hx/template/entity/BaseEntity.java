@@ -1,13 +1,9 @@
 package com.hx.template.entity;
 
-import io.realm.RealmModel;
-import io.realm.annotations.PrimaryKey;
-
 /**
  * Created by huangx on 2016/8/23.
  */
-public class BaseEntity implements RealmModel {
-    @PrimaryKey
+public class BaseEntity  {
     private String objectId;
     private String createdAt;
     private String updatedAt;

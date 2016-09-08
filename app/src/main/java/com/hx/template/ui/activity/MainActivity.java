@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import com.hx.template.R;
 import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.widget.BadgeView;
 import com.hx.template.widget.MainTabItemView;
 import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.ui.fragment.FavoriteFragment;
@@ -33,6 +34,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.huangx.common.utils.ToastUtils;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends BaseActivity {
 
@@ -71,6 +73,12 @@ public class MainActivity extends BaseActivity {
             currentIndex = getIntent().getIntExtra(PAGE_INDEX, 0);
         }
         switchPage(currentIndex);
+        int badgeCount = 1;
+        ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
+
+        BadgeView badgeView = new BadgeView(this);
+        badgeView.setBadgeCount(badgeCount);
+        badgeView.setTargetView(mainMenuItem1.getImage());
     }
 
     @Override
