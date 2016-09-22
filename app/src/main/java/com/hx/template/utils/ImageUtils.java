@@ -3,6 +3,10 @@ package com.hx.template.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.view.View;
 
@@ -167,5 +171,27 @@ public class ImageUtils {
         Bitmap bitmap = view.getDrawingCache();
 
         return bitmap;
+    }
+
+    /**
+     * 将图片转化为灰度图片
+     *
+     * @param bitmap
+     * @return
+     */
+    public static Bitmap grayBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        Bitmap greyBitmap = Bitmap
+                .createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(greyBitmap);
+        Paint paint = new Paint();
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.setSaturation(0);
+        ColorMatrixColorFilter colorMatrixFilter = new ColorMatrixColorFilter(
+                colorMatrix);
+        paint.setColorFilter(colorMatrixFilter);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return greyBitmap;
     }
 }
