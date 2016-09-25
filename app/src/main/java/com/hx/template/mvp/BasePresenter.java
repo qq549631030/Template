@@ -2,33 +2,47 @@ package com.hx.template.mvp;
 
 import android.support.annotation.NonNull;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by huangx on 2016/5/9.
  */
 public class BasePresenter<T extends MvpView> implements Presenter<T> {
 
-    private T mMvpView;
+    private WeakReference<T> viewRef;
+
+    private ViewState viewState;
 
     @Override
     public void attachView(@NonNull T mvpView) {
-        mMvpView = mvpView;
+        viewRef = new WeakReference<T>(mvpView);
+        if (viewState != null) {
+            viewState.apply(mvpView);
+        }
     }
 
     @Override
     public void detachView() {
-        mMvpView = null;
-    }
-
-    @Override
-    public void onDestroyed() {
+        if (viewRef != null) {
+            viewRef.clear();
+            viewRef = null;
+        }
     }
 
     public boolean isViewAttached() {
-        return mMvpView != null;
+        return viewRef != null && viewRef.get() != null;
     }
 
     public T getMvpView() {
-        return mMvpView;
+        return viewRef == null ? null : viewRef.get();
+    }
+
+    public ViewState getViewState() {
+        return viewState;
+    }
+
+    public void setViewState(ViewState viewState) {
+        this.viewState = viewState;
     }
 
     public void checkViewAttached() {

@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.global.HXLog;
 import com.hx.template.mvp.contract.SelectImageView;
 import com.hx.template.mvp.presenter.SelectImagePresenter;
@@ -17,7 +18,7 @@ import java.io.File;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SelectImageActivity extends BaseActivity implements SelectImageView {
+public class SelectImageActivity extends BaseMvpActivity implements SelectImageView {
 
     SelectImagePresenter presenter;
 

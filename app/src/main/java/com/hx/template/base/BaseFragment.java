@@ -17,19 +17,11 @@ import com.hx.template.mvp.Presenter;
 /**
  * Created by huangx on 2016/5/12.
  */
-public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fragment implements MvpView, LoaderManager.LoaderCallbacks<P> {
-
-    public final static int BASE_FRAGMENT_LOADER_ID = 200;
+public class BaseFragment extends Fragment {
 
     protected boolean isViewCreated;
 
     protected boolean isVisable;
-
-    // boolean flag to avoid delivering the result twice. Calling initLoader in onActivityCreated makes
-    // onLoadFinished will be called twice during configuration change.
-    private boolean delivered = false;
-
-    protected P presenter;
 
     @Override
     public void onAttach(Activity activity) {
@@ -55,7 +47,6 @@ public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fra
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(BASE_FRAGMENT_LOADER_ID, null, this);
         SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
     }
 
@@ -65,21 +56,6 @@ public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fra
         SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (presenter != null) {
-            presenter.attachView((V) this);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        if (presenter != null) {
-            presenter.detachView();
-        }
-        super.onPause();
-    }
 
     @Override
     public void onDestroyView() {
@@ -125,56 +101,6 @@ public class BaseFragment<P extends Presenter<V>, V extends MvpView> extends Fra
     public void finish() {
         if (getActivity() != null) {
             getActivity().finish();
-        }
-    }
-
-
-    @Override
-    public Loader<P> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<P> loader, P data) {
-        HXLog.d("onLoadFinished delivered = " + delivered);
-        if (!delivered) {
-            presenter = data;
-            delivered = true;
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<P> loader) {
-        HXLog.d("onLoaderReset");
-        presenter = null;
-    }
-
-    @Override
-    public void showError(String errorMsg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).showError(errorMsg);
-        }
-    }
-
-    /**
-     * 显示loading对话框
-     *
-     * @param msg
-     */
-    @Override
-    public void showLoadingProgress(String msg) {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).showLoadingProgress(msg);
-        }
-    }
-
-    /**
-     * 隐藏loading对话框
-     */
-    @Override
-    public void hideLoadingProgress() {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideLoadingProgress();
         }
     }
 }

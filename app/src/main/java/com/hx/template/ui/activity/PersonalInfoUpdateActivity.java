@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
@@ -26,7 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PersonalInfoUpdateActivity extends BaseActivity<PersonalInfoUpdatePresenter, PersonalInfoUpdateContract.View> implements PersonalInfoUpdateContract.View {
+public class PersonalInfoUpdateActivity extends BaseMvpActivity<PersonalInfoUpdatePresenter, PersonalInfoUpdateContract.View> implements PersonalInfoUpdateContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

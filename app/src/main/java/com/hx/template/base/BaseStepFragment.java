@@ -12,7 +12,7 @@ import com.hx.template.mvp.Presenter;
 /**
  * Created by huangx on 2016/5/13.
  */
-public class BaseStepFragment<P extends Presenter<V>, V extends MvpView> extends BaseFragment<P, V> {
+public class BaseStepFragment<P extends Presenter<V>, V extends MvpView> extends BaseMvpFragment<P, V> {
     /**
      * 是否是第一步
      */

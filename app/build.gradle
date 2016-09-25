@@ -155,7 +155,6 @@ android {
     dexOptions {
         preDexLibraries = false
         javaMaxHeapSize "4g"
-        incremental true
     }
 }
 
@@ -226,7 +225,7 @@ dependencies {
 }
 
 rocoo_fix {
-    preVersionPath = '1'
+//    preVersionPath = '1'
     enable = true
     scanref =false
 }

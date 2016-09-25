@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.widget.CircleImageView;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
@@ -46,7 +47,7 @@ import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
-public class PersonalInfoActivity extends BaseActivity<PersonalInfoPresenter, PersonalInfoContract.View> implements PersonalInfoContract.View {
+public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter, PersonalInfoContract.View> implements PersonalInfoContract.View {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
     private static final int REQUEST_CODE_CROP_IMAGE = 102;

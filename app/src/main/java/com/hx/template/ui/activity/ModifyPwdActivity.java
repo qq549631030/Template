@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.mvp.contract.ModifyPwdContract;
 import com.hx.template.mvp.presenter.ModifyPwdPresenter;
@@ -21,7 +22,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ModifyPwdActivity extends BaseActivity<ModifyPwdPresenter, ModifyPwdContract.View> implements ModifyPwdContract.View {
+public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, ModifyPwdContract.View> implements ModifyPwdContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

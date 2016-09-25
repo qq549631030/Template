@@ -22,42 +22,28 @@ import com.hx.template.mvp.PresenterFactory;
 import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.ToastUtils;
 
-public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends AppCompatActivity implements MvpView, LoaderManager.LoaderCallbacks<P> {
-
-    public final static int BASE_ACTIVITY_LOADER_ID = 100;
-
-    private ProgressDialog mProgressDialog;
+public class BaseActivity extends AppCompatActivity {
 
     private ConnectivityManager mConnectivityManager;
 
-    protected P presenter;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GlobalActivityManager.push(this);
+        mProgressDialog = new ProgressDialog(this);
         mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         IntentFilter netFilter = new IntentFilter();
         netFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(netReceiver, netFilter);
         SaveSceneUtils.onRestoreInstanceState(this, savedInstanceState);
-        mProgressDialog = new ProgressDialog(this);
-        getSupportLoaderManager().initLoader(BASE_ACTIVITY_LOADER_ID, null, this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (presenter != null) {
-            presenter.attachView((V) this);
-        }
-    }
 
     @Override
     protected void onDestroy() {
-        if (presenter != null) {
-            presenter.detachView();
-        }
         super.onDestroy();
         unregisterReceiver(netReceiver);
         netReceiver = null;
@@ -116,57 +102,16 @@ public class BaseActivity<P extends Presenter<V>, V extends MvpView> extends App
 
     }
 
-    /**
-     * 显示loading对话框
-     *
-     * @param msg
-     */
-    @Override
-    public void showLoadingProgress(String msg) {
+    public void showDefaultLoadingProgress(String msg) {
         mProgressDialog.setMessage(msg);
         if (!mProgressDialog.isShowing()) {
             mProgressDialog.show();
         }
     }
 
-    /**
-     * 隐藏loading对话框
-     */
-    @Override
-    public void hideLoadingProgress() {
+    public void hideDefaultLoadingProgress() {
         if (mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
-    }
-
-    @Override
-    public Loader<P> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader(this, new PresenterFactory<P>() {
-            @Override
-            public P create() {
-                return onCreatePresenter();
-            }
-        });
-    }
-
-    @Override
-    public void onLoadFinished(Loader<P> loader, P data) {
-        HXLog.d("onLoadFinished");
-        presenter = data;
-    }
-
-    @Override
-    public void onLoaderReset(Loader<P> loader) {
-        HXLog.d("onLoaderReset");
-        presenter = null;
-    }
-
-    @Override
-    public void showError(String errorMsg) {
-        ToastUtils.showToast(this, errorMsg);
-    }
-
-    protected P onCreatePresenter() {
-        return null;
     }
 }

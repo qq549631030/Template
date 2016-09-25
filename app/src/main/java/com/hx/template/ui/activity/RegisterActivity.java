@@ -15,6 +15,7 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.mvp.contract.RegisterContract;
@@ -29,7 +30,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends BaseActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View {
+public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View {
 
     @Bind(R.id.username)
     EditText username;

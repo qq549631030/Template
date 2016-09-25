@@ -16,12 +16,14 @@ import android.widget.EditText;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.domain.usercase.single.user.LoginCase;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GsonUtils;
 import com.hx.template.model.ModelManager;
+import com.hx.template.mvp.ViewState;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
 import com.hx.template.utils.StringUtils;
@@ -31,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
+public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
 
     @Bind(R.id.username)
     EditText username;
@@ -51,6 +53,26 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
     @Override
     protected LoginPresenter onCreatePresenter() {
         return ComponentHolder.getAppComponent().loginPresenter();
+    }
+
+    @Override
+    protected ViewState<LoginContract.View> onCreateViewState() {
+        return new ViewState<LoginContract.View>() {
+            private String username;
+            private String password;
+
+            @Override
+            public void apply(LoginContract.View view) {
+                view.setUserName(username);
+                view.setPassword(password);
+            }
+
+            @Override
+            public void save(LoginContract.View view) {
+                username = view.getUserName();
+                password = view.getPassword();
+            }
+        };
     }
 
     @Override
@@ -91,8 +113,18 @@ public class LoginActivity extends BaseActivity<LoginPresenter, LoginContract.Vi
     }
 
     @Override
+    public void setUserName(String userName) {
+        this.username.setText(userName);
+    }
+
+    @Override
     public String getPassword() {
         return password.getText().toString().trim();
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password.setText(password);
     }
 
     /**

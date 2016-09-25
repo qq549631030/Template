@@ -17,11 +17,25 @@ public interface LoginContract {
         String getUserName();
 
         /**
+         * 设置用户名
+         *
+         * @param userName
+         */
+        void setUserName(String userName);
+
+        /**
          * 获取密码
          *
          * @return
          */
         String getPassword();
+
+        /**
+         * 设置密码
+         *
+         * @param password
+         */
+        void setPassword(String password);
 
         /**
          * 登录成功
