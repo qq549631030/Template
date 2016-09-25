@@ -2,6 +2,8 @@ package com.hx.template.mvp;
 
 import android.support.annotation.NonNull;
 
+import com.hx.template.global.HXLog;
+
 import java.lang.ref.WeakReference;
 
 /**

@@ -43,6 +43,10 @@ public class BaseMvpActivity<P extends Presenter<V>, V extends MvpView> extends 
         super.onSaveInstanceState(outState);
         if (presenter instanceof BasePresenter) {
             ViewState viewState = ((BasePresenter) presenter).getViewState();
+            if (viewState == null) {
+                viewState = onCreateViewState();
+                ((BasePresenter) presenter).setViewState(viewState);
+            }
             if (viewState != null) {
                 viewState.save(this);
             }
@@ -71,9 +75,6 @@ public class BaseMvpActivity<P extends Presenter<V>, V extends MvpView> extends 
     public void onLoadFinished(Loader<P> loader, P data) {
         HXLog.d("onLoadFinished");
         presenter = data;
-        if (presenter instanceof BasePresenter) {
-            ((BasePresenter) presenter).setViewState(onCreateViewState());
-        }
     }
 
     @Override

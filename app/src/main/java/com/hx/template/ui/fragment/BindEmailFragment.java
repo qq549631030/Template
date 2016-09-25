@@ -48,13 +48,8 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
     }
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader(getContext(), new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().bindEmailPresenter();
-            }
-        });
+    protected BindEmailPresenter onCreatePresenter() {
+        return ComponentHolder.getAppComponent().bindEmailPresenter();
     }
 
     @Override

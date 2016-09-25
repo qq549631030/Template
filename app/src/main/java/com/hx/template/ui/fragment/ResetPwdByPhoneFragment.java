@@ -59,13 +59,8 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
     }
 
     @Override
-    public Loader<ResetPwdByPhonePresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(getContext(), new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().resetPwdByPhonePresenter();
-            }
-        });
+    protected ResetPwdByPhonePresenter onCreatePresenter() {
+        return ComponentHolder.getAppComponent().resetPwdByPhonePresenter();
     }
 
     @Override

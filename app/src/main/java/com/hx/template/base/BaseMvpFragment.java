@@ -6,8 +6,12 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.hx.template.global.HXLog;
+import com.hx.template.mvp.BasePresenter;
 import com.hx.template.mvp.MvpView;
 import com.hx.template.mvp.Presenter;
+import com.hx.template.mvp.PresenterFactory;
+import com.hx.template.mvp.PresenterLoader;
+import com.hx.template.mvp.ViewState;
 import com.hx.template.utils.ToastUtils;
 
 /**
@@ -46,10 +50,29 @@ public class BaseMvpFragment<P extends Presenter<V>, V extends MvpView> extends 
         super.onPause();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (presenter instanceof BasePresenter) {
+            ViewState viewState = ((BasePresenter) presenter).getViewState();
+            if (viewState == null) {
+                viewState = onCreateViewState();
+                ((BasePresenter) presenter).setViewState(viewState);
+            }
+            if (viewState != null) {
+                viewState.save(this);
+            }
+        }
+    }
 
     @Override
     public Loader<P> onCreateLoader(int id, Bundle args) {
-        return null;
+        return new PresenterLoader(getContext(), new PresenterFactory<P>() {
+            @Override
+            public P create() {
+                return onCreatePresenter();
+            }
+        });
     }
 
     @Override
@@ -65,6 +88,14 @@ public class BaseMvpFragment<P extends Presenter<V>, V extends MvpView> extends 
     public void onLoaderReset(Loader<P> loader) {
         HXLog.d("onLoaderReset");
         presenter = null;
+    }
+
+    protected P onCreatePresenter() {
+        return null;
+    }
+
+    protected ViewState<V> onCreateViewState() {
+        return null;
     }
 
     @Override

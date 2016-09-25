@@ -59,13 +59,8 @@ public class VerifyPhoneFragment extends BaseStepFragment<VerifyPhonePresenter, 
     }
 
     @Override
-    public Loader<VerifyPhonePresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(getContext(), new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().verifyPhonePresenter();
-            }
-        });
+    protected VerifyPhonePresenter onCreatePresenter() {
+        return ComponentHolder.getAppComponent().verifyPhonePresenter();
     }
 
     @Override

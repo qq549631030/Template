@@ -51,6 +51,12 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
     public BindPhoneFragment() {
     }
 
+
+    @Override
+    protected BindPhonePresenter onCreatePresenter() {
+        return ComponentHolder.getAppComponent().bindPhonePresenter();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,16 +90,6 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    @Override
-    public Loader<BindPhonePresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(getContext(), new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().bindPhonePresenter();
-            }
-        });
     }
 
     @Override

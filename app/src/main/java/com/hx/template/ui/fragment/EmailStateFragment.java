@@ -51,13 +51,8 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
     }
 
     @Override
-    public Loader<EmailStatePresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(getContext(), new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().emailStatePresenter();
-            }
-        });
+    protected EmailStatePresenter onCreatePresenter() {
+        return ComponentHolder.getAppComponent().emailStatePresenter();
     }
 
     @Override

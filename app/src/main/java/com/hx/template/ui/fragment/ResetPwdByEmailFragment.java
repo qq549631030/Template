@@ -46,13 +46,8 @@ public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPre
     }
 
     @Override
-    public Loader<ResetPwdByEmailPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(getContext(), new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().resetPwdByEmailPresenter();
-            }
-        });
+    protected ResetPwdByEmailPresenter onCreatePresenter() {
+        return ComponentHolder.getAppComponent().resetPwdByEmailPresenter();
     }
 
     @Override
