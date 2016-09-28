@@ -3,7 +3,7 @@ package com.hx.template.model;
 /**
  * Created by huangxiang on 16/8/13.
  */
-public interface SMSModel {
+public interface SMSModel extends BaseModel{
     /**
      * 请求短信验证码
      *

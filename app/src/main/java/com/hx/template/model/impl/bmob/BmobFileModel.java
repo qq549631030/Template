@@ -43,4 +43,15 @@ public class BmobFileModel implements FileModel {
             }
         });
     }
+
+    /**
+     * 取消操作
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean cancel(Object... args) {
+        return false;
+    }
 }

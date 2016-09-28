@@ -64,4 +64,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         }
         return true;
     }
+
+    @Override
+    public boolean cancel(Object... args) {
+        return super.cancel(args);
+    }
 }

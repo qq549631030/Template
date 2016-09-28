@@ -154,4 +154,15 @@ public class BmobUserImpl implements UserModel {
     public void logout() {
         BmobUser.logOut();
     }
+
+    /**
+     * 取消操作
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean cancel(Object... args) {
+        return false;
+    }
 }

@@ -13,6 +13,7 @@ import com.hx.template.http.volley.HttpPostUtils;
 import com.hx.template.http.HttpParams;
 import com.hx.template.http.HttpParseUtils;
 import com.hx.template.http.HttpReturn;
+import com.hx.template.http.volley.VolleyManager;
 import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
@@ -144,5 +145,17 @@ public class VolleyUserModel implements UserModel {
     @Override
     public void logout() {
 
+    }
+
+    /**
+     * 取消操作
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean cancel(Object... args) {
+        VolleyManager.cancelPendingRequests();
+        return true;
     }
 }

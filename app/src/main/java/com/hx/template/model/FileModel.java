@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Created by huangxiang on 16/8/14.
  */
-public interface FileModel {
+public interface FileModel extends BaseModel{
     /**
      * 上传文件
      *

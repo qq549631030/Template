@@ -46,6 +46,11 @@ public class LoginCase extends UseCase<LoginCase.RequestValues, LoginCase.Respon
         });
     }
 
+    @Override
+    public boolean cancel(Object... args) {
+        return userModel.cancel(args);
+    }
+
     public static final class RequestValues implements UseCase.RequestValues {
         private final String username;
         private final String password;

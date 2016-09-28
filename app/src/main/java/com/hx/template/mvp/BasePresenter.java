@@ -53,6 +53,17 @@ public class BasePresenter<T extends MvpView> implements Presenter<T> {
         }
     }
 
+    /**
+     * 取消操作
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean cancel(Object... args) {
+        return true;
+    }
+
     public static class MvpViewNotAttachedException extends RuntimeException {
         public MvpViewNotAttachedException() {
             super("Please call Presenter.attachView(MvpView) before" +

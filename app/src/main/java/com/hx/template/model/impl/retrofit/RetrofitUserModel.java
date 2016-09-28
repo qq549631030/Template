@@ -153,4 +153,15 @@ public class RetrofitUserModel implements UserModel {
     public void logout() {
 
     }
+
+    /**
+     * 取消操作
+     *
+     * @param args
+     * @return
+     */
+    @Override
+    public boolean cancel(Object... args) {
+        return false;
+    }
 }

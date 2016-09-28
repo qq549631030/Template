@@ -103,6 +103,10 @@ public class VolleyManager {
         getRequestQueue().add(req);
     }
 
+    public static void cancelPendingRequests() {
+        cancelPendingRequests(VOLLEY_TAG);
+    }
+
     /**
      * Cancels all pending requests by the specified TAG, it is important to
      * specify a TAG so that the pending/ongoing requests can be cancelled.

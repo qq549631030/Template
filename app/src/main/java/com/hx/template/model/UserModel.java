@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Created by huangxiang on 16/3/9.
  */
-public interface UserModel {
+public interface UserModel extends BaseModel{
     /**
      * 注册
      *
