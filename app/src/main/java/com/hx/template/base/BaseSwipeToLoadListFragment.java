@@ -18,7 +18,7 @@ public class BaseSwipeToLoadListFragment extends BaseRefreshListFragment impleme
     private SwipeToLoadLayout swipeToLoadLayout;
 
     @Override
-    protected int getLayoutRes() {
+    protected int getContentRes() {
         return R.layout.layout_base_swip_to_load_list;
     }
 

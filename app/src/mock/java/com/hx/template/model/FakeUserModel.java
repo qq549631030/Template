@@ -226,4 +226,10 @@ public class FakeUserModel implements UserModel {
         currentUser = null;
         User.setCurrent(null);
     }
+
+    @Override
+    public boolean cancel(Object... args) {
+        handler.removeCallbacksAndMessages(null);
+        return true;
+    }
 }

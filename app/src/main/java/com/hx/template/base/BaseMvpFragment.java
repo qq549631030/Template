@@ -43,11 +43,11 @@ public class BaseMvpFragment<P extends Presenter<V>, V extends MvpView> extends 
     }
 
     @Override
-    public void onPause() {
+    public void onDestroyView() {
         if (presenter != null) {
             presenter.detachView();
         }
-        super.onPause();
+        super.onDestroyView();
     }
 
     @Override

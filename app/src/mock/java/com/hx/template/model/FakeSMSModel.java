@@ -54,4 +54,10 @@ public class FakeSMSModel implements SMSModel {
             }
         }, 2000);
     }
+
+    @Override
+    public boolean cancel(Object... args) {
+        handler.removeCallbacksAndMessages(null);
+        return true;
+    }
 }

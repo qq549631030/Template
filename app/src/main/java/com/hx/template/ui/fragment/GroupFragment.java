@@ -60,7 +60,7 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
 //
 //            }
 //        });
-        showProgress();
+        showLoading();
         fetchData();
     }
 
@@ -100,7 +100,7 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
                 } else {
                     hideNoMore();
                 }
-                hideProgress();
+                showContent();
             }
         }, 1000);
     }

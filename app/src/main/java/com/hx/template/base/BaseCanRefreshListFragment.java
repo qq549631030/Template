@@ -19,7 +19,7 @@ public class BaseCanRefreshListFragment extends BaseRefreshListFragment implemen
     private CanRefreshLayout canRefreshLayout;
 
     @Override
-    protected int getLayoutRes() {
+    protected int getContentRes() {
         return R.layout.layout_base_can_refresh_list;
     }
 

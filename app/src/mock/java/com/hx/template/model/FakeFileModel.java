@@ -32,4 +32,9 @@ public class FakeFileModel implements FileModel {
         }, 2000);
     }
 
+    @Override
+    public boolean cancel(Object... args) {
+        handler.removeCallbacksAndMessages(null);
+        return true;
+    }
 }
