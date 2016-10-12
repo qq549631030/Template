@@ -87,12 +87,6 @@ public class RegisterPresenterTest {
         presenter.register();
     }
 
-
-    @Test
-    public void testOnDestroyed() throws Exception {
-        presenter.onDestroyed();
-    }
-
     @Test
     public void testRegister_Normal() throws Exception {
         presenter.attachView(registerMvpView);

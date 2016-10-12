@@ -49,11 +49,6 @@ public class BasePresenterTest {
     }
 
     @Test
-    public void testOnDestroyed() throws Exception {
-        presenter.onDestroyed();
-    }
-
-    @Test
     public void testIsViewAttached_Attached() throws Exception {
         assertFalse(presenter.isViewAttached());
         presenter.attachView(mvpView);
