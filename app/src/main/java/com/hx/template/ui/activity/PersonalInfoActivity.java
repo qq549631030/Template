@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.os.Handler;
 import android.support.v4.content.Loader;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
@@ -13,10 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseMvpActivity;
-import com.hx.template.widget.CircleImageView;
 import com.hx.template.dagger2.ComponentHolder;
+import com.hx.template.demo.LockScreenActivity;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
@@ -31,6 +30,7 @@ import com.hx.template.utils.ActivityOptionsHelper;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.utils.UriUtils;
+import com.hx.template.widget.CircleImageView;
 import com.soundcloud.android.crop.Crop;
 
 import org.greenrobot.eventbus.EventBus;
@@ -68,6 +68,8 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
     TextView gender;
     @Bind(R.id.qrcode)
     ImageView qrcode;
+
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,12 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
         }
         switch (view.getId()) {
             case R.id.avatar:
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(PersonalInfoActivity.this, LockScreenActivity.class));
+                    }
+                }, 10000);
                 break;
             case R.id.avatar_layout:
                 MultiImageSelector.create().count(1).single().showCamera(true).start(this, REQUEST_CODE_SELECT_IMAGE);

@@ -57,7 +57,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 2
-        versionName "1.0"
+        versionName "2.0"
         // dex突破65535的限制
         multiDexEnabled true
         // 默认是umeng的渠道
@@ -226,6 +226,6 @@ dependencies {
 
 rocoo_fix {
 //    preVersionPath = '1'
-    enable = true
+    enable = false
     scanref =false
 }
