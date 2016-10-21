@@ -4,28 +4,26 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
 
 /**
  * Created by huangx on 2016/5/12.
  */
 public class BaseFragment extends Fragment {
 
+    protected boolean isActivityAttached;
+
     protected boolean isViewCreated;
 
-    protected boolean isVisable;
+    protected boolean isVisible;
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        isActivityAttached = true;
         String title = getFragmentTitle();
         if (!TextUtils.isEmpty(title)) {
             activity.setTitle(title);
@@ -63,6 +61,12 @@ public class BaseFragment extends Fragment {
         isViewCreated = false;
     }
 
+    @Override
+    public void onDetach() {
+        isActivityAttached = false;
+        super.onDetach();
+    }
+
     protected String getFragmentTitle() {
         return null;
     }
@@ -72,12 +76,6 @@ public class BaseFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         SaveSceneUtils.onSaveInstanceState(this, outState);
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        isVisable = isVisibleToUser;
     }
 
     @Override
@@ -91,6 +89,7 @@ public class BaseFragment extends Fragment {
                 getActivity().setTitle(title);
             }
         }
+        isVisible = !hidden;
         super.onHiddenChanged(hidden);
     }
 
