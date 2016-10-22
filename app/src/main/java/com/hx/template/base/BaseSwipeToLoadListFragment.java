@@ -31,8 +31,6 @@ public class BaseSwipeToLoadListFragment extends BaseRefreshListFragment impleme
         }
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
-        swipeToLoadLayout.setRefreshEnabled(refreshEnable);
-        swipeToLoadLayout.setLoadMoreEnabled(loadMoreEnable);
     }
 
     @Override
@@ -48,24 +46,22 @@ public class BaseSwipeToLoadListFragment extends BaseRefreshListFragment impleme
     }
 
     @Override
-    public void setRefreshEnable(boolean refreshEnable) {
-        super.setRefreshEnable(refreshEnable);
+    protected void setRefreshEnableImpl(boolean refreshEnable) {
         swipeToLoadLayout.setRefreshEnabled(refreshEnable);
     }
 
     @Override
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        super.setLoadMoreEnable(loadMoreEnable);
+    protected void setLoadMoreEnableImpl(boolean loadMoreEnable) {
         swipeToLoadLayout.setLoadMoreEnabled(loadMoreEnable);
     }
 
     @Override
-    public void setRefreshing(boolean refreshing) {
+    protected void setRefreshingImpl(boolean refreshing) {
         swipeToLoadLayout.setRefreshing(refreshing);
     }
 
     @Override
-    public void setLoadingMore(boolean loadingMore) {
+    protected void setLoadingMoreImpl(boolean loadingMore) {
         swipeToLoadLayout.setLoadingMore(loadingMore);
     }
 

@@ -32,8 +32,6 @@ public class BaseCanRefreshListFragment extends BaseRefreshListFragment implemen
         canRefreshLayout.setStyle(CanRefreshLayout.UPPER, CanRefreshLayout.CLASSIC);
         canRefreshLayout.setOnRefreshListener(this);
         canRefreshLayout.setOnLoadMoreListener(this);
-        canRefreshLayout.setRefreshEnabled(refreshEnable);
-        canRefreshLayout.setLoadMoreEnabled(refreshEnable);
     }
 
     @Override
@@ -49,19 +47,17 @@ public class BaseCanRefreshListFragment extends BaseRefreshListFragment implemen
     }
 
     @Override
-    public void setRefreshEnable(boolean refreshEnable) {
-        super.setRefreshEnable(refreshEnable);
+    protected void setRefreshEnableImpl(boolean refreshEnable) {
         canRefreshLayout.setRefreshEnabled(refreshEnable);
     }
 
     @Override
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        super.setLoadMoreEnable(loadMoreEnable);
+    protected void setLoadMoreEnableImpl(boolean loadMoreEnable) {
         canRefreshLayout.setLoadMoreEnabled(loadMoreEnable);
     }
 
     @Override
-    public void setRefreshing(boolean refreshing) {
+    protected void setRefreshingImpl(boolean refreshing) {
         if (refreshing) {
             canRefreshLayout.autoRefresh();
         } else {
@@ -70,7 +66,7 @@ public class BaseCanRefreshListFragment extends BaseRefreshListFragment implemen
     }
 
     @Override
-    public void setLoadingMore(boolean loadingMore) {
+    protected void setLoadingMoreImpl(boolean loadingMore) {
         if (loadingMore) {
             //unSupport
         } else {

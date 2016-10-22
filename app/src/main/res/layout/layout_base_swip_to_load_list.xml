@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+    <com.hx.template.layout.SwipeBackLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,31 +12,17 @@
 
         <include
             android:id="@id/swipe_refresh_header"
-            layout="@layout/layout_twitter_header" />
+            layout="@layout/layout_twitter_header"/>
 
         <ListView
             android:id="@id/swipe_target"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:divider="@null" />
+            android:divider="@null"/>
 
         <include
             android:id="@id/swipe_load_more_footer"
-            layout="@layout/layout_classic_footer" />
-    </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
-
-    <ViewStub
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
-
-    <ViewStub
-        android:id="@android:id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+            layout="@layout/layout_classic_footer"/>
+    </com.hx.template.layout.SwipeBackLayout>
 </FrameLayout>
