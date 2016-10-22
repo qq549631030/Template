@@ -5,11 +5,10 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.aspsine.swipetoloadlayout.SwipeLoadMoreTrigger;
-import com.aspsine.swipetoloadlayout.SwipeTrigger;
-
 import cn.hx.swipetoloadlayout.GoogleCircleProgressView;
 import cn.hx.swipetoloadlayout.R;
+import cn.hx.swipetoloadlayout.SwipeLoadMoreTrigger;
+import cn.hx.swipetoloadlayout.SwipeTrigger;
 
 /**
  * Created by aspsine on 16/1/27.

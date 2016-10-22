@@ -6,10 +6,10 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.aspsine.swipetoloadlayout.SwipeRefreshTrigger;
-import com.aspsine.swipetoloadlayout.SwipeTrigger;
 
 import cn.hx.swipetoloadlayout.R;
+import cn.hx.swipetoloadlayout.SwipeRefreshTrigger;
+import cn.hx.swipetoloadlayout.SwipeTrigger;
 import cn.hx.swipetoloadlayout.drawable.google.RingProgressDrawable;
 
 

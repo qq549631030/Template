@@ -6,9 +6,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.aspsine.swipetoloadlayout.SwipeLoadMoreFooterLayout;
-
 import cn.hx.swipetoloadlayout.R;
+import cn.hx.swipetoloadlayout.SwipeLoadMoreFooterLayout;
 
 /**
  * Created by Aspsine on 2015/9/2.

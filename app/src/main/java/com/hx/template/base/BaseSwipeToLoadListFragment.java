@@ -3,10 +3,11 @@ package com.hx.template.base;
 import android.view.View;
 import android.widget.ListView;
 
-import com.aspsine.swipetoloadlayout.OnLoadMoreListener;
-import com.aspsine.swipetoloadlayout.OnRefreshListener;
-import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
 import com.hx.template.R;
+
+import cn.hx.swipetoloadlayout.OnLoadMoreListener;
+import cn.hx.swipetoloadlayout.OnRefreshListener;
+import cn.hx.swipetoloadlayout.SwipeToLoadLayout;
 
 /**
  * 功能说明：com.hx.template.base

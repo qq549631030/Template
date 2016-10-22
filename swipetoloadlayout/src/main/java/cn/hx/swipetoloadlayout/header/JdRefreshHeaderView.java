@@ -8,10 +8,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.aspsine.swipetoloadlayout.SwipeRefreshTrigger;
-import com.aspsine.swipetoloadlayout.SwipeTrigger;
-
 import cn.hx.swipetoloadlayout.R;
+import cn.hx.swipetoloadlayout.SwipeRefreshTrigger;
+import cn.hx.swipetoloadlayout.SwipeTrigger;
 
 /**
  * Created by Aspsine on 2015/11/5.
