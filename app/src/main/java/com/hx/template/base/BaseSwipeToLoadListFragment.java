@@ -31,6 +31,7 @@ public class BaseSwipeToLoadListFragment extends BaseRefreshListFragment impleme
         }
         swipeToLoadLayout.setOnRefreshListener(this);
         swipeToLoadLayout.setOnLoadMoreListener(this);
+
     }
 
     @Override

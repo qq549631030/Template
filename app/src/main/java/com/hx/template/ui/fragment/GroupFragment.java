@@ -45,21 +45,8 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
         adapter = new SimpleAdapter(getContext(), list, android.R.layout.simple_expandable_list_item_1, new String[]{"title"}, new int[]{android.R.id.text1});
         getListView().setAdapter(adapter);
         getListView().setDividerHeight(10);
-//        getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(AbsListView absListView, int i) {
-//                if (i == SCROLL_STATE_IDLE) {
-//                    if (absListView.getLastVisiblePosition() == absListView.getCount() - 1 && !ViewCompat.canScrollVertically(absListView, 1)) {
-//                        setLoadingMore(true);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-//
-//            }
-//        });
+        setTotalCount(120);
+        setAutoLoadMore(true);
         showLoading();
         fetchData();
     }
@@ -89,16 +76,12 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
                     list.add(item);
                 }
                 adapter.notifyDataSetChanged();
+                onDataChange();
                 if (isRefreshing()) {
                     setRefreshing(false);
                 }
                 if (isLoadingMore()) {
                     setLoadingMore(false);
-                }
-                if (list.size() >= 120) {
-                    showNoMore();
-                } else {
-                    hideNoMore();
                 }
                 showContent();
             }

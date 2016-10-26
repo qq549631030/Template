@@ -4,7 +4,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <com.hx.template.layout.SwipeBackLayout
+    <cn.hx.swipetoloadlayout.SwipeToLoadLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,5 +24,5 @@
         <include
             android:id="@id/swipe_load_more_footer"
             layout="@layout/layout_classic_footer"/>
-    </com.hx.template.layout.SwipeBackLayout>
+    </cn.hx.swipetoloadlayout.SwipeToLoadLayout>
 </FrameLayout>
