@@ -1,1 +1,1 @@
-include ':app', ':ormlite-sqlcipher', ':commonutils','swipetoloadlayout'
+include ':app', ':ormlite-sqlcipher', ':commonutils','swipetoloadlayout','easeui'
