@@ -56,6 +56,16 @@ public class BaseCanRefreshListFragment extends BaseRefreshListFragment implemen
         canRefreshLayout.setLoadMoreEnabled(loadMoreEnable);
     }
 
+    /**
+     * 打开/关闭自动加载更多实现
+     *
+     * @param autoLoadMore
+     */
+    @Override
+    protected void setAutoLoadMoreEnableImpl(boolean autoLoadMore) {
+
+    }
+
     @Override
     protected void setRefreshingImpl(boolean refreshing) {
         if (refreshing) {

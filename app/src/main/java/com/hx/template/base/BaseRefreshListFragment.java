@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.hx.template.R;
 
@@ -23,15 +21,17 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
     public static final String EXTRA_LOAD_MORE_ENABLE = "_extra_load_more_enable";
     public static final String EXTRA_AUTO_LOAD_MORE_ENABLE = "_extra_load_more_enable";
 
+    protected View more;
+    protected View loadingMore;
     protected View noMore;
 
     protected boolean refreshEnable = true;
     protected boolean loadMoreEnable = true;
-    protected boolean autoLoadMore = false;
+    protected boolean autoLoadMoreEnable = false;
 
     protected int totalCount = 0;
 
-    protected int getNoMoreRes() {
+    protected int getMoreRes() {
         return R.layout.layout_base_more;
     }
 
@@ -42,7 +42,7 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
         if (args != null) {
             refreshEnable = args.getBoolean(EXTRA_REFRESH_ENABLE, true);
             loadMoreEnable = args.getBoolean(EXTRA_LOAD_MORE_ENABLE, false);
-            autoLoadMore = args.getBoolean(EXTRA_AUTO_LOAD_MORE_ENABLE, false);
+            autoLoadMoreEnable = args.getBoolean(EXTRA_AUTO_LOAD_MORE_ENABLE, false);
         }
     }
 
@@ -50,11 +50,10 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        if (getNoMoreRes() > 0) {
-            View more = inflater.inflate(getNoMoreRes(), null);
-            initNoMoreLayout(more);
-            noMore = more.findViewById(R.id.no_more_layout);
-            getListView().addFooterView(more);
+        if (getMoreRes() > 0) {
+            View moreView = inflater.inflate(getMoreRes(), null);
+            initMoreLayout(moreView);
+            getListView().addFooterView(moreView);
         }
         return view;
     }
@@ -64,8 +63,8 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
         super.onViewCreated(view, savedInstanceState);
         setRefreshEnable(refreshEnable);
         setLoadMoreEnable(loadMoreEnable);
-        if (autoLoadMore) {
-            setAutoLoadMoreImpl(autoLoadMore);
+        if (autoLoadMoreEnable) {
+            setAutoLoadMoreEnableImpl(autoLoadMoreEnable);
         }
     }
 
@@ -112,12 +111,14 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
     protected abstract void initRefreshLayout(View parent);
 
     /**
-     * 初始化没有更多数据
+     * 初始化更多数据
      *
      * @param parent
      */
-    protected void initNoMoreLayout(View parent) {
-
+    protected void initMoreLayout(View parent) {
+        more = parent.findViewById(R.id.more_layout);
+        loadingMore = parent.findViewById(R.id.ll_loading_more);
+        noMore = parent.findViewById(R.id.tv_no_more);
     }
 
     /**
@@ -138,30 +139,39 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
     protected abstract void setRefreshEnableImpl(boolean refreshEnable);
 
     /**
-     * 打开/关闭加载更多
+     * 打开/关闭上拉加载更多
      *
      * @param loadMoreEnable
      */
     public void setLoadMoreEnable(boolean loadMoreEnable) {
         this.loadMoreEnable = loadMoreEnable;
+        if (loadMoreEnable) {
+            setAutoLoadMoreEnable(false);//上拉加载更多时禁用自动加载更多
+        }
         setLoadMoreEnableImpl(loadMoreEnable);
     }
 
     /**
-     * 打开/关闭加载更多实现
+     * 打开/关闭上拉加载更多实现
      *
      * @param loadMoreEnable
      */
     protected abstract void setLoadMoreEnableImpl(boolean loadMoreEnable);
 
     /**
-     * 打开/关闭自动加载更多(注意:使用这个功能，ListView.setOnScrollListener将不可使用)
+     * 打开/关闭自动加载更多
      *
-     * @param autoLoadMore
+     * @param autoLoadMoreEnable
      */
-    public void setAutoLoadMore(boolean autoLoadMore) {
-        this.autoLoadMore = autoLoadMore;
-        setAutoLoadMoreImpl(autoLoadMore);
+    public void setAutoLoadMoreEnable(boolean autoLoadMoreEnable) {
+        this.autoLoadMoreEnable = autoLoadMoreEnable;
+        if (autoLoadMoreEnable) {
+            setLoadMoreEnable(false);//自动加载更多时禁用上拉加载更多
+            showLoadingMore();
+        } else {
+            hideLoadingMore();
+        }
+        setAutoLoadMoreEnableImpl(autoLoadMoreEnable);
     }
 
     /**
@@ -169,29 +179,7 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
      *
      * @param autoLoadMore
      */
-    protected void setAutoLoadMoreImpl(boolean autoLoadMore) {
-        if (autoLoadMore) {
-            getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    if (SCROLL_STATE_IDLE == scrollState) {
-                        if (!ViewCompat.canScrollVertically(view, 1)) {
-                            if (hasMoreData()) {
-                                setLoadingMore(true);
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-                }
-            });
-        } else {
-            getListView().setOnScrollListener(null);
-        }
-    }
+    protected abstract void setAutoLoadMoreEnableImpl(boolean autoLoadMore);
 
     /**
      * 开始/停止刷新
@@ -251,20 +239,58 @@ public abstract class BaseRefreshListFragment extends BaseListFragment {
     }
 
     /**
+     * 显示自动加载更多
+     */
+    private void showLoadingMore() {
+        if (more != null) {
+            more.setVisibility(View.VISIBLE);
+        }
+        if (loadingMore != null) {
+            loadingMore.setVisibility(View.VISIBLE);
+        }
+        if (noMore != null) {
+            noMore.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 隐藏自动加载更多
+     */
+    private void hideLoadingMore() {
+        if (hasMoreData()) {
+            if (more != null) {
+                more.setVisibility(View.GONE);
+            }
+        } else {
+            showNoMore();
+        }
+    }
+
+    /**
      * 显示无更多数据
      */
-    public void showNoMore() {
+    private void showNoMore() {
+        if (more != null) {
+            more.setVisibility(View.VISIBLE);
+        }
         if (noMore != null) {
             noMore.setVisibility(View.VISIBLE);
+        }
+        if (loadingMore != null) {
+            loadingMore.setVisibility(View.GONE);
         }
     }
 
     /**
      * 隐藏无更多数据
      */
-    public void hideNoMore() {
-        if (noMore != null) {
-            noMore.setVisibility(View.GONE);
+    private void hideNoMore() {
+        if (autoLoadMoreEnable) {
+            showLoadingMore();
+        } else {
+            if (more != null) {
+                more.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

@@ -1,6 +1,8 @@
 package com.hx.template.base;
 
+import android.support.v4.view.ViewCompat;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.hx.template.R;
@@ -54,6 +56,36 @@ public class BaseSwipeToLoadListFragment extends BaseRefreshListFragment impleme
     @Override
     protected void setLoadMoreEnableImpl(boolean loadMoreEnable) {
         swipeToLoadLayout.setLoadMoreEnabled(loadMoreEnable);
+    }
+
+    /**
+     * 打开/关闭自动加载更多实现(注意:使用这个功能，ListView.setOnScrollListener将不可使用)
+     *
+     * @param autoLoadMore
+     */
+    @Override
+    protected void setAutoLoadMoreEnableImpl(boolean autoLoadMore) {
+        if (autoLoadMore) {
+            getListView().setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+                    if (SCROLL_STATE_IDLE == scrollState) {
+                        if (!ViewCompat.canScrollVertically(view, 1)) {
+                            if (hasMoreData()) {
+                                onLoadMore();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                }
+            });
+        } else {
+            getListView().setOnScrollListener(null);
+        }
     }
 
     @Override

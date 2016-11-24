@@ -5,28 +5,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
-import com.hx.template.R;
-import com.hx.template.base.BaseCanRefreshListFragment;
-import com.hx.template.base.BaseFragment;
-import com.hx.template.base.BaseListFragment;
 import com.hx.template.base.BaseSwipeToLoadListFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +34,7 @@ public class GroupFragment extends BaseSwipeToLoadListFragment {
         getListView().setAdapter(adapter);
         getListView().setDividerHeight(10);
         setTotalCount(120);
-        setAutoLoadMore(true);
+        setAutoLoadMoreEnable(true);
         showLoading();
         fetchData();
     }
