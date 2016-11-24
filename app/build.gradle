@@ -183,6 +183,7 @@ dependencies {
     //常用工具工程
     compile project(':commonutils')
     compile project(':swipetoloadlayout')
+    compile project(':easeui')
     compile 'cn.bmob.android:bmob-sdk:3.5.0'
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
