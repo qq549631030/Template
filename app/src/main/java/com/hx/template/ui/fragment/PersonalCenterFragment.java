@@ -98,7 +98,7 @@ public class PersonalCenterFragment extends BaseFragment {
         }
         switch (view.getId()) {
             case R.id.personal_into_layout:
-                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), ActivityOptionsHelper.makeSceneTransitionAnimationBundle(getActivity(), true, new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(username, "username"), new Pair(qrcode, "qrcode")));
+//                startActivity(new Intent(getContext(), PersonalInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP), ActivityOptionsHelper.makeSceneTransitionAnimationBundle(getActivity(), true, new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(username, "username"), new Pair(qrcode, "qrcode")));
                 break;
             case R.id.qrcode:
                 break;

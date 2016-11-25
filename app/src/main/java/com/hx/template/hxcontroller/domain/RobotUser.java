@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -11,13 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hx.template.hxcontroller;
-
+package com.hx.template.hxcontroller.domain;
 
 import com.easemob.easeui.domain.EaseUser;
 
 public class RobotUser extends EaseUser {
 	public RobotUser(String username) {
-        super(username.toLowerCase());
+        super(username);
     }
 }

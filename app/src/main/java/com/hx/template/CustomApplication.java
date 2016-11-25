@@ -23,6 +23,7 @@ import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
 import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.http.bmob.BmobDataChangeListener;
+import com.hx.template.hxcontroller.HXSDKHelper;
 import com.hx.template.model.Callback;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
@@ -77,6 +78,7 @@ public class CustomApplication extends Application {
         initDagger2();
         Dexter.initialize(instance);
         BmobManager.init(instance);
+        HXSDKHelper.getInstance().init(instance);
         initActivityManager();
         if (BuildConfig.DEBUG) {
             enabledStrictMode();

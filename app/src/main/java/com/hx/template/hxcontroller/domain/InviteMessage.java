@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.hx.template.hxcontroller;
+package com.hx.template.hxcontroller.domain;
 
 public class InviteMessage {
 	private String from;

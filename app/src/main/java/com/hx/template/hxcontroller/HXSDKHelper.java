@@ -31,8 +31,11 @@ import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.easeui.EaseConstant;
 import com.easemob.easeui.controller.EaseUI;
+import com.easemob.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
 import com.easemob.easeui.controller.EaseUI.EaseSettingsProvider;
 import com.easemob.easeui.controller.EaseUI.EaseUserProfileProvider;
+import com.easemob.easeui.domain.EaseEmojicon;
+import com.easemob.easeui.domain.EaseEmojiconGroupEntity;
 import com.easemob.easeui.domain.EaseUser;
 import com.easemob.easeui.model.EaseNotifier;
 import com.easemob.easeui.model.EaseNotifier.EaseNotificationInfoProvider;
@@ -40,6 +43,13 @@ import com.easemob.easeui.utils.EaseACKUtil;
 import com.easemob.easeui.utils.EaseCommonUtils;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
+import com.hx.template.hxcontroller.db.DemoDBManager;
+import com.hx.template.hxcontroller.db.InviteMessgeDao;
+import com.hx.template.hxcontroller.db.UserDao;
+import com.hx.template.hxcontroller.domain.InviteMessage;
+import com.hx.template.hxcontroller.domain.InviteMessage.InviteMesageStatus;
+import com.hx.template.hxcontroller.domain.RobotUser;
+import com.hx.template.hxcontroller.receiver.CallReceiver;
 import com.hx.template.ui.activity.MainActivity;
 
 import java.util.ArrayList;
@@ -48,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class HXSDKHelper {
+public class HXSDKHelper {
     /**
      * 数据同步listener
      */
@@ -60,10 +70,10 @@ public abstract class HXSDKHelper {
         public void onSyncComplete(boolean success);
     }
 
-    protected static final String TAG = "DemoHelper";
-
-    protected EaseUI easeUI;
-
+    protected static final String TAG = "HXSDKHelper";
+    
+	private EaseUI easeUI;
+	
     /**
      * EMEventListener
      */
@@ -71,12 +81,14 @@ public abstract class HXSDKHelper {
 
 	private Map<String, EaseUser> contactList;
 
-//	private UserProfileManager userProManager;
+	private Map<String, RobotUser> robotList;
+
+	private UserProfileManager userProManager;
 
 	private static HXSDKHelper instance = null;
-
-    protected HXSDKModel hxModel = null;
-
+	
+	private HXSDKModel HXSDKModel = null;
+	
 	/**
      * HuanXin sync groups status listener
      */
@@ -96,31 +108,36 @@ public abstract class HXSDKHelper {
     private boolean isGroupsSyncedWithServer = false;
     private boolean isContactsSyncedWithServer = false;
     private boolean isBlackListSyncedWithServer = false;
-
+    
     private boolean alreadyNotified = false;
-
+	
 	public boolean isVoiceCalling;
     public boolean isVideoCalling;
 
 	private String username;
 
-    protected Context appContext;
+    private Context appContext;
+
+    private CallReceiver callReceiver;
 
     private EMConnectionListener connectionListener;
+
+    private InviteMessgeDao inviteMessgeDao;
+    private UserDao userDao;
 
     private LocalBroadcastManager broadcastManager;
 
     private boolean isGroupAndContactListenerRegisted;
 
-    protected HXSDKHelper() {
-        instance = this;
+	private HXSDKHelper() {
 	}
 
 	public synchronized static HXSDKHelper getInstance() {
+		if (instance == null) {
+			instance = new HXSDKHelper();
+		}
 		return instance;
 	}
-
-    abstract protected HXSDKModel createModel();
 
 	/**
 	 * init helper
@@ -147,18 +164,18 @@ public abstract class HXSDKHelper {
 		    easeUI = EaseUI.getInstance();
 		    //调用easeui的api设置providers
 		    setEaseUIProviders();
-		    hxModel = createModel();
+		    HXSDKModel = new HXSDKModel(context);
 		    //设置chat options
 		    setChatoptions();
 			//初始化PreferenceManager
-//			PreferenceManager.init(context);
+			PreferenceManager.init(context);
 			//初始化用户管理类
-//			getUserProfileManager().init(context);
+			getUserProfileManager().init(context);
 			
 			//设置全局监听
 			setGlobalListeners();
 			broadcastManager = LocalBroadcastManager.getInstance(appContext);
-//	        initDbDao();
+	        initDbDao();
 	        
 		}
 	}
@@ -178,6 +195,139 @@ public abstract class HXSDKHelper {
                 return getUserInfo(username);
             }
         });
+        
+        //不设置，则使用easeui默认的
+        easeUI.setSettingsProvider(new EaseSettingsProvider() {
+            
+            @Override
+            public boolean isSpeakerOpened() {
+                return HXSDKModel.getSettingMsgSpeaker();
+            }
+            
+            @Override
+            public boolean isMsgVibrateAllowed(EMMessage message) {
+                return HXSDKModel.getSettingMsgVibrate();
+            }
+            
+            @Override
+            public boolean isMsgSoundAllowed(EMMessage message) {
+                return HXSDKModel.getSettingMsgSound();
+            }
+            
+            @Override
+            public boolean isMsgNotifyAllowed(EMMessage message) {
+                if(message == null){
+                    return HXSDKModel.getSettingMsgNotification();
+                }
+                if(!HXSDKModel.getSettingMsgNotification()){
+                    return false;
+                }else{
+                    //如果允许新消息提示
+                    //屏蔽的用户和群组不提示用户
+                    String chatUsename = null;
+                    List<String> notNotifyIds = null;
+                    // 获取设置的不提示新消息的用户或者群组ids
+                    if (message.getChatType() == ChatType.Chat) {
+                        chatUsename = message.getFrom();
+                        notNotifyIds = HXSDKModel.getDisabledIds();
+                    } else {
+                        chatUsename = message.getTo();
+                        notNotifyIds = HXSDKModel.getDisabledGroups();
+                    }
+
+                    if (notNotifyIds == null || !notNotifyIds.contains(chatUsename)) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        });
+        //设置表情provider
+//        easeUI.setEmojiconInfoProvider(new EaseEmojiconInfoProvider() {
+//
+//            @Override
+//            public EaseEmojicon getEmojiconInfo(String emojiconIdentityCode) {
+//                EaseEmojiconGroupEntity data = EmojiconExampleGroupData.getData();
+//                for(EaseEmojicon emojicon : data.getEmojiconList()){
+//                    if(emojicon.getIdentityCode().equals(emojiconIdentityCode)){
+//                        return emojicon;
+//                    }
+//                }
+//                return null;
+//            }
+//
+//            @Override
+//            public Map<String, Object> getTextEmojiconMapping() {
+//                //返回文字表情emoji文本和图片(resource id或者本地路径)的映射map
+//                return null;
+//            }
+//        });
+        
+        //不设置，则使用easeui默认的
+        easeUI.getNotifier().setNotificationInfoProvider(new EaseNotificationInfoProvider() {
+            
+            @Override
+            public String getTitle(EMMessage message) {
+              //修改标题,这里使用默认
+                return null;
+            }
+            
+            @Override
+            public int getSmallIcon(EMMessage message) {
+              //设置小图标，这里为默认
+                return 0;
+            }
+            
+            @Override
+            public String getDisplayedText(EMMessage message) {
+                // 设置状态栏的消息提示，可以根据message的类型做相应提示
+                String ticker = EaseCommonUtils.getMessageDigest(message, appContext);
+                if(message.getType() == Type.TXT){
+                    ticker = ticker.replaceAll("\\[.{2,3}\\]", "[表情]");
+                }
+                EaseUser user = getUserInfo(message.getFrom());
+                if(user != null){
+                    return getUserInfo(message.getFrom()).getNick() + ": " + ticker;
+                }else{
+                    return message.getFrom() + ": " + ticker;
+                }
+            }
+            
+            @Override
+            public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
+                return null;
+                // return fromUsersNum + "个基友，发来了" + messageNum + "条消息";
+            }
+            
+            @Override
+            public Intent getLaunchIntent(EMMessage message) {
+                //设置点击通知栏跳转事件
+                Intent intent = new Intent(appContext, MainActivity.class);
+                //有电话时优先跳转到通话页面
+                if(isVideoCalling){
+//                    intent = new Intent(appContext, VideoCallActivity.class);
+                }else if(isVoiceCalling){
+//                    intent = new Intent(appContext, VoiceCallActivity.class);
+                }else{
+                    ChatType chatType = message.getChatType();
+                    if (chatType == ChatType.Chat) { // 单聊信息
+                        intent.putExtra("userId", message.getFrom());
+                        intent.putExtra("chatType", Constant.CHATTYPE_SINGLE);
+                    } else { // 群聊信息
+                        // message.getTo()为群聊id
+                        intent.putExtra("userId", message.getTo());
+                        if(chatType == ChatType.GroupChat){
+                            intent.putExtra("chatType", Constant.CHATTYPE_GROUP);
+                        }else{
+                            intent.putExtra("chatType", Constant.CHATTYPE_CHATROOM);
+                        }
+                        
+                    }
+                }
+                return intent;
+            }
+        });
     }
     
     /**
@@ -188,9 +338,9 @@ public abstract class HXSDKHelper {
         syncContactsListeners = new ArrayList<DataSyncListener>();
         syncBlackListListeners = new ArrayList<DataSyncListener>();
         
-        isGroupsSyncedWithServer = hxModel.isGroupsSynced();
-        isContactsSyncedWithServer = hxModel.isContactSynced();
-        isBlackListSyncedWithServer = hxModel.isBacklistSynced();
+        isGroupsSyncedWithServer = HXSDKModel.isGroupsSynced();
+        isContactsSyncedWithServer = HXSDKModel.isContactSynced();
+        isBlackListSyncedWithServer = HXSDKModel.isBacklistSynced();
         
         // create the global connection listener
         connectionListener = new EMConnectionListener() {
@@ -235,8 +385,14 @@ public abstract class HXSDKHelper {
             }
         };
         
+        
+        IntentFilter callFilter = new IntentFilter(EMChatManager.getInstance().getIncomingCallBroadcastAction());
+        if(callReceiver == null){
+            callReceiver = new CallReceiver();
+        }
+
         //注册通话广播接收者
-        registerCallReceiver();
+        appContext.registerReceiver(callReceiver, callFilter);    
         //注册连接监听
         EMChatManager.getInstance().addConnectionListener(connectionListener);
         //注册群组和联系人监听
@@ -245,12 +401,12 @@ public abstract class HXSDKHelper {
         registerEventListener();
         
     }
-
-    /**
-     * 注册通话广播接收者
-     */
-    protected abstract void registerCallReceiver();
-
+    
+    private void initDbDao() {
+        inviteMessgeDao = new InviteMessgeDao(appContext);
+        userDao = new UserDao(appContext);
+    }
+    
     /**
      * 注册群组和联系人监听，由于logout的时候会被sdk清除掉，再次登录的时候需要再注册一下
      */
@@ -296,7 +452,7 @@ public abstract class HXSDKHelper {
             // 提醒新消息
             getNotifier().viberateAndPlayTone(msg);
             //发送local广播
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -309,14 +465,14 @@ public abstract class HXSDKHelper {
         @Override
         public void onUserRemoved(String groupId, String groupName) {
             //TODO 提示用户被T了，demo省略此步骤
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
         public void onGroupDestroy(String groupId, String groupName) {
             // 群被解散
             //TODO 提示用户群被解散,demo省略
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -330,9 +486,9 @@ public abstract class HXSDKHelper {
             msg.setGroupName(groupName);
             msg.setReason(reason);
             Log.d(TAG, applyer + " 申请加入群聊：" + groupName);
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEAPPLYED);
+            msg.setStatus(InviteMesageStatus.BEAPPLYED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -350,7 +506,7 @@ public abstract class HXSDKHelper {
             EMChatManager.getInstance().saveMessage(msg);
             // 提醒新消息
             getNotifier().viberateAndPlayTone(msg);
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_GROUP_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
         @Override
@@ -379,7 +535,7 @@ public abstract class HXSDKHelper {
                 }
             }
             //发送好友变动广播
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -389,23 +545,23 @@ public abstract class HXSDKHelper {
             synchronized (localUsers) {
                 for (String username : usernameList) {
                     localUsers.remove(username);
-//                    userDao.deleteContact(username);
-//                    inviteMessgeDao.deleteMessage(username);
+                    userDao.deleteContact(username);
+                    inviteMessgeDao.deleteMessage(username);
                 }
-                broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_CONTACT_CHANAGED));
+                broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
             }
         }
 
         @Override
         public void onContactInvited(String username, String reason) {
             // 接到邀请的消息，如果不处理(同意或拒绝)，掉线后，服务器会自动再发过来，所以客户端不需要重复提醒
-//            List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
-//
-//            for (InviteMessage inviteMessage : msgs) {
-//                if (inviteMessage.getGroupId() == null && inviteMessage.getFrom().equals(username)) {
-//                    inviteMessgeDao.deleteMessage(username);
-//                }
-//            }
+            List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
+
+            for (InviteMessage inviteMessage : msgs) {
+                if (inviteMessage.getGroupId() == null && inviteMessage.getFrom().equals(username)) {
+                    inviteMessgeDao.deleteMessage(username);
+                }
+            }
             // 自己封装的javabean
             InviteMessage msg = new InviteMessage();
             msg.setFrom(username);
@@ -413,27 +569,27 @@ public abstract class HXSDKHelper {
             msg.setReason(reason);
             Log.d(TAG, username + "请求加你为好友,reason: " + reason);
             // 设置相应status
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEINVITEED);
+            msg.setStatus(InviteMesageStatus.BEINVITEED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
         public void onContactAgreed(String username) {
-//            List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
-//            for (InviteMessage inviteMessage : msgs) {
-//                if (inviteMessage.getFrom().equals(username)) {
-//                    return;
-//                }
-//            }
+            List<InviteMessage> msgs = inviteMessgeDao.getMessagesList();
+            for (InviteMessage inviteMessage : msgs) {
+                if (inviteMessage.getFrom().equals(username)) {
+                    return;
+                }
+            }
             // 自己封装的javabean
             InviteMessage msg = new InviteMessage();
             msg.setFrom(username);
             msg.setTime(System.currentTimeMillis());
             Log.d(TAG, username + "同意了你的好友请求");
-            msg.setStatus(InviteMessage.InviteMesageStatus.BEAGREED);
+            msg.setStatus(InviteMesageStatus.BEAGREED);
             notifyNewIviteMessage(msg);
-            broadcastManager.sendBroadcast(new Intent(HXConstant.ACTION_CONTACT_CHANAGED));
+            broadcastManager.sendBroadcast(new Intent(Constant.ACTION_CONTACT_CHANAGED));
         }
 
         @Override
@@ -449,12 +605,12 @@ public abstract class HXSDKHelper {
      * @param msg
      */
     private void notifyNewIviteMessage(InviteMessage msg){
-//        if(inviteMessgeDao == null){
-//            inviteMessgeDao = new InviteMessgeDao(appContext);
-//        }
-//        inviteMessgeDao.saveMessage(msg);
-//        //保存未读数，这里没有精确计算
-//        inviteMessgeDao.saveUnreadMessageCount(1);
+        if(inviteMessgeDao == null){
+            inviteMessgeDao = new InviteMessgeDao(appContext);
+        }
+        inviteMessgeDao.saveMessage(msg);
+        //保存未读数，这里没有精确计算
+        inviteMessgeDao.saveUnreadMessageCount(1);
         // 提示有新消息
         getNotifier().viberateAndPlayTone(null);
     }
@@ -465,14 +621,14 @@ public abstract class HXSDKHelper {
     protected void onConnectionConflict(){
         Intent intent = new Intent(appContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(HXConstant.ACCOUNT_CONFLICT, true);
+        intent.putExtra(Constant.ACCOUNT_CONFLICT, true);
         appContext.startActivity(intent);
     }
 
     protected void onUserBeBlocked(){
         Intent intent = new Intent(appContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(HXConstant.ACCOUNT_BE_BLOCKED, true);
+        intent.putExtra(Constant.ACCOUNT_BE_BLOCKED, true);
         appContext.startActivity(intent);
     }
 
@@ -482,11 +638,11 @@ public abstract class HXSDKHelper {
     protected void onCurrentAccountRemoved(){
         Intent intent = new Intent(appContext, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(HXConstant.ACCOUNT_REMOVED, true);
+        intent.putExtra(Constant.ACCOUNT_REMOVED, true);
         appContext.startActivity(intent);
     }
 	
-	protected EaseUser getUserInfo(String username){
+	private EaseUser getUserInfo(String username){
 	    //获取user信息，demo是从内存的好友列表里获取，
         //实际开发中，可能还需要从服务器获取用户信息,
         //从服务器获取的数据，最好缓存起来，避免频繁的网络请求
@@ -496,13 +652,13 @@ public abstract class HXSDKHelper {
 	    }
         EaseUser user = null;
         if(username.equals(EMChatManager.getInstance().getCurrentUser()))
-//            return getUserProfileManager().getCurrentUserInfo();
+            return getUserProfileManager().getCurrentUserInfo();
         if(getContactList() != null)
             user = getContactList().get(username);
         //TODO 获取不在好友列表里的群成员具体信息，即陌生人信息，demo未实现
-//        if(user == null && getRobotList() != null){
-//            user = getRobotList().get(username);
-//        }
+        if(user == null && getRobotList() != null){
+            user = getRobotList().get(username);
+        }
         return user;
 	}
 	
@@ -674,7 +830,7 @@ public abstract class HXSDKHelper {
 	}
 	
 	public HXSDKModel getModel(){
-        return (HXSDKModel) hxModel;
+        return (HXSDKModel) HXSDKModel;
     }
 	
 	/**
@@ -691,7 +847,7 @@ public abstract class HXSDKHelper {
      */
     public void saveContact(EaseUser user){
     	contactList.put(user.getUsername(), user);
-    	hxModel.saveContact(user);
+    	HXSDKModel.saveContact(user);
     }
     
     /**
@@ -701,7 +857,7 @@ public abstract class HXSDKHelper {
      */
     public Map<String, EaseUser> getContactList() {
         if (isLoggedIn() && contactList == null) {
-            contactList = hxModel.getContactList();
+            contactList = HXSDKModel.getContactList();
         }
         
         return contactList;
@@ -713,7 +869,7 @@ public abstract class HXSDKHelper {
      */
     public void setCurrentUserName(String username){
     	this.username = username;
-    	hxModel.setCurrentUserName(username);
+    	HXSDKModel.setCurrentUserName(username);
     }
     
     /**
@@ -721,10 +877,20 @@ public abstract class HXSDKHelper {
      */
     public String getCurrentUsernName(){
     	if(username == null){
-    		username = hxModel.getCurrentUsernName();
+    		username = HXSDKModel.getCurrentUsernName();
     	}
     	return username;
     }
+
+	public void setRobotList(Map<String, RobotUser> robotList) {
+		this.robotList = robotList;
+	}
+	public Map<String, RobotUser> getRobotList() {
+		if (isLoggedIn() && robotList == null) {
+			robotList = HXSDKModel.getRobotList();
+		}
+		return robotList;
+	}
 
 	 /**
      * update user list to cach And db
@@ -737,15 +903,15 @@ public abstract class HXSDKHelper {
          }
          ArrayList<EaseUser> mList = new ArrayList<EaseUser>();
          mList.addAll(contactList.values());
-         hxModel.saveContactList(mList);
+         HXSDKModel.saveContactList(mList);
     }
-//
-//	public UserProfileManager getUserProfileManager() {
-//		if (userProManager == null) {
-//			userProManager = new UserProfileManager();
-//		}
-//		return userProManager;
-//	}
+
+	public UserProfileManager getUserProfileManager() {
+		if (userProManager == null) {
+			userProManager = new UserProfileManager();
+		}
+		return userProManager;
+	}
 
 	void endCall() {
 		try {
@@ -832,7 +998,7 @@ public abstract class HXSDKHelper {
                        return;
                    }
                    
-                   hxModel.setGroupsSynced(true);
+                   HXSDKModel.setGroupsSynced(true);
                    
                    isGroupsSyncedWithServer = true;
                    isSyncingGroupsWithServer = false;
@@ -846,7 +1012,7 @@ public abstract class HXSDKHelper {
                        callback.onSuccess();
                    }
                } catch (EaseMobException e) {
-                   hxModel.setGroupsSynced(false);
+                   HXSDKModel.setGroupsSynced(false);
                    isGroupsSyncedWithServer = false;
                    isSyncingGroupsWithServer = false;
                    noitifyGroupSyncListeners(false);
@@ -893,11 +1059,11 @@ public abstract class HXSDKHelper {
                    getContactList().clear();
                    getContactList().putAll(userlist);
                     // 存入db
-//                   UserDao dao = new UserDao(appContext);
-//                   List<EaseUser> users = new ArrayList<EaseUser>(userlist.values());
-//                   dao.saveContactList(users);
+                   UserDao dao = new UserDao(appContext);
+                   List<EaseUser> users = new ArrayList<EaseUser>(userlist.values());
+                   dao.saveContactList(users);
 
-                   hxModel.setContactSynced(true);
+                   HXSDKModel.setContactSynced(true);
                    EMLog.d(TAG, "set contact syn status to true");
                    
                    isContactsSyncedWithServer = true;
@@ -910,23 +1076,23 @@ public abstract class HXSDKHelper {
                    }
                    
                    
-//                   getUserProfileManager().asyncFetchContactInfosFromServer(usernames,new EMValueCallBack<List<EaseUser>>() {
-//
-//                       @Override
-//                       public void onSuccess(List<EaseUser> uList) {
-//                           updateContactList(uList);
-//                           getUserProfileManager().notifyContactInfosSyncListener(true);
-//                       }
-//
-//                       @Override
-//                       public void onError(int error, String errorMsg) {
-//                       }
-//                   });
+                   getUserProfileManager().asyncFetchContactInfosFromServer(usernames,new EMValueCallBack<List<EaseUser>>() {
+
+                       @Override
+                       public void onSuccess(List<EaseUser> uList) {
+                           updateContactList(uList);
+                           getUserProfileManager().notifyContactInfosSyncListener(true);
+                       }
+
+                       @Override
+                       public void onError(int error, String errorMsg) {
+                       }
+                   });
                    if(callback != null){
                        callback.onSuccess(usernames);
                    }
                } catch (EaseMobException e) {
-                   hxModel.setContactSynced(false);
+                   HXSDKModel.setContactSynced(false);
                    isContactsSyncedWithServer = false;
                    isSyncingContactsWithServer = false;
                    noitifyGroupSyncListeners(false);
@@ -965,7 +1131,7 @@ public abstract class HXSDKHelper {
                        return;
                    }
                    
-                   hxModel.setBlacklistSynced(true);
+                   HXSDKModel.setBlacklistSynced(true);
                    
                    isBlackListSyncedWithServer = true;
                    isSyncingBlackListWithServer = false;
@@ -976,7 +1142,7 @@ public abstract class HXSDKHelper {
                        callback.onSuccess(usernames);
                    }
                } catch (EaseMobException e) {
-                   hxModel.setBlacklistSynced(false);
+                   HXSDKModel.setBlacklistSynced(false);
                    
                    isBlackListSyncedWithServer = false;
                    isSyncingBlackListWithServer = true;
@@ -1036,9 +1202,9 @@ public abstract class HXSDKHelper {
         isSyncingContactsWithServer = false;
         isSyncingBlackListWithServer = false;
         
-        hxModel.setGroupsSynced(false);
-        hxModel.setContactSynced(false);
-        hxModel.setBlacklistSynced(false);
+        HXSDKModel.setGroupsSynced(false);
+        HXSDKModel.setContactSynced(false);
+        HXSDKModel.setBlacklistSynced(false);
         
         isGroupsSyncedWithServer = false;
         isContactsSyncedWithServer = false;
@@ -1048,9 +1214,9 @@ public abstract class HXSDKHelper {
         isGroupAndContactListenerRegisted = false;
         
         setContactList(null);
-//        setRobotList(null);
-//        getUserProfileManager().reset();
-//        DemoDBManager.getInstance().closeDB();
+        setRobotList(null);
+        getUserProfileManager().reset();
+        DemoDBManager.getInstance().closeDB();
     }
 
     public void pushActivity(Activity activity) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2016 Hyphenate Inc. All rights reserved.
+ * Copyright (C) 2013-2014 EaseMob Technologies. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,13 +12,14 @@
  * limitations under the License.
  */
 
-package com.hx.template.hxcontroller;
+package com.hx.template.hxcontroller.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.hyphenate.util.EMLog;
+import com.easemob.util.EMLog;
+import com.hx.template.hxcontroller.HXSDKHelper;
 
 public class CallReceiver extends BroadcastReceiver {
 
@@ -26,19 +27,19 @@ public class CallReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		if(!HXSDKHelper.getInstance().isLoggedIn())
 		    return;
-		//username
+		//拨打方username
 		String from = intent.getStringExtra("from");
 		//call type
 		String type = intent.getStringExtra("type");
-		if("video".equals(type)){ //video call
+//		if("video".equals(type)){ //视频通话
 //		    context.startActivity(new Intent(context, VideoCallActivity.class).
 //                    putExtra("username", from).putExtra("isComingCall", true).
 //                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-		}else{ //voice call
+//		}else{ //音频通话
 //		    context.startActivity(new Intent(context, VoiceCallActivity.class).
 //		            putExtra("username", from).putExtra("isComingCall", true).
 //		            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-		}
+//		}
 		EMLog.d("CallReceiver", "app received a incoming call");
 	}
 
