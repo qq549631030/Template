@@ -32,6 +32,17 @@ public class FakeFileModel implements FileModel {
         }, 2000);
     }
 
+    /**
+     * 上传字节数组
+     *
+     * @param data
+     * @param callback
+     */
+    @Override
+    public void uploadByteArray(byte[] data, FileUploadCallback callback) {
+
+    }
+
     @Override
     public boolean cancel(Object... args) {
         handler.removeCallbacksAndMessages(null);

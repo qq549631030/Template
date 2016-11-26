@@ -2,12 +2,13 @@ package com.hx.template.model;
 
 import com.hx.template.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by huangxiang on 16/3/9.
  */
-public interface UserModel extends BaseModel{
+public interface UserModel extends BaseModel {
     /**
      * 注册
      *
@@ -38,10 +39,21 @@ public interface UserModel extends BaseModel{
     /**
      * 获取用户信息
      *
-     * @param userId   用户id
-     * @param callback 回调监听
+     * @param fieldValue 查询的字段值
+     * @param fieldName  查询的字段名称(必须唯一)
+     * @param callback   回调监听
+     * @param <T>
      */
-    void getUserInfo(String userId, Callback callback);
+    <T> void getUserInfo(T fieldValue, String fieldName, Callback callback);
+
+    /**
+     * 查询多条用户信息
+     *
+     * @param fieldValues 查询条件列表值
+     * @param fieldName   查询的字段名称
+     * @param callback    回调监听
+     */
+    <T> void getUserListInfo(List<T> fieldValues, String fieldName, Callback callback);
 
     /**
      * 更新用户信息

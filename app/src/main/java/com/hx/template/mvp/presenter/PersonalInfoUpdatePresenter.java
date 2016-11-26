@@ -36,7 +36,7 @@ public class PersonalInfoUpdatePresenter extends BasePresenter<PersonalInfoUpdat
                 Map<String, Object> values = new HashMap<>();
                 values.put("nickname", nicknameNew);
                 getMvpView().showLoadingProgress("修改中...");
-                UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues("", values);
+                UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues(getMvpView().getUserId(), values);
                 updateUserInfoCase.setRequestValues(requestValues);
                 updateUserInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
                     @Override

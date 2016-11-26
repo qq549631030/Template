@@ -45,6 +45,17 @@ public class BmobFileModel implements FileModel {
     }
 
     /**
+     * 上传字节数组
+     *
+     * @param data
+     * @param callback
+     */
+    @Override
+    public void uploadByteArray(byte[] data, FileUploadCallback callback) {
+
+    }
+
+    /**
      * 取消操作
      *
      * @param args

@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -94,11 +95,24 @@ public class VolleyUserModel implements UserModel {
     /**
      * 获取用户信息
      *
-     * @param userId   用户id
-     * @param callback 回调监听
+     * @param fieldValue 查询的字段值
+     * @param fieldName  查询的字段名称(必须唯一)
+     * @param callback   回调监听
      */
     @Override
-    public void getUserInfo(String userId, Callback callback) {
+    public <T> void getUserInfo(T fieldValue, String fieldName, Callback callback) {
+
+    }
+
+    /**
+     * 查询多条用户信息
+     *
+     * @param fieldValues 查询条件列表
+     * @param fieldName   查询的字段名称
+     * @param callback    回调监听
+     */
+    @Override
+    public <T> void getUserListInfo(List<T> fieldValues, String fieldName, Callback callback) {
 
     }
 

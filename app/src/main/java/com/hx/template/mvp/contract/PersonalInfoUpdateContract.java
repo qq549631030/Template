@@ -9,6 +9,13 @@ import com.hx.template.mvp.Presenter;
 public interface PersonalInfoUpdateContract {
     interface View extends MvpView {
         /**
+         * 获取要修改的用户id
+         *
+         * @return
+         */
+        String getUserId();
+
+        /**
          * 获取要修改的值
          *
          * @return

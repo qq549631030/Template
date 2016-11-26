@@ -89,6 +89,20 @@ public class PersonalInfoUpdateActivity extends BaseMvpActivity<PersonalInfoUpda
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * 获取要修改的用户id
+     *
+     * @return
+     */
+    @Override
+    public String getUserId() {
+        User currentUser = User.getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.getObjectId();
+        }
+        return null;
+    }
+
     @Override
     public String getNewData() {
         return editText.getText().toString().trim();

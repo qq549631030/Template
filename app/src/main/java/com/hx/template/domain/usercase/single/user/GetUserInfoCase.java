@@ -22,8 +22,7 @@ public class GetUserInfoCase extends UseCase<GetUserInfoCase.RequestValues, GetU
 
     @Override
     public void executeUseCase(RequestValues requestValues) {
-        String userId = requestValues.getUserId();
-        userModel.getUserInfo(userId, new Callback() {
+        userModel.getUserInfo(requestValues.getFieldValue(), requestValues.getFieldName(), new Callback() {
             @Override
             public void onSuccess(int taskId, Object... data) {
                 if (taskId == TaskManager.TASK_ID_GET_USER_INFO) {
@@ -43,14 +42,20 @@ public class GetUserInfoCase extends UseCase<GetUserInfoCase.RequestValues, GetU
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
-        private final String userId;
+        private final String fieldValue;
+        private final String fieldName;
 
-        public RequestValues(String userId) {
-            this.userId = userId;
+        public RequestValues(String fieldValue, String fieldName) {
+            this.fieldValue = fieldValue;
+            this.fieldName = fieldName;
         }
 
-        public String getUserId() {
-            return userId;
+        public String getFieldValue() {
+            return fieldValue;
+        }
+
+        public String getFieldName() {
+            return fieldName;
         }
     }
 

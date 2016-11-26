@@ -1,14 +1,27 @@
 package com.hx.template.hxcontroller;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.easemob.EMValueCallBack;
+import com.easemob.chat.EMChat;
 import com.easemob.chat.EMChatManager;
 import com.easemob.easeui.domain.EaseUser;
+import com.hx.template.domain.usercase.UseCase;
+import com.hx.template.domain.usercase.single.user.GetUserInfoCase;
+import com.hx.template.domain.usercase.single.user.GetUserListInfoCase;
+import com.hx.template.entity.User;
 import com.hx.template.hxcontroller.HXSDKHelper.DataSyncListener;
+import com.hx.template.model.Callback;
+import com.hx.template.model.ModelManager;
+import com.hx.template.model.UserModel;
+import com.hx.template.utils.DecimalUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 public class UserProfileManager {
 
@@ -26,7 +39,7 @@ public class UserProfileManager {
 	/**
 	 * HuanXin sync contact nick and avatar listener
 	 */
-	private List<DataSyncListener> syncContactInfosListeners;
+	private List<DataSyncListener> syncContactInfosListeners = new ArrayList<DataSyncListener>();
 
 	private boolean isSyncingContactInfosWithServer = false;
 
@@ -39,7 +52,6 @@ public class UserProfileManager {
 		if (sdkInited) {
 			return true;
 		}
-//		ParseManager.getInstance().onInit(context);
 		syncContactInfosListeners = new ArrayList<DataSyncListener>();
 		sdkInited = true;
 		return true;
@@ -68,31 +80,40 @@ public class UserProfileManager {
 			return;
 		}
 		isSyncingContactInfosWithServer = true;
-//		ParseManager.getInstance().getContactInfos(usernames, new EMValueCallBack<List<EaseUser>>() {
-//
-//			@Override
-//			public void onSuccess(List<EaseUser> value) {
-//				isSyncingContactInfosWithServer = false;
-//				// in case that logout already before server returns,we should
-//				// return immediately
-//				if (!EMChat.getInstance().isLoggedIn()) {
-//					return;
-//				}
-//				if (callback != null) {
-//					callback.onSuccess(value);
-//				}
-//			}
-//
-//			@Override
-//			public void onError(int error, String errorMsg) {
-//				isSyncingContactInfosWithServer = false;
-//				if (callback != null) {
-//					callback.onError(error, errorMsg);
-//				}
-//			}
-//
-//		});
+		UserModel userModel = ModelManager.provideUserModel();
+		GetUserListInfoCase getUserListInfoCase = new GetUserListInfoCase(userModel);
+		GetUserListInfoCase.RequestValues requestValues = new GetUserListInfoCase.RequestValues(usernames,"username");
+		getUserListInfoCase.setRequestValues(requestValues);
+		getUserListInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<GetUserListInfoCase.ResponseValue>() {
+			@Override
+			public void onSuccess(GetUserListInfoCase.ResponseValue response) {
+                isSyncingContactInfosWithServer = false;
+                List<User> userList = response.getUserList();
+                // in case that logout already before server returns,we should
+                // return immediately
+                if (!EMChat.getInstance().isLoggedIn()) {
+                    return;
+                }
+                if (callback != null) {
+                    List<EaseUser> easeUsers = new ArrayList<EaseUser>();
+                    if (userList != null && userList.size() > 0) {
+                        for (User user : userList) {
+                            easeUsers.add(convertToEaseUser(user));
+                        }
+                    }
+                    callback.onSuccess(easeUsers);
+                }
+            }
 
+			@Override
+			public void onError(String errorCode, String errorMsg) {
+				isSyncingContactInfosWithServer = false;
+				if (callback != null) {
+					callback.onError(DecimalUtils.getInt(errorCode), errorMsg);
+				}
+			}
+		});
+		getUserListInfoCase.run();
 	}
 
 	public void notifyContactInfosSyncListener(boolean success) {
@@ -113,81 +134,41 @@ public class UserProfileManager {
 
 	public synchronized EaseUser getCurrentUserInfo() {
 		if (currentUser == null) {
-			String username = EMChatManager.getInstance().getCurrentUser();
-			currentUser = new EaseUser(username);
-			String nick = getCurrentUserNick();
-			currentUser.setNick((nick != null) ? nick : username);
-			currentUser.setAvatar(getCurrentUserAvatar());
+			User user = User.getCurrentUser();
+			if (user != null) {
+				currentUser = convertToEaseUser(user);
+			}
 		}
 		return currentUser;
 	}
 
-//	public boolean updateCurrentUserNickName(final String nickname) {
-//		boolean isSuccess = ParseManager.getInstance().updateParseNickName(nickname);
-//		if (isSuccess) {
-//			setCurrentUserNick(nickname);
-//		}
-//		return isSuccess;
-//	}
-//
-//	public String uploadUserAvatar(byte[] data) {
-//		String avatarUrl = ParseManager.getInstance().uploadParseAvatar(data);
-//		if (avatarUrl != null) {
-//			setCurrentUserAvatar(avatarUrl);
-//		}
-//		return avatarUrl;
-//	}
-
-	public void asyncGetCurrentUserInfo() {
-//		ParseManager.getInstance().asyncGetCurrentUserInfo(new EMValueCallBack<EaseUser>() {
-//
-//			@Override
-//			public void onSuccess(final EaseUser value) {
-//			    if(value != null){
-//    				setCurrentUserNick(value.getNick());
-//    				setCurrentUserAvatar(value.getAvatar());
-//
-//    				new Thread(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
-//                            boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
-//                                    value.getNick(), true);
-//                            if (!updatenick) {
-//                                Log.e("user", "update current user nick fail");
-//                            }
-//                        }
-//                    }).start();
-//			    }
-//			}
-//
-//			@Override
-//			public void onError(int error, String errorMsg) {
-//
-//			}
-//		});
-
-	}
 	public void asyncGetUserInfo(final String username, final EMValueCallBack<EaseUser> callback){
-//		ParseManager.getInstance().asyncGetUserInfo(username, callback);
-	}
-	private void setCurrentUserNick(String nickname) {
-		getCurrentUserInfo().setNick(nickname);
-		PreferenceManager.getInstance().setCurrentUserNick(nickname);
+		UserModel userModel = ModelManager.provideUserModel();
+		GetUserInfoCase getUserInfoCase = new GetUserInfoCase(userModel);
+		GetUserInfoCase.RequestValues requestValues = new GetUserInfoCase.RequestValues(username,"username");
+		getUserInfoCase.setRequestValues(requestValues);
+		getUserInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<GetUserInfoCase.ResponseValue>() {
+			@Override
+			public void onSuccess(GetUserInfoCase.ResponseValue response) {
+				User user = response.getUser();
+				if (user != null) {
+					final EaseUser easeUser = convertToEaseUser(user);
+					callback.onSuccess(easeUser);
+				}
+			}
+
+			@Override
+			public void onError(String errorCode, String errorMsg) {
+				callback.onError(DecimalUtils.getInt(errorCode),errorMsg);
+			}
+		});
+		getUserInfoCase.run();
 	}
 
-	private void setCurrentUserAvatar(String avatar) {
-		getCurrentUserInfo().setAvatar(avatar);
-		PreferenceManager.getInstance().setCurrentUserAvatar(avatar);
-	}
-
-	private String getCurrentUserNick() {
-		return PreferenceManager.getInstance().getCurrentUserNick();
-	}
-
-	private String getCurrentUserAvatar() {
-		return PreferenceManager.getInstance().getCurrentUserAvatar();
-	}
-
+    public static EaseUser convertToEaseUser(User user){
+        EaseUser easeUser = new EaseUser(user.getUsername());
+        easeUser.setAvatar(user.getAvatar());
+        easeUser.setNick(user.getNickname());
+        return easeUser;
+    }
 }

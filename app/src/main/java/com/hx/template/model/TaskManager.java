@@ -10,11 +10,12 @@ public class TaskManager {
     public static final int TASK_ID_LOGIN = 1102;
     public static final int TASK_ID_MODIFY_PWD = 1103;
     public static final int TASK_ID_GET_USER_INFO = 1104;
-    public static final int TASK_ID_UPDATE_USER_INFO = 1105;
-    public static final int TASK_ID_REQUEST_EMAIL_VERIFY = 1106;
-    public static final int TASK_ID_RESET_PASSWORD_BY_SMS_CODE = 1107;
-    public static final int TASK_ID_RESET_PASSWORD_BY_EMAIL = 1108;
-    public static final int TASK_ID_LOGOUT = 1109;
+    public static final int TASK_ID_GET_USER_INFO_LIST = 1105;
+    public static final int TASK_ID_UPDATE_USER_INFO = 1106;
+    public static final int TASK_ID_REQUEST_EMAIL_VERIFY = 1107;
+    public static final int TASK_ID_RESET_PASSWORD_BY_SMS_CODE = 1108;
+    public static final int TASK_ID_RESET_PASSWORD_BY_EMAIL = 1109;
+    public static final int TASK_ID_LOGOUT = 1110;
     //==========SMSModel==========
     public static final int TASK_ID_REQUEST_SMS_CODE = 1201;
     public static final int TASK_ID_VERIFY_SMS_CODE = 1202;

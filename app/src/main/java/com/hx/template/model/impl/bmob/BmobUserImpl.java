@@ -6,11 +6,14 @@ import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
@@ -64,16 +67,57 @@ public class BmobUserImpl implements UserModel {
     /**
      * 获取用户信息
      *
-     * @param userId   用户id
-     * @param callback 回调监听
+     * @param fieldValue 查询的字段值
+     * @param fieldName  查询的字段名称
+     * @param callback   回调监听
      */
     @Override
-    public void getUserInfo(String userId, final Callback callback) {
+    public <T> void getUserInfo(T fieldValue, String fieldName, final Callback callback) {
         BmobQuery<BbUser> query = new BmobQuery<BbUser>();
-        query.getObject(userId, new QueryListener<BbUser>() {
+        if ("username".equals(fieldName)) {
+            query.addWhereEqualTo("username", fieldValue);
+        } else if ("userId".equals(fieldName)) {
+            query.addWhereEqualTo("objectId", fieldValue);
+        }
+        query.findObjects(new FindListener<BbUser>() {
             @Override
-            public void done(BbUser bbUser, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO, e, bbUser.toUser());
+            public void done(List<BbUser> list, BmobException e) {
+                List<User> userList = new ArrayList<User>();
+                if (list != null && list.size() > 0) {
+                    BbUser bbUser = list.get(0);
+                    BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO_LIST, e, bbUser.toUser());
+                } else {
+                    BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO_LIST, new BmobException(-1, "not found"));
+                }
+            }
+        });
+    }
+
+    /**
+     * 查询多条用户信息
+     *
+     * @param fieldValues 查询条件列表
+     * @param fieldName   查询的字段名称
+     * @param callback    回调监听
+     */
+    @Override
+    public <T> void getUserListInfo(List<T> fieldValues, String fieldName, final Callback callback) {
+        BmobQuery<BbUser> query = new BmobQuery<BbUser>();
+        if ("username".equals(fieldName)) {
+            query.addWhereContainedIn("username", fieldValues);
+        } else if ("userId".equals(fieldName)) {
+            query.addWhereContainedIn("objectId", fieldValues);
+        }
+        query.findObjects(new FindListener<BbUser>() {
+            @Override
+            public void done(List<BbUser> list, BmobException e) {
+                List<User> userList = new ArrayList<User>();
+                if (list != null && list.size() > 0) {
+                    for (BbUser bbUser : list) {
+                        userList.add(bbUser.toUser());
+                    }
+                }
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO_LIST, e, userList);
             }
         });
     }

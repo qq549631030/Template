@@ -113,23 +113,44 @@ public class FakeUserModel implements UserModel {
     /**
      * 获取用户信息
      *
-     * @param userId   用户id
-     * @param callback 回调监听
+     * @param fieldValue 查询的字段值
+     * @param fieldName  查询的字段名称(必须唯一)
+     * @param callback   回调监听
      */
     @Override
-    public void getUserInfo(final String userId, final Callback callback) {
+    public <T> void getUserInfo(final T fieldValue, final String fieldName, final Callback callback) {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 for (User user : userList) {
-                    if (user.getObjectId().equals(userId)) {
-                        callback.onSuccess(TaskManager.TASK_ID_GET_USER_INFO, user);
-                        return;
+                    if ("username".equals(fieldName)) {
+                        if (user.getUsername().equals(fieldValue)) {
+                            callback.onSuccess(TaskManager.TASK_ID_GET_USER_INFO, user);
+                            return;
+                        }
+                    }else if ("userId".equals(fieldName)){
+                        if (user.getObjectId().equals(fieldValue)) {
+                            callback.onSuccess(TaskManager.TASK_ID_GET_USER_INFO, user);
+                            return;
+                        }
                     }
+
                 }
                 callback.onFailure(TaskManager.TASK_ID_GET_USER_INFO, "1005", "用户不存在");
             }
         }, 2000);
+    }
+
+    /**
+     * 查询多条用户信息
+     *
+     * @param fieldValues 查询条件列表
+     * @param fieldName   查询的字段名称
+     * @param callback    回调监听
+     */
+    @Override
+    public <T> void getUserListInfo(List<T> fieldValues, String fieldName, Callback callback) {
+
     }
 
     /**
