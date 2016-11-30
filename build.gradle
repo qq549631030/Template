@@ -45,4 +45,16 @@ ext {
 
     // App dependencies
     supportLibraryVersion = '25.0.1'
+
+    //google
+    gsonVersion = '2.8.0'
+
+    //squareup
+    okhttpVersion = '3.4.2'
+    okioVersion = '1.11.0'
+    picassoVersion = '2.5.2'
+
+    //ReactiveX
+    rxjavaVersion = '1.2.3'
+    rxandroidVersion = '1.2.1'
 }

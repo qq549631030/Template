@@ -23,7 +23,7 @@ import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
 import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.http.bmob.BmobDataChangeListener;
-import com.hx.template.hxcontroller.HXSDKHelper;
+import com.hx.template.hxcontroller.HXManager;
 import com.hx.template.model.Callback;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
@@ -61,8 +61,8 @@ public class CustomApplication extends Application {
     protected void attachBaseContext(Context base) {
         try {
             super.attachBaseContext(base);
-            RocooFix.init(this);
-            RocooFix.initPathFromAssets(this, "patch.jar");
+//            RocooFix.init(this);
+//            RocooFix.initPathFromAssets(this, "patch.jar");
             MultiDex.install(this);
         } catch (Exception e) {
             e.printStackTrace();
@@ -78,7 +78,7 @@ public class CustomApplication extends Application {
         initDagger2();
         Dexter.initialize(instance);
         BmobManager.init(instance);
-        HXSDKHelper.getInstance().init(instance);
+//        HXManager.init(instance);
         initActivityManager();
         if (BuildConfig.DEBUG) {
             enabledStrictMode();
@@ -232,9 +232,9 @@ public class CustomApplication extends Application {
             UserModel userModel = ModelManager.provideUserModel();
 
             if (callback != null) {
-                userModel.getUserInfo(user.getObjectId(), callback);
+                userModel.getUserInfo(user.getObjectId(),"userId", callback);
             } else {
-                userModel.getUserInfo(user.getObjectId(), new Callback() {
+                userModel.getUserInfo(user.getObjectId(),"userId", new Callback() {
                     @Override
                     public void onSuccess(int taskId, Object... data) {
                         if (data != null && data.length > 0 && data[0] instanceof User) {

@@ -42,7 +42,7 @@ public class BmobUserImpl implements UserModel {
         BmobUser.loginByAccount(username, password, new LogInListener<BbUser>() {
             @Override
             public void done(BbUser bbUser, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_LOGIN, e, bbUser.toUser());
+                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_LOGIN, e, bbUser != null ? bbUser.toUser() : null);
             }
         });
     }

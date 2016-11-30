@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.BmobConfig;
 import cn.bmob.v3.BmobRealTimeData;
 import cn.bmob.v3.listener.ValueEventListener;
 
@@ -19,14 +20,24 @@ import cn.bmob.v3.listener.ValueEventListener;
  */
 public class BmobManager {
 
-    public static final String APP_KEY = "0dffa5dd0fb6b49c5dbcd57971946e0b";
+    public static final String APP_ID = "0dffa5dd0fb6b49c5dbcd57971946e0b";
 
     private static List<BmobDataChangeListener> listeners = new ArrayList<BmobDataChangeListener>();
 
     private static BmobRealTimeData bmobRealTimeData;
 
     public static void init(Context context) {
-        Bmob.initialize(context, APP_KEY);
+        BmobConfig config =new BmobConfig.Builder(context)
+        //设置appkey
+        .setApplicationId(APP_ID)
+        //请求超时时间（单位为秒）：默认15s
+        .setConnectTimeout(30)
+        //文件分片上传时每片的大小（单位字节），默认512*1024
+        .setUploadBlockSize(1024*1024)
+        //文件的过期时间(单位为秒)：默认1800s
+        .setFileExpiration(2500)
+        .build();
+        Bmob.initialize(config);
     }
 
     public static void startRealTimeListener() {
@@ -59,7 +70,7 @@ public class BmobManager {
                         String objectId = jsonObject.optString("objectId");
                         String action = jsonObject.optString("action");
                         JSONObject data = jsonObject.optJSONObject("data");
-                        if (APP_KEY.equals(appKey)) {
+                        if (APP_ID.equals(appKey)) {
                             for (BmobDataChangeListener listener : listeners) {
                                 if (!TextUtils.isEmpty(action) && action.equals(listener.getAction())) {
                                     if (!TextUtils.isEmpty(listener.getTableName()) && !listener.getTableName().equals(tableName)) {
