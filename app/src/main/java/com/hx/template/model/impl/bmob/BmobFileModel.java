@@ -1,6 +1,5 @@
 package com.hx.template.model.impl.bmob;
 
-import com.hx.template.model.Callback;
 import com.hx.template.model.FileModel;
 import com.hx.template.model.FileUploadCallback;
 import com.hx.template.model.TaskManager;
@@ -39,7 +38,7 @@ public class BmobFileModel implements FileModel {
 
             @Override
             public void onError(int i, String s) {
-                BmobCallBackDeliver.deliverFailure(callback, TaskManager.TASK_ID_UPLOAD_FILE, new BmobException(i, s));
+                BmobCallBackDeliver.deliverFailure(callback, new BmobException(i, s));
             }
         });
     }

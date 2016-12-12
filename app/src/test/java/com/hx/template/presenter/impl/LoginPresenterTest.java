@@ -1,11 +1,10 @@
 package com.hx.template.presenter.impl;
 
+import com.hx.mvp.Callback;
 import com.hx.template.CustomRule;
 import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
 
@@ -55,9 +54,9 @@ public class LoginPresenterTest {
                     User user = new User();
                     user.setUsername(username);
                     user.setPassword(password);
-                    callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
+                    callback.onSuccess(user);
                 } else {
-                    callback.onFailure(TaskManager.TASK_ID_LOGIN, "10001", "用户名或密码错误");
+                    callback.onFailure("10001", "用户名或密码错误");
                 }
                 return null;
             }
@@ -67,11 +66,6 @@ public class LoginPresenterTest {
     @Test(expected = IllegalArgumentException.class)
     public void testUserModelNull() throws Exception {
         presenter = new LoginPresenter(null);
-    }
-
-    @Test(expected = BasePresenter.MvpViewNotAttachedException.class)
-    public void testViewNotAttach() throws Exception {
-        presenter.login();
     }
 
     @Test
@@ -108,7 +102,7 @@ public class LoginPresenterTest {
         when(loginMvpView.getUserName()).thenReturn("");
         when(loginMvpView.getPassword()).thenReturn("123456");
         presenter.login();
-        verify(loginMvpView, never()).showLoadingProgress(anyString());
+        verify(loginMvpView, never()).showLoadingProgress(true, anyString());
         verify(userModel, never()).login(anyString(), anyString(), any(Callback.class));
     }
 
@@ -118,7 +112,7 @@ public class LoginPresenterTest {
         when(loginMvpView.getUserName()).thenReturn("huangxiang");
         when(loginMvpView.getPassword()).thenReturn("");
         presenter.login();
-        verify(loginMvpView, never()).showLoadingProgress(anyString());
+        verify(loginMvpView, never()).showLoadingProgress(true, anyString());
         verify(userModel, never()).login(anyString(), anyString(), any(Callback.class));
     }
 }

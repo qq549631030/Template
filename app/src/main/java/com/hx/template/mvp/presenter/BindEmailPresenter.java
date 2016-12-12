@@ -1,10 +1,10 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
 import com.hx.template.Constant;
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.UpdateUserInfoCase;
+import com.hx.template.mvp.usecase.single.user.UpdateUserInfoCase;
 import com.hx.template.mvp.contract.BindEmailContract;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
 import java.util.HashMap;
@@ -29,27 +29,29 @@ public class BindEmailPresenter extends BasePresenter<BindEmailContract.View> im
      */
     @Override
     public void resetEmail(String userId) {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
             Map<String, Object> values = new HashMap<>();
             values.put("email", getMvpView().getEmail());
-            getMvpView().showLoadingProgress("正在发送验证邮件...");
+            getMvpView().showLoadingProgress(true, "正在发送验证邮件...");
             UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues(userId, values);
             updateUserInfoCase.setRequestValues(requestValues);
-            updateUserInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
+            updateUserInfoCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
                 @Override
                 public void onSuccess(UpdateUserInfoCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().onRequestSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().onRequestFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().onRequestFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

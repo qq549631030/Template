@@ -1,20 +1,13 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
 import com.hx.template.Constant;
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.complex.BindPhoneCase;
-import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
-import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
-import com.hx.template.model.SMSModel;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.mvp.usecase.complex.BindPhoneCase;
+import com.hx.template.mvp.usecase.single.sms.RequestSMSCodeCase;
 import com.hx.template.mvp.contract.BindPhoneContract;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -38,25 +31,27 @@ public class BindPhonePresenter extends BasePresenter<BindPhoneContract.View> im
      */
     @Override
     public void requestSMSCode() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkPhone()) {
-            getMvpView().showLoadingProgress("正在获取短信验证码...");
+            getMvpView().showLoadingProgress(true, "正在获取短信验证码...");
             RequestSMSCodeCase.RequestValues requestValues = new RequestSMSCodeCase.RequestValues(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate());
             requestSMSCodeCase.setRequestValues(requestValues);
-            requestSMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
+            requestSMSCodeCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
                 @Override
                 public void onSuccess(RequestSMSCodeCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().onRequestSuccess(response.getSmsId());
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().onRequestFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().onRequestFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });
@@ -71,25 +66,27 @@ public class BindPhonePresenter extends BasePresenter<BindPhoneContract.View> im
      */
     @Override
     public void bindPhone(String userId) {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
-            getMvpView().showLoadingProgress("正在绑定...");
+            getMvpView().showLoadingProgress(true, "正在绑定...");
             BindPhoneCase.RequestValues requestValues = new BindPhoneCase.RequestValues(getMvpView().getVerifyPhoneNumber(), getMvpView().getSMSCode(), userId);
             bindPhoneCase.setRequestValues(requestValues);
-            bindPhoneCase.setUseCaseCallback(new UseCase.UseCaseCallback<BindPhoneCase.ResponseValue>() {
+            bindPhoneCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<BindPhoneCase.ResponseValue>() {
                 @Override
                 public void onSuccess(BindPhoneCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().bindSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().bindFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().bindFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

@@ -2,7 +2,6 @@ package com.hx.template.ui.fragment;
 
 
 import android.os.Bundle;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,12 @@ import com.hx.template.base.BaseStepFragment;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.mvp.contract.ResetPwdByEmailContract;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.mvp.presenter.ResetPwdByEmailPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 /**
@@ -29,7 +25,7 @@ import butterknife.OnClick;
  */
 public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPresenter, ResetPwdByEmailContract.View> implements ResetPwdByEmailContract.View {
 
-    @Bind(R.id.email)
+
     EditText email;
 
     public ResetPwdByEmailFragment() {
@@ -54,14 +50,15 @@ public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reset_pwd_by_email, container, false);
-        ButterKnife.bind(this, view);
+        email = (EditText) view.findViewById(R.id.email);
+
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @OnClick({R.id.confirm, R.id.reset_by_phone})

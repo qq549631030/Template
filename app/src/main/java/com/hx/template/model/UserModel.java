@@ -1,5 +1,6 @@
 package com.hx.template.model;
 
+import com.hx.mvp.Callback;
 import com.hx.template.entity.User;
 
 import java.util.List;

@@ -5,20 +5,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.presenter.PresenterFactory;
+import com.hx.mvp.presenter.PresenterLoader;
+import com.hx.mvp.view.BaseMvpView;
+import com.hx.mvp.view.ViewState;
 import com.hx.template.global.HXLog;
-import com.hx.template.mvp.BasePresenter;
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
-import com.hx.template.mvp.ViewState;
 import com.hx.template.utils.ToastUtils;
 
 /**
  * Created by huangxiang on 2016/9/24.
  */
 
-public class BaseMvpFragment<P extends Presenter<V>, V extends MvpView> extends BaseFragment implements MvpView, LoaderManager.LoaderCallbacks<P> {
+public class BaseMvpFragment<P extends Presenter<V>, V extends BaseMvpView> extends BaseFragment implements BaseMvpView, LoaderManager.LoaderCallbacks<P> {
 
     public final static int BASE_FRAGMENT_PRESENTER_LOADER_ID = 200;
 
@@ -67,12 +67,15 @@ public class BaseMvpFragment<P extends Presenter<V>, V extends MvpView> extends 
 
     @Override
     public Loader<P> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader(getContext(), new PresenterFactory<P>() {
-            @Override
-            public P create() {
-                return onCreatePresenter();
-            }
-        });
+        if (BASE_FRAGMENT_PRESENTER_LOADER_ID == id) {
+            return new PresenterLoader(getContext(), new PresenterFactory<P>() {
+                @Override
+                public P create() {
+                    return onCreatePresenter();
+                }
+            });
+        }
+        return null;
     }
 
     @Override
@@ -98,30 +101,38 @@ public class BaseMvpFragment<P extends Presenter<V>, V extends MvpView> extends 
         return null;
     }
 
-    @Override
-    public void showError(String errorMsg) {
-        ToastUtils.showToast(getContext(), errorMsg);
-    }
-
     /**
-     * 显示loading对话框
+     * 显示/隐藏加载中动画
      *
-     * @param msg
+     * @param show true 显示 false 隐藏
+     * @param args 额外参数
      */
     @Override
-    public void showLoadingProgress(String msg) {
+    public void showLoadingProgress(boolean show, Object... args) {
         if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).showDefaultLoadingProgress(msg);
+            if (show) {
+                String loadingMsg;
+                if (args != null && args.length > 0) {
+                    loadingMsg = args[0].toString();
+                } else {
+                    loadingMsg = "";
+                }
+                ((BaseActivity) getActivity()).showDefaultLoadingProgress(loadingMsg);
+            } else {
+                ((BaseActivity) getActivity()).hideDefaultLoadingProgress();
+            }
         }
     }
 
     /**
-     * 隐藏loading对话框
+     * 通用错误
+     *
+     * @param errorData 错误数据
      */
     @Override
-    public void hideLoadingProgress() {
-        if (getActivity() instanceof BaseActivity) {
-            ((BaseActivity) getActivity()).hideDefaultLoadingProgress();
+    public void showError(Object... errorData) {
+        if (errorData != null && errorData.length > 0) {
+            ToastUtils.showToast(getContext(), errorData[0].toString());
         }
     }
 }

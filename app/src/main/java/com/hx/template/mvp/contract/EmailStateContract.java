@@ -1,13 +1,13 @@
 package com.hx.template.mvp.contract;
 
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.view.BaseMvpView;
 
 /**
  * Created by huangx on 2016/8/23.
  */
 public interface EmailStateContract {
-    interface View extends MvpView {
+    interface View extends BaseMvpView {
         /**
          * 获取请求的Email
          *

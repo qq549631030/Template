@@ -3,7 +3,6 @@ package com.hx.template.ui.fragment;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +15,12 @@ import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.http.bmob.BmobSMSTemplate;
 import com.hx.template.mvp.contract.ResetPwdByPhoneContract;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.mvp.presenter.ResetPwdByPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 /**
@@ -32,15 +28,15 @@ import butterknife.OnClick;
  */
 public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePresenter, ResetPwdByPhoneContract.View> implements ResetPwdByPhoneContract.View {
 
-    @Bind(R.id.phone)
+
     EditText phone;
-    @Bind(R.id.vcode)
+
     EditText vcode;
-    @Bind(R.id.getvcode)
+
     TextView getvcode;
-    @Bind(R.id.password)
+
     EditText password;
-    @Bind(R.id.confirm_password)
+
     EditText confirmPassword;
 
     private CountDownTimer countDownTimer;
@@ -88,14 +84,14 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reset_pwd_by_phone, container, false);
-        ButterKnife.bind(this, view);
+
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @OnClick({R.id.getvcode, R.id.confirm, R.id.reset_by_email})

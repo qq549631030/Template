@@ -26,8 +26,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 /**
@@ -35,13 +35,13 @@ import butterknife.OnClick;
  */
 public class PersonalCenterFragment extends BaseFragment {
 
-    @Bind(R.id.avatar)
+
     CircleImageView avatar;
-    @Bind(R.id.nickname)
+
     TextView nickname;
-    @Bind(R.id.username)
+
     TextView username;
-    @Bind(R.id.qrcode)
+
     ImageView qrcode;
 
     @Override
@@ -53,7 +53,11 @@ public class PersonalCenterFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal_center, null);
-        ButterKnife.bind(this, view);
+        qrcode = (ImageView) view.findViewById(R.id.qrcode);
+        username = (TextView) view.findViewById(R.id.username);
+        nickname = (TextView) view.findViewById(R.id.nickname);
+        avatar = (CircleImageView) view.findViewById(R.id.avatar);
+
         return view;
     }
 
@@ -87,7 +91,7 @@ public class PersonalCenterFragment extends BaseFragment {
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
 

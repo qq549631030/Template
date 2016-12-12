@@ -1,7 +1,7 @@
 package com.hx.template.mvp.contract;
 
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.view.BaseMvpView;
 
 import java.io.File;
 
@@ -9,7 +9,7 @@ import java.io.File;
  * Created by huangx on 2016/8/22.
  */
 public interface PersonalInfoContract {
-    interface View extends MvpView {
+    interface View extends BaseMvpView {
         /**
          * 头像修改成功
          */

@@ -2,7 +2,6 @@ package com.hx.template.model;
 
 import android.os.Handler;
 
-import com.hx.template.model.Callback;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.TaskManager;
 

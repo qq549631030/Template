@@ -30,8 +30,8 @@ import com.hx.template.ui.fragment.GroupFragment;
 import com.hx.template.ui.fragment.HomeFragment;
 import com.hx.template.ui.fragment.PersonalCenterFragment;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 import cn.huangx.common.utils.ToastUtils;
 import me.leolin.shortcutbadger.ShortcutBadger;
@@ -42,17 +42,17 @@ public class MainActivity extends BaseActivity {
 
     public final static int REQUEST_CODE_SCAN = 1001;
 
-    @Bind(R.id.toolbar)
+
     Toolbar toolbar;
-    @Bind(R.id.container)
+
     FrameLayout container;
-    @Bind(R.id.main_menu_item_1)
+
     MainTabItemView mainMenuItem1;
-    @Bind(R.id.main_menu_item_2)
+
     MainTabItemView mainMenuItem2;
-    @Bind(R.id.main_menu_item_3)
+
     MainTabItemView mainMenuItem3;
-    @Bind(R.id.main_menu_item_4)
+
     MainTabItemView mainMenuItem4;
 
     private FragmentManager mFragmentManager;
@@ -65,7 +65,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        container = (FrameLayout) findViewById(R.id.container);
+        mainMenuItem1 = (MainTabItemView) findViewById(R.id.main_menu_item_1);
+        mainMenuItem2 = (MainTabItemView) findViewById(R.id.main_menu_item_2);
+        mainMenuItem3 = (MainTabItemView) findViewById(R.id.main_menu_item_3);
+        mainMenuItem4 = (MainTabItemView) findViewById(R.id.main_menu_item_4);
+
         setSupportActionBar(toolbar);
         mFragmentManager = getSupportFragmentManager();
         initViews();

@@ -22,18 +22,18 @@ import com.hx.template.utils.ColorUtils;
 import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.widget.PageIndicator;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 import cn.huangx.common.utils.PackageUtils;
 
 public class GuideActivity extends BaseActivity {
 
-    @Bind(R.id.viewpager)
+
     ViewPager viewpager;
-    @Bind(R.id.start)
+
     TextView start;
-    @Bind(R.id.indicator)
+
     PageIndicator indicator;
 
     private int bitmapsFull[] = new int[]{R.drawable.guide_01, R.drawable.guide_02,
@@ -45,7 +45,10 @@ public class GuideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-        ButterKnife.bind(this);
+        viewpager = (ViewPager) findViewById(R.id.viewpager);
+        start = (TextView) findViewById(R.id.start);
+        indicator = (PageIndicator) findViewById(R.id.indicator);
+
         mViews = new View[bitmapsFull.length];
         viewpager.setAdapter(new GuidePagerAdapter(this));
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

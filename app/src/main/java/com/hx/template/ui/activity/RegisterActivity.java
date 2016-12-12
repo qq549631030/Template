@@ -13,37 +13,39 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.presenter.PresenterFactory;
+import com.hx.mvp.presenter.PresenterLoader;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.mvp.contract.RegisterContract;
 import com.hx.template.mvp.presenter.RegisterPresenter;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View {
 
-    @Bind(R.id.username)
+
     EditText username;
-    @Bind(R.id.password)
+
     EditText password;
-    @Bind(R.id.confirm_password)
+
     EditText confirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        ButterKnife.bind(this);
+        username = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.password);
+        confirmPassword = (EditText) findViewById(R.id.confirm_password);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

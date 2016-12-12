@@ -6,38 +6,41 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.EditText;
 
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.presenter.PresenterFactory;
+import com.hx.mvp.presenter.PresenterLoader;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.mvp.contract.ModifyPwdContract;
 import com.hx.template.mvp.presenter.ModifyPwdPresenter;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, ModifyPwdContract.View> implements ModifyPwdContract.View {
 
-    @Bind(R.id.toolbar)
+
     Toolbar toolbar;
-    @Bind(R.id.old_pwd)
+
     EditText oldPwd;
-    @Bind(R.id.new_pwd)
+
     EditText newPwd;
-    @Bind(R.id.confirm_password)
+
     EditText confirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_pwd);
-        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        oldPwd = (EditText) findViewById(R.id.old_pwd);
+        newPwd = (EditText) findViewById(R.id.new_pwd);
+        confirmPassword = (EditText) findViewById(R.id.confirm_password);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("修改密码");

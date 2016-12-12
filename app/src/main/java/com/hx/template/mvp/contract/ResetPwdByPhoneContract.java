@@ -1,14 +1,14 @@
 package com.hx.template.mvp.contract;
 
-import com.hx.template.mvp.MvpView;
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.view.BaseMvpView;
 import com.hx.template.mvp.SMSRequestView;
-import com.hx.template.mvp.Presenter;
 
 /**
  * Created by huangx on 2016/8/22.
  */
 public interface ResetPwdByPhoneContract {
-    interface View extends MvpView, SMSRequestView {
+    interface View extends BaseMvpView, SMSRequestView {
         /**
          * 获取验证码
          *

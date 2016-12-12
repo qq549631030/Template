@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.hx.template.R;
 import com.hx.template.base.BaseFragment;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 public class FavoriteFragment extends BaseFragment {
 
 
-    @Bind(R.id.text)
+
     TextView text;
 
     public FavoriteFragment() {
@@ -33,13 +33,14 @@ public class FavoriteFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
-        ButterKnife.bind(this, view);
+        text = (TextView) view.findViewById(R.id.text);
+
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 }

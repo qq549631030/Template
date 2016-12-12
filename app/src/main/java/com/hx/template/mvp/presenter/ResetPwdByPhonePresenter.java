@@ -1,15 +1,11 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
 import com.hx.template.Constant;
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
-import com.hx.template.domain.usercase.single.user.ResetPwdBySMSCodeCase;
-import com.hx.template.model.Callback;
-import com.hx.template.model.SMSModel;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.mvp.usecase.single.sms.RequestSMSCodeCase;
+import com.hx.template.mvp.usecase.single.user.ResetPwdBySMSCodeCase;
 import com.hx.template.mvp.contract.ResetPwdByPhoneContract;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
 import java.util.regex.Pattern;
@@ -34,24 +30,26 @@ public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContr
      */
     @Override
     public void requestSMSCode() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkPhone()) {
             RequestSMSCodeCase.RequestValues requestValues = new RequestSMSCodeCase.RequestValues(getMvpView().getRequestPhoneNumber(), getMvpView().getSMSTemplate());
             requestSMSCodeCase.setRequestValues(requestValues);
-            requestSMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
+            requestSMSCodeCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<RequestSMSCodeCase.ResponseValue>() {
                 @Override
                 public void onSuccess(RequestSMSCodeCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().onRequestSuccess(response.getSmsId());
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().onRequestFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().onRequestFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });
@@ -64,24 +62,26 @@ public class ResetPwdByPhonePresenter extends BasePresenter<ResetPwdByPhoneContr
      */
     @Override
     public void resetPasswordBySMSCode() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
             ResetPwdBySMSCodeCase.RequestValues requestValues = new ResetPwdBySMSCodeCase.RequestValues(getMvpView().getSMSCode(), getMvpView().getPassword());
             resetPwdBySMSCodeCase.setRequestValues(requestValues);
-            resetPwdBySMSCodeCase.setUseCaseCallback(new UseCase.UseCaseCallback<ResetPwdBySMSCodeCase.ResponseValue>() {
+            resetPwdBySMSCodeCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<ResetPwdBySMSCodeCase.ResponseValue>() {
                 @Override
                 public void onSuccess(ResetPwdBySMSCodeCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().resetSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().resetFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().resetFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

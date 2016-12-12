@@ -4,7 +4,6 @@ package com.hx.template.ui.fragment;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +16,15 @@ import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.http.bmob.BmobSMSTemplate;
-import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.BindPhoneContract;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.mvp.presenter.BindPhonePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 /**
@@ -38,11 +33,11 @@ import butterknife.OnClick;
 public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, BindPhoneContract.View> implements BindPhoneContract.View {
 
 
-    @Bind(R.id.phone)
+
     EditText phone;
-    @Bind(R.id.vcode)
+
     EditText vcode;
-    @Bind(R.id.getvcode)
+
     TextView getvcode;
 
     private CountDownTimer countDownTimer;
@@ -82,14 +77,14 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bind_phone, container, false);
-        ButterKnife.bind(this, view);
+
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     @Override

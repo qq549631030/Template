@@ -1,9 +1,9 @@
 package com.hx.template.mvp.presenter;
 
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.LoginCase;
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.mvp.usecase.single.user.LoginCase;
 import com.hx.template.mvp.contract.LoginContract;
-import com.hx.template.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
@@ -27,25 +27,27 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
      */
     @Override
     public void login() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
-            getMvpView().showLoadingProgress("登录中...");
+            getMvpView().showLoadingProgress(true, "登录中...");
             LoginCase.RequestValues requestValues = new LoginCase.RequestValues(getMvpView().getUserName(), getMvpView().getPassword());
             loginCase.setRequestValues(requestValues);
-            loginCase.setUseCaseCallback(new UseCase.UseCaseCallback<LoginCase.ResponseValue>() {
+            loginCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<LoginCase.ResponseValue>() {
                 @Override
                 public void onSuccess(LoginCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().loginSuccess(response.getUser());
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().loginFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().loginFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

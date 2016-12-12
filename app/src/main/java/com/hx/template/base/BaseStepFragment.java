@@ -5,14 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.view.BaseMvpView;
 import com.hx.template.R;
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
 
 /**
  * Created by huangx on 2016/5/13.
  */
-public class BaseStepFragment<P extends Presenter<V>, V extends MvpView> extends BaseMvpFragment<P, V> {
+public class BaseStepFragment<P extends Presenter<V>, V extends BaseMvpView> extends BaseMvpFragment<P, V> {
     /**
      * 是否是第一步
      */

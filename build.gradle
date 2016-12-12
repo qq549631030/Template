@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.dodola:rocoofix:1.2.6'
 //        classpath "io.realm:realm-gradle-plugin:1.2.0"
@@ -39,22 +39,27 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 16
-    targetSdkVersion = 24
-    compileSdkVersion = 24
-    buildToolsVersion = '24.0.2'
+    targetSdkVersion = 25
+    compileSdkVersion = 25
+    buildToolsVersion = '25.0.1'
 
     // App dependencies
     supportLibraryVersion = '25.0.1'
 
     //google
     gsonVersion = '2.8.0'
+    daggerVersion = '2.8'
 
     //squareup
     okhttpVersion = '3.4.2'
     okioVersion = '1.11.0'
     picassoVersion = '2.5.2'
+    retrofitVersion = '2.1.0'
 
     //ReactiveX
     rxjavaVersion = '1.2.3'
     rxandroidVersion = '1.2.1'
+
+    //jakewharton
+    butterknifeVersion = '7.0.1'
 }

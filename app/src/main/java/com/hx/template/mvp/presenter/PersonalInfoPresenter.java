@@ -1,8 +1,8 @@
 package com.hx.template.mvp.presenter;
 
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.complex.UpdateAvatarCase;
-import com.hx.template.mvp.BasePresenter;
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.mvp.usecase.complex.UpdateAvatarCase;
 import com.hx.template.mvp.contract.PersonalInfoContract;
 
 import java.io.File;
@@ -22,25 +22,27 @@ public class PersonalInfoPresenter extends BasePresenter<PersonalInfoContract.Vi
 
     @Override
     public void updateAvatar(String userId, File file) {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput(userId, file)) {
-            getMvpView().showLoadingProgress("正在修改头像...");
+            getMvpView().showLoadingProgress(true, "正在修改头像...");
             UpdateAvatarCase.RequestValues requestValues = new UpdateAvatarCase.RequestValues(userId, file);
             updateAvatarCase.setRequestValues(requestValues);
-            updateAvatarCase.setUseCaseCallback(new UseCase.UseCaseCallback<UpdateAvatarCase.ResponseValue>() {
+            updateAvatarCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<UpdateAvatarCase.ResponseValue>() {
                 @Override
                 public void onSuccess(UpdateAvatarCase.ResponseValue response) {
                     if (!isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().avatarUpdateSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (!isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().avatarUpdateFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().avatarUpdateFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

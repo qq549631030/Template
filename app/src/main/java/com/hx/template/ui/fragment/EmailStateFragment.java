@@ -4,7 +4,6 @@ package com.hx.template.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +15,13 @@ import com.hx.template.base.BaseStepFragment;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.EmailStateContract;
 import com.hx.template.mvp.presenter.EmailStatePresenter;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 /**
@@ -35,11 +30,11 @@ import butterknife.OnClick;
 public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, EmailStateContract.View> implements EmailStateContract.View {
 
 
-    @Bind(R.id.email_state)
+
     TextView emailState;
-    @Bind(R.id.resend)
+
     Button resend;
-    @Bind(R.id.rebind)
+
     Button rebind;
 
     public EmailStateFragment() {
@@ -59,7 +54,10 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_email_state, container, false);
-        ButterKnife.bind(this, view);
+        rebind = (Button) view.findViewById(R.id.rebind);
+        resend = (Button) view.findViewById(R.id.resend);
+        emailState = (TextView) view.findViewById(R.id.email_state);
+
         return view;
     }
 
@@ -72,7 +70,7 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+
     }
 
     private void refreshViews() {

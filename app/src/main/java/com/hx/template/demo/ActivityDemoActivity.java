@@ -19,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
 public class ActivityDemoActivity extends Activity {
     private static final String TAG = "ActivityDemoActivity";
     @Bind(R.id.button)

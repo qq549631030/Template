@@ -1,13 +1,10 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
 import com.hx.template.Constant;
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.RequestEmailVerifyCase;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.mvp.usecase.single.user.RequestEmailVerifyCase;
 import com.hx.template.mvp.contract.EmailStateContract;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
 import java.util.regex.Pattern;
@@ -31,25 +28,27 @@ public class EmailStatePresenter extends BasePresenter<EmailStateContract.View> 
      */
     @Override
     public void requestEmailVerify() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
-            getMvpView().showLoadingProgress("正在发送验证邮件...");
+            getMvpView().showLoadingProgress(true, "正在发送验证邮件...");
             RequestEmailVerifyCase.RequestValues requestValues = new RequestEmailVerifyCase.RequestValues(getMvpView().getEmail());
             requestEmailVerifyCase.setRequestValues(requestValues);
-            requestEmailVerifyCase.setUseCaseCallback(new UseCase.UseCaseCallback<RequestEmailVerifyCase.ResponseValue>() {
+            requestEmailVerifyCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<RequestEmailVerifyCase.ResponseValue>() {
                 @Override
                 public void onSuccess(RequestEmailVerifyCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().onRequestSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().onRequestFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().onRequestFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

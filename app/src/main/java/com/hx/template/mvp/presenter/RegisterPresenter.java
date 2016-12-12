@@ -1,9 +1,9 @@
 package com.hx.template.mvp.presenter;
 
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.RegisterCase;
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.mvp.usecase.single.user.RegisterCase;
 import com.hx.template.mvp.contract.RegisterContract;
-import com.hx.template.mvp.BasePresenter;
 
 import javax.inject.Inject;
 
@@ -26,25 +26,27 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
      */
     @Override
     public void register() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
-            getMvpView().showLoadingProgress("注册中...");
+            getMvpView().showLoadingProgress(true, "注册中...");
             RegisterCase.RequestValues requestValues = new RegisterCase.RequestValues(getMvpView().getUserName(), getMvpView().getPassword());
             registerCase.setRequestValues(requestValues);
-            registerCase.setUseCaseCallback(new UseCase.UseCaseCallback<RegisterCase.ResponseValue>() {
+            registerCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<RegisterCase.ResponseValue>() {
                 @Override
                 public void onSuccess(RegisterCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().registerSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().registerFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().registerFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

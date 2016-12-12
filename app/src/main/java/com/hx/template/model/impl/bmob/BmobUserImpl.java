@@ -1,8 +1,8 @@
 package com.hx.template.model.impl.bmob;
 
+import com.hx.mvp.Callback;
 import com.hx.template.entity.BbUser;
 import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
@@ -15,7 +15,6 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.LogInListener;
-import cn.bmob.v3.listener.QueryListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
@@ -32,7 +31,7 @@ public class BmobUserImpl implements UserModel {
         user.signUp(new SaveListener<BbUser>() {
             @Override
             public void done(BbUser bbUser, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_REGISTER, e, bbUser.toUser());
+                BmobCallBackDeliver.handleResult(callback, e, bbUser.toUser());
             }
         });
     }
@@ -42,7 +41,7 @@ public class BmobUserImpl implements UserModel {
         BmobUser.loginByAccount(username, password, new LogInListener<BbUser>() {
             @Override
             public void done(BbUser bbUser, BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_LOGIN, e, bbUser != null ? bbUser.toUser() : null);
+                BmobCallBackDeliver.handleResult(callback, e, bbUser != null ? bbUser.toUser() : null);
             }
         });
     }
@@ -59,7 +58,7 @@ public class BmobUserImpl implements UserModel {
         BmobUser.updateCurrentUserPassword(oldPwd, newPwd, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_MODIFY_PWD, e);
+                BmobCallBackDeliver.handleResult(callback, e);
             }
         });
     }
@@ -85,9 +84,9 @@ public class BmobUserImpl implements UserModel {
                 List<User> userList = new ArrayList<User>();
                 if (list != null && list.size() > 0) {
                     BbUser bbUser = list.get(0);
-                    BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO_LIST, e, bbUser.toUser());
+                    BmobCallBackDeliver.handleResult(callback, e, bbUser.toUser());
                 } else {
-                    BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO_LIST, new BmobException(-1, "not found"));
+                    BmobCallBackDeliver.handleResult(callback, new BmobException(-1, "not found"));
                 }
             }
         });
@@ -117,7 +116,7 @@ public class BmobUserImpl implements UserModel {
                         userList.add(bbUser.toUser());
                     }
                 }
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_GET_USER_INFO_LIST, e, userList);
+                BmobCallBackDeliver.handleResult(callback, e, userList);
             }
         });
     }
@@ -137,7 +136,7 @@ public class BmobUserImpl implements UserModel {
         bbUser.update(userId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_UPDATE_USER_INFO, e);
+                BmobCallBackDeliver.handleResult(callback, e);
             }
         });
     }
@@ -153,7 +152,7 @@ public class BmobUserImpl implements UserModel {
         BmobUser.requestEmailVerify(email, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY, e);
+                BmobCallBackDeliver.handleResult(callback, e);
             }
         });
     }
@@ -170,7 +169,7 @@ public class BmobUserImpl implements UserModel {
         BmobUser.resetPasswordBySMSCode(code, pwd, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE, e);
+                BmobCallBackDeliver.handleResult(callback, e);
             }
         });
     }
@@ -186,7 +185,7 @@ public class BmobUserImpl implements UserModel {
         BmobUser.resetPasswordByEmail(email, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                BmobCallBackDeliver.handleResult(callback, TaskManager.TASK_ID_RESET_PASSWORD_BY_EMAIL, e);
+                BmobCallBackDeliver.handleResult(callback, e);
             }
         });
     }

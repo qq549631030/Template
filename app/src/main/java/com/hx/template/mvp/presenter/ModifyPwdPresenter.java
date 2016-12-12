@@ -1,12 +1,9 @@
 package com.hx.template.mvp.presenter;
 
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.ModifyPwdCase;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.mvp.usecase.single.user.ModifyPwdCase;
 import com.hx.template.mvp.contract.ModifyPwdContract;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
 import javax.inject.Inject;
@@ -28,25 +25,27 @@ public class ModifyPwdPresenter extends BasePresenter<ModifyPwdContract.View> im
      */
     @Override
     public void modifyPwd() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
-            getMvpView().showLoadingProgress("修改中...");
+            getMvpView().showLoadingProgress(true, "修改中...");
             ModifyPwdCase.RequestValues requestValues = new ModifyPwdCase.RequestValues(getMvpView().getOldPwd(), getMvpView().getNewPwd());
             modifyPwdCase.setRequestValues(requestValues);
-            modifyPwdCase.setUseCaseCallback(new UseCase.UseCaseCallback<ModifyPwdCase.ResponseValue>() {
+            modifyPwdCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<ModifyPwdCase.ResponseValue>() {
                 @Override
                 public void onSuccess(ModifyPwdCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().modifySuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().hideLoadingProgress();
-                        getMvpView().modifyFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().modifyFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

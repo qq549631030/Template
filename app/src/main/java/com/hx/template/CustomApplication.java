@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
-import com.dodola.rocoofix.RocooFix;
 import com.facebook.stetho.Stetho;
+import com.hx.mvp.Callback;
 import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
 import com.hx.template.dagger2.ComponentHolder;
@@ -23,8 +23,6 @@ import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
 import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.http.bmob.BmobDataChangeListener;
-import com.hx.template.hxcontroller.HXManager;
-import com.hx.template.model.Callback;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.utils.SharedPreferencesUtil;
@@ -232,11 +230,11 @@ public class CustomApplication extends Application {
             UserModel userModel = ModelManager.provideUserModel();
 
             if (callback != null) {
-                userModel.getUserInfo(user.getObjectId(),"userId", callback);
+                userModel.getUserInfo(user.getObjectId(), "userId", callback);
             } else {
-                userModel.getUserInfo(user.getObjectId(),"userId", new Callback() {
+                userModel.getUserInfo(user.getObjectId(), "userId", new Callback() {
                     @Override
-                    public void onSuccess(int taskId, Object... data) {
+                    public void onSuccess(Object... data) {
                         if (data != null && data.length > 0 && data[0] instanceof User) {
                             String userData = GsonUtil.toJson(data[0]);
                             SharedPreferencesUtil.setParam(instance, "bmob_sp", "user", userData);
@@ -245,7 +243,7 @@ public class CustomApplication extends Application {
                     }
 
                     @Override
-                    public void onFailure(int taskId, String errorCode, String errorMsg) {
+                    public void onFailure(String errorCode, Object... errorData) {
 
                     }
                 });

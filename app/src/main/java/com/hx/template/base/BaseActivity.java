@@ -8,19 +8,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import com.hx.template.global.GlobalActivityManager;
-import com.hx.template.global.HXLog;
 import com.hx.template.global.SaveSceneUtils;
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
-import com.hx.template.utils.ToastUtils;
 
 public class BaseActivity extends AppCompatActivity {
 

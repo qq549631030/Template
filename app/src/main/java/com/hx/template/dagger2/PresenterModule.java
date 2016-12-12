@@ -1,14 +1,14 @@
 package com.hx.template.dagger2;
 
-import com.hx.template.domain.usercase.complex.BindPhoneCase;
-import com.hx.template.domain.usercase.complex.UpdateAvatarCase;
-import com.hx.template.domain.usercase.single.sms.RequestSMSCodeCase;
-import com.hx.template.domain.usercase.single.user.LoginCase;
-import com.hx.template.domain.usercase.single.user.ModifyPwdCase;
-import com.hx.template.domain.usercase.single.user.RegisterCase;
-import com.hx.template.domain.usercase.single.user.ResetPwdByEmailCase;
-import com.hx.template.domain.usercase.single.user.ResetPwdBySMSCodeCase;
-import com.hx.template.domain.usercase.single.user.UpdateUserInfoCase;
+import com.hx.template.mvp.usecase.complex.BindPhoneCase;
+import com.hx.template.mvp.usecase.complex.UpdateAvatarCase;
+import com.hx.template.mvp.usecase.single.sms.RequestSMSCodeCase;
+import com.hx.template.mvp.usecase.single.user.LoginCase;
+import com.hx.template.mvp.usecase.single.user.ModifyPwdCase;
+import com.hx.template.mvp.usecase.single.user.RegisterCase;
+import com.hx.template.mvp.usecase.single.user.ResetPwdByEmailCase;
+import com.hx.template.mvp.usecase.single.user.ResetPwdBySMSCodeCase;
+import com.hx.template.mvp.usecase.single.user.UpdateUserInfoCase;
 import com.hx.template.mvp.presenter.BindEmailPresenter;
 import com.hx.template.mvp.presenter.BindPhonePresenter;
 import com.hx.template.mvp.presenter.LoginPresenter;

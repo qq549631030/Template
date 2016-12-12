@@ -3,6 +3,7 @@ package com.hx.template.model.impl.volley;
 import android.text.TextUtils;
 
 import com.google.gson.reflect.TypeToken;
+import com.hx.mvp.Callback;
 import com.hx.template.CustomApplication;
 import com.hx.template.HttpConfig;
 import com.hx.template.R;
@@ -14,7 +15,6 @@ import com.hx.template.http.HttpParams;
 import com.hx.template.http.HttpParseUtils;
 import com.hx.template.http.HttpReturn;
 import com.hx.template.http.volley.VolleyManager;
-import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
@@ -58,24 +58,24 @@ public class VolleyUserModel implements UserModel {
                     } else {
                         ErrorCode code = mReturn.getCode();
                         if (code != null) {
-                            callback.onFailure(TaskManager.TASK_ID_LOGIN, mReturn.getCode().getId(), CustomApplication.getInstance().getString(mReturn.getCode().getRes()));
+                            callback.onFailure(mReturn.getCode().getId(), CustomApplication.getInstance().getString(mReturn.getCode().getRes()));
                         } else {
                             String msg = mReturn.getMsg();
                             if (TextUtils.isEmpty(msg)) {
-                                callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                                callback.onFailure( "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                             } else {
-                                callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", msg);
+                                callback.onFailure("-1", msg);
                             }
                         }
                     }
                 } else {
-                    callback.onFailure(TaskManager.TASK_ID_LOGIN, "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                    callback.onFailure( "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                 }
             }
 
             @Override
             public void onError(String ErrorMsg, int errorCode) {
-                callback.onFailure(TaskManager.TASK_ID_LOGIN, Integer.toString(errorCode), ErrorMsg);
+                callback.onFailure( Integer.toString(errorCode), ErrorMsg);
             }
         }, false);
     }

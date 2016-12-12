@@ -1,13 +1,10 @@
 package com.hx.template.mvp.presenter;
 
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
 import com.hx.template.Constant;
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.ResetPwdByEmailCase;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
+import com.hx.template.mvp.usecase.single.user.ResetPwdByEmailCase;
 import com.hx.template.mvp.contract.ResetPwdByEmailContract;
-import com.hx.template.mvp.BasePresenter;
 import com.hx.template.utils.StringUtils;
 
 import java.util.regex.Pattern;
@@ -31,23 +28,27 @@ public class ResetPwdByEmailPresenter extends BasePresenter<ResetPwdByEmailContr
      */
     @Override
     public void resetPasswordByEmail() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         if (checkInput()) {
-            getMvpView().showLoadingProgress("正在重置...");
+            getMvpView().showLoadingProgress(true, "正在重置...");
             ResetPwdByEmailCase.RequestValues requestValues = new ResetPwdByEmailCase.RequestValues(getMvpView().getEmail());
             resetPwdByEmailCase.setRequestValues(requestValues);
-            resetPwdByEmailCase.setUseCaseCallback(new UseCase.UseCaseCallback<ResetPwdByEmailCase.ResponseValue>() {
+            resetPwdByEmailCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<ResetPwdByEmailCase.ResponseValue>() {
                 @Override
                 public void onSuccess(ResetPwdByEmailCase.ResponseValue response) {
                     if (isViewAttached()) {
+                        getMvpView().showLoadingProgress(false);
                         getMvpView().sendSuccess();
                     }
                 }
 
                 @Override
-                public void onError(String errorCode, String errorMsg) {
+                public void onError(String errorCode, Object... errorData) {
                     if (isViewAttached()) {
-                        getMvpView().sendFail(errorCode, errorMsg);
+                        getMvpView().showLoadingProgress(false);
+                        getMvpView().sendFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
                 }
             });

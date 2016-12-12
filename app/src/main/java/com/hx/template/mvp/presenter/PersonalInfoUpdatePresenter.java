@@ -1,13 +1,10 @@
 package com.hx.template.mvp.presenter;
 
-import com.hx.template.domain.usercase.UseCase;
-import com.hx.template.domain.usercase.single.user.UpdateUserInfoCase;
+import com.hx.mvp.presenter.BasePresenter;
+import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.mvp.usecase.single.user.UpdateUserInfoCase;
 import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
-import com.hx.template.model.TaskManager;
-import com.hx.template.model.UserModel;
 import com.hx.template.mvp.contract.PersonalInfoUpdateContract;
-import com.hx.template.mvp.BasePresenter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,30 +25,32 @@ public class PersonalInfoUpdatePresenter extends BasePresenter<PersonalInfoUpdat
 
     @Override
     public void updateInfo() {
-        checkViewAttached();
+        if (!isViewAttached()) {
+            return;
+        }
         int infoType = getMvpView().getDataType();
         switch (infoType) {
             case User.INFO_TYPE_NICKNAME:
                 String nicknameNew = getMvpView().getNewData();
                 Map<String, Object> values = new HashMap<>();
                 values.put("nickname", nicknameNew);
-                getMvpView().showLoadingProgress("修改中...");
+                getMvpView().showLoadingProgress(true, "修改中...");
                 UpdateUserInfoCase.RequestValues requestValues = new UpdateUserInfoCase.RequestValues(getMvpView().getUserId(), values);
                 updateUserInfoCase.setRequestValues(requestValues);
-                updateUserInfoCase.setUseCaseCallback(new UseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
+                updateUserInfoCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<UpdateUserInfoCase.ResponseValue>() {
                     @Override
                     public void onSuccess(UpdateUserInfoCase.ResponseValue response) {
                         if (isViewAttached()) {
-                            getMvpView().hideLoadingProgress();
+                            getMvpView().showLoadingProgress(false);
                             getMvpView().updateSuccess();
                         }
                     }
 
                     @Override
-                    public void onError(String errorCode, String errorMsg) {
+                    public void onError(String errorCode, Object... errorData) {
                         if (isViewAttached()) {
-                            getMvpView().hideLoadingProgress();
-                            getMvpView().updateFail(errorCode, errorMsg);
+                            getMvpView().showLoadingProgress(false);
+                            getMvpView().updateFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                         }
                     }
                 });

@@ -1,14 +1,13 @@
 package com.hx.template.presenter.impl;
 
+import com.hx.mvp.Callback;
 import com.hx.template.CustomAnswer;
 import com.hx.template.CustomRule;
 import com.hx.template.entity.User;
-import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.mvp.contract.RegisterContract;
 import com.hx.template.mvp.presenter.RegisterPresenter;
-import com.hx.template.mvp.BasePresenter;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -59,9 +58,9 @@ public class RegisterPresenterTest {
                     User user = new User();
                     user.setUsername(username);
                     user.setPassword(password);
-                    callback.onSuccess(TaskManager.TASK_ID_REGISTER, user);
+                    callback.onSuccess(user);
                 } else {
-                    callback.onFailure(TaskManager.TASK_ID_REGISTER, "10002", "用户名已存在");
+                    callback.onFailure("10002", "用户名已存在");
                 }
                 countDownLatch.countDown();
                 return result;
@@ -82,11 +81,6 @@ public class RegisterPresenterTest {
         presenter = new RegisterPresenter(null);
     }
 
-    @Test(expected = BasePresenter.MvpViewNotAttachedException.class)
-    public void testViewNotAttach() throws Exception {
-        presenter.register();
-    }
-
     @Test
     public void testRegister_Normal() throws Exception {
         presenter.attachView(registerMvpView);
@@ -96,9 +90,9 @@ public class RegisterPresenterTest {
         countDownLatch = new CountDownLatch(1);
         presenter.register();
         countDownLatch.await();
-        verify(registerMvpView).showLoadingProgress(anyString());
+        verify(registerMvpView).showLoadingProgress(true, anyString());
         verify(userModel).register(anyString(), anyString(), any(Callback.class));
-        verify(registerMvpView).hideLoadingProgress();
+        verify(registerMvpView).showLoadingProgress(false);
         verify(registerMvpView).registerSuccess();
     }
 
@@ -111,9 +105,9 @@ public class RegisterPresenterTest {
         countDownLatch = new CountDownLatch(1);
         presenter.register();
         countDownLatch.await();
-        verify(registerMvpView).showLoadingProgress(anyString());
+        verify(registerMvpView).showLoadingProgress(true, anyString());
         verify(userModel).register(anyString(), anyString(), any(Callback.class));
-        verify(registerMvpView).hideLoadingProgress();
+        verify(registerMvpView).showLoadingProgress(false);
         verify(registerMvpView).registerFail("10002", "用户名已存在");
     }
 
@@ -127,7 +121,7 @@ public class RegisterPresenterTest {
         presenter.register();
         countDownLatch.await();
         verify(registerMvpView).showError(anyString());
-        verify(registerMvpView, never()).showLoadingProgress(anyString());
+        verify(registerMvpView, never()).showLoadingProgress(true, anyString());
         verify(userModel, never()).register(anyString(), anyString(), any(Callback.class));
     }
 
@@ -141,7 +135,7 @@ public class RegisterPresenterTest {
         presenter.register();
         countDownLatch.await();
         verify(registerMvpView).showError(anyString());
-        verify(registerMvpView, never()).showLoadingProgress(anyString());
+        verify(registerMvpView, never()).showLoadingProgress(true, anyString());
         verify(userModel, never()).register(anyString(), anyString(), any(Callback.class));
     }
 
@@ -155,7 +149,7 @@ public class RegisterPresenterTest {
         presenter.register();
         countDownLatch.await();
         verify(registerMvpView).showError(anyString());
-        verify(registerMvpView, never()).showLoadingProgress(anyString());
+        verify(registerMvpView, never()).showLoadingProgress(true, anyString());
         verify(userModel, never()).register(anyString(), anyString(), any(Callback.class));
     }
 }

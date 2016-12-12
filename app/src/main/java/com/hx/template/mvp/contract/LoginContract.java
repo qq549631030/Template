@@ -1,14 +1,14 @@
 package com.hx.template.mvp.contract;
 
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.view.BaseMvpView;
 import com.hx.template.entity.User;
-import com.hx.template.mvp.MvpView;
-import com.hx.template.mvp.Presenter;
 
 /**
  * Created by huangx on 2016/8/22.
  */
 public interface LoginContract {
-    interface View extends MvpView {
+    interface View extends BaseMvpView {
         /**
          * 获取用户名
          *

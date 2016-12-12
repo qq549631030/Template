@@ -12,30 +12,36 @@ import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.qrcode.utils.QRCodeCreateUtil;
 import com.hx.template.utils.StringUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import cn.bmob.v3.datatype.BmobFile;
 
 public class QrcodeCardActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+
     Toolbar toolbar;
-    @Bind(R.id.avatar)
+
     ImageView avatar;
-    @Bind(R.id.nickname)
+
     TextView nickname;
-    @Bind(R.id.address)
+
     TextView address;
-    @Bind(R.id.qrcode)
+
     ImageView qrcode;
-    @Bind(R.id.tips)
+
     TextView tips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_card);
-        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        avatar = (ImageView) findViewById(R.id.avatar);
+        nickname = (TextView) findViewById(R.id.nickname);
+        address = (TextView) findViewById(R.id.address);
+        qrcode = (ImageView) findViewById(R.id.qrcode);
+        tips = (TextView) findViewById(R.id.tips);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("二维码名片");

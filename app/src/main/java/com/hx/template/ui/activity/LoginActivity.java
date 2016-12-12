@@ -14,37 +14,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.hx.mvp.view.ViewState;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
-import com.hx.template.domain.usercase.single.user.LoginCase;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GsonUtils;
-import com.hx.template.model.ModelManager;
-import com.hx.template.mvp.ViewState;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
 
-    @Bind(R.id.username)
+
     EditText username;
-    @Bind(R.id.password)
+
     EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ButterKnife.bind(this);
+        username = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.password);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("登录");

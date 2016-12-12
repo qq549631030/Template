@@ -12,6 +12,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.presenter.PresenterFactory;
+import com.hx.mvp.presenter.PresenterLoader;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
@@ -21,9 +24,6 @@ import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.imageloader.ImageLoaderManager;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.mvp.contract.PersonalInfoContract;
 import com.hx.template.mvp.presenter.PersonalInfoPresenter;
 import com.hx.template.utils.ActivityOptionsHelper;
@@ -40,8 +40,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
@@ -52,21 +52,21 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
     private static final int REQUEST_CODE_CROP_IMAGE = 102;
 
-    @Bind(R.id.toolbar)
+
     Toolbar toolbar;
-    @Bind(R.id.avatar)
+
     CircleImageView avatar;
-    @Bind(R.id.nickname)
+
     TextView nickname;
-    @Bind(R.id.username)
+
     TextView username;
-    @Bind(R.id.mobile_phone)
+
     TextView mobilePhone;
-    @Bind(R.id.email)
+
     TextView email;
-    @Bind(R.id.gender)
+
     TextView gender;
-    @Bind(R.id.qrcode)
+
     ImageView qrcode;
 
     private Handler handler = new Handler();
@@ -75,7 +75,15 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
-        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
+        nickname = (TextView) findViewById(R.id.nickname);
+        username = (TextView) findViewById(R.id.username);
+        mobilePhone = (TextView) findViewById(R.id.mobile_phone);
+        email = (TextView) findViewById(R.id.email);
+        gender = (TextView) findViewById(R.id.gender);
+        qrcode = (ImageView) findViewById(R.id.qrcode);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("个人信息");

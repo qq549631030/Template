@@ -7,31 +7,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
+import com.hx.mvp.presenter.Presenter;
+import com.hx.mvp.presenter.PresenterFactory;
+import com.hx.mvp.presenter.PresenterLoader;
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
-import com.hx.template.model.ModelManager;
 import com.hx.template.mvp.contract.PersonalInfoUpdateContract;
-import com.hx.template.mvp.Presenter;
-import com.hx.template.mvp.PresenterFactory;
-import com.hx.template.mvp.PresenterLoader;
 import com.hx.template.mvp.presenter.PersonalInfoUpdatePresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 public class PersonalInfoUpdateActivity extends BaseMvpActivity<PersonalInfoUpdatePresenter, PersonalInfoUpdateContract.View> implements PersonalInfoUpdateContract.View {
 
-    @Bind(R.id.toolbar)
+
     Toolbar toolbar;
-    @Bind(R.id.editText)
+
     EditText editText;
 
     int infoType = -1;
@@ -40,7 +38,9 @@ public class PersonalInfoUpdateActivity extends BaseMvpActivity<PersonalInfoUpda
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info_update);
-        ButterKnife.bind(this);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        editText = (EditText) findViewById(R.id.editText);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         infoType = getIntent().getIntExtra(User.INFO_TYPE, -1);

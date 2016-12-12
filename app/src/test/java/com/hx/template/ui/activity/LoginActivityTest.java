@@ -2,13 +2,13 @@ package com.hx.template.ui.activity;
 
 import android.widget.EditText;
 
+import com.hx.mvp.Callback;
 import com.hx.template.BuildConfig;
 import com.hx.template.CustomAnswer;
 import com.hx.template.R;
 import com.hx.template.TestApplication;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.Callback;
 import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.mvp.presenter.LoginPresenter;
@@ -69,9 +69,9 @@ public class LoginActivityTest {
                     User user = new User();
                     user.setUsername(username);
                     user.setPassword(password);
-                    callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
+                    callback.onSuccess(user);
                 } else {
-                    callback.onFailure(TaskManager.TASK_ID_LOGIN, "10001", "用户名或密码错误");
+                    callback.onFailure("10001", "用户名或密码错误");
                 }
                 return null;
             }

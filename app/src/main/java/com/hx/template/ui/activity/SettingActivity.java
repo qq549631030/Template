@@ -36,26 +36,30 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import butterknife.OnClick;
 
 public class SettingActivity extends BaseActivity {
 
-    @Bind(R.id.cache_size)
+
     TextView cacheSize;
-    @Bind(R.id.toolbar)
+
     Toolbar toolbar;
-    @Bind(R.id.bind_phone)
+
     TextView bindPhone;
-    @Bind(R.id.bind_email)
+
     TextView bindEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        ButterKnife.bind(this);
+        cacheSize = (TextView) findViewById(R.id.cache_size);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        bindPhone = (TextView) findViewById(R.id.bind_phone);
+        bindEmail = (TextView) findViewById(R.id.bind_email);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("设置");

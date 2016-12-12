@@ -1,5 +1,7 @@
 package com.hx.template.model;
 
+import com.hx.mvp.Callback;
+
 /**
  * Created by huangxiang on 16/8/13.
  */
