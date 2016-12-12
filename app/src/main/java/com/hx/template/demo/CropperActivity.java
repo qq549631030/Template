@@ -19,12 +19,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 public class CropperActivity extends BaseActivity {
 
-    @Bind(R.id.cropImageView)
+
     CropImageView cropImageView;
 
     private Uri srcUri;
@@ -35,7 +35,8 @@ public class CropperActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropper);
-        ButterKnife.bind(this);
+        cropImageView = (CropImageView) findViewById(R.id.cropImageView);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -31,12 +31,10 @@ import com.hx.template.ui.fragment.HomeFragment;
 import com.hx.template.ui.fragment.PersonalCenterFragment;
 
 
-
-import butterknife.OnClick;
 import cn.huangx.common.utils.ToastUtils;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static String PAGE_INDEX = "pageIndex";
 
@@ -71,7 +69,10 @@ public class MainActivity extends BaseActivity {
         mainMenuItem2 = (MainTabItemView) findViewById(R.id.main_menu_item_2);
         mainMenuItem3 = (MainTabItemView) findViewById(R.id.main_menu_item_3);
         mainMenuItem4 = (MainTabItemView) findViewById(R.id.main_menu_item_4);
-
+        mainMenuItem1.setOnClickListener(this);
+        mainMenuItem2.setOnClickListener(this);
+        mainMenuItem3.setOnClickListener(this);
+        mainMenuItem4.setOnClickListener(this);
         setSupportActionBar(toolbar);
         mFragmentManager = getSupportFragmentManager();
         initViews();
@@ -133,7 +134,6 @@ public class MainActivity extends BaseActivity {
         mainMenuItem4.setColorSelected(R.color.main_menu_color_selected);
     }
 
-    @OnClick({R.id.main_menu_item_1, R.id.main_menu_item_2, R.id.main_menu_item_3, R.id.main_menu_item_4})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.main_menu_item_1:

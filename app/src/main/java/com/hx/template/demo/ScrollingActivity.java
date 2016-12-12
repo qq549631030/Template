@@ -21,21 +21,22 @@ import com.hx.template.adapter.NetworkImageHolderView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 public class ScrollingActivity extends AppCompatActivity {
 
 
     List<String> urls = new ArrayList<String>();
-    @Bind(R.id.banner)
+
     ConvenientBanner banner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
-        ButterKnife.bind(this);
+        banner = (ConvenientBanner) findViewById(R.id.banner);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

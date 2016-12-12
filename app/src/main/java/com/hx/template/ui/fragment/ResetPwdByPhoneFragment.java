@@ -6,6 +6,7 @@ import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,26 +21,20 @@ import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 
-
-import butterknife.OnClick;
-
 /**
  * 手机号码重置密码
  */
-public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePresenter, ResetPwdByPhoneContract.View> implements ResetPwdByPhoneContract.View {
+public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePresenter, ResetPwdByPhoneContract.View> implements ResetPwdByPhoneContract.View, View.OnClickListener {
 
-
-    EditText phone;
-
-    EditText vcode;
-
-    TextView getvcode;
-
-    EditText password;
-
-    EditText confirmPassword;
 
     private CountDownTimer countDownTimer;
+    private EditText phone;
+    private EditText vcode;
+    private TextView getvcode;
+    private EditText password;
+    private EditText confirmPassword;
+    private Button confirm;
+    private TextView resetByEmail;
 
     public ResetPwdByPhoneFragment() {
     }
@@ -85,6 +80,7 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reset_pwd_by_phone, container, false);
 
+        initView(view);
         return view;
     }
 
@@ -94,7 +90,7 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
 
     }
 
-    @OnClick({R.id.getvcode, R.id.confirm, R.id.reset_by_email})
+    @Override
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
@@ -205,5 +201,19 @@ public class ResetPwdByPhoneFragment extends BaseStepFragment<ResetPwdByPhonePre
     @Override
     public void onRequestFail(String errorCode, String errorMsg) {
         ToastUtils.showToast(getContext(), StringUtils.nullStrToEmpty(errorMsg));
+    }
+
+    private void initView(View view) {
+        phone = (EditText) view.findViewById(R.id.phone);
+        vcode = (EditText) view.findViewById(R.id.vcode);
+        getvcode = (TextView) view.findViewById(R.id.getvcode);
+        password = (EditText) view.findViewById(R.id.password);
+        confirmPassword = (EditText) view.findViewById(R.id.confirm_password);
+        confirm = (Button) view.findViewById(R.id.confirm);
+        resetByEmail = (TextView) view.findViewById(R.id.reset_by_email);
+
+        getvcode.setOnClickListener(this);
+        confirm.setOnClickListener(this);
+        resetByEmail.setOnClickListener(this);
     }
 }

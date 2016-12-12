@@ -21,7 +21,7 @@ public class ResetPwdActivity extends BaseStepActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("重置密码");
+        setTitle(getString(R.string.reset_pwd_title));
     }
 
     @Override

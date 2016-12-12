@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.activity.SettingActivity"
-    tools:showIn="@layout/activity_setting">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior"
+              tools:context=".ui.activity.SettingActivity"
+              tools:showIn="@layout/activity_setting">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +22,7 @@
             android:id="@+id/clean_cache_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_normal_height"
+            android:clickable="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -30,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="清除缓存" />
+                android:text="清除缓存"/>
 
             <TextView
                 android:id="@+id/cache_size"
@@ -38,22 +39,24 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                tools:text="213k" />
+                tools:text="213k"/>
         </RelativeLayout>
 
         <TextView
             android:id="@+id/modify_pwd"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_normal_height"
+            android:clickable="true"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="修改密码" />
+            android:text="修改密码"/>
 
         <RelativeLayout
             android:id="@+id/bind_phone_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_normal_height"
+            android:clickable="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -62,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="绑定手机" />
+                android:text="绑定手机"/>
 
             <TextView
                 android:id="@+id/bind_phone"
@@ -70,13 +73,14 @@
                 android:layout_height="@dimen/base_normal_height"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                tools:text="15870679047" />
+                tools:text="15870679047"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/bind_email_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/base_normal_height"
+            android:clickable="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
 
@@ -85,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:text="绑定邮箱" />
+                android:text="绑定邮箱"/>
 
             <TextView
                 android:id="@+id/bind_email"
@@ -93,7 +97,7 @@
                 android:layout_height="@dimen/base_normal_height"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical"
-                tools:text="549631030@qq.com" />
+                tools:text="549631030@qq.com"/>
         </RelativeLayout>
     </LinearLayout>
 
@@ -105,6 +109,6 @@
         android:layout_marginLeft="@dimen/base_padding_size"
         android:layout_marginRight="@dimen/base_padding_size"
         android:layout_marginTop="@dimen/base_padding_size"
-        android:text="退出登录" />
+        android:text="退出登录"/>
 
 </LinearLayout>

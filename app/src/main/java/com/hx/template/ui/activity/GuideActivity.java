@@ -23,11 +23,9 @@ import com.hx.template.utils.SharedPreferencesUtil;
 import com.hx.template.widget.PageIndicator;
 
 
-
-import butterknife.OnClick;
 import cn.huangx.common.utils.PackageUtils;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends BaseActivity implements View.OnClickListener {
 
 
     ViewPager viewpager;
@@ -49,6 +47,7 @@ public class GuideActivity extends BaseActivity {
         start = (TextView) findViewById(R.id.start);
         indicator = (PageIndicator) findViewById(R.id.indicator);
 
+        start.setOnClickListener(this);
         mViews = new View[bitmapsFull.length];
         viewpager.setAdapter(new GuidePagerAdapter(this));
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -81,7 +80,7 @@ public class GuideActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.start})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.start:

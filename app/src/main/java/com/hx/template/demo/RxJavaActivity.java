@@ -15,8 +15,8 @@ import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.hx.template.utils.ImageUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -25,14 +25,15 @@ import rx.schedulers.Schedulers;
 
 public class RxJavaActivity extends BaseActivity {
 
-    @Bind(R.id.image)
+
     ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rx_java);
-        ButterKnife.bind(this);
+        image = (ImageView) findViewById(R.id.image);
+
 
         Observable.just("huang").subscribe(new Action1<String>() {
             @Override

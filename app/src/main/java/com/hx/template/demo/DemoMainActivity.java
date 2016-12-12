@@ -21,19 +21,20 @@ import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.hx.template.utils.ImageUtils;
 import com.hx.template.utils.ToastUtils;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 public class DemoMainActivity extends BaseActivity {
     private static final String TAG = "DemoMainActivity";
-    @Bind(R.id.image)
+
     ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo_main);
-        ButterKnife.bind(this);
+        image = (ImageView) findViewById(R.id.image);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

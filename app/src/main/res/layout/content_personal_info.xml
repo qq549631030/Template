@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.activity.PersonalInfoActivity"
-    tools:showIn="@layout/activity_personal_info">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context=".ui.activity.PersonalInfoActivity"
+                tools:showIn="@layout/activity_personal_info">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -29,6 +29,7 @@
                     android:id="@+id/avatar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:padding="@dimen/base_padding_size">
 
@@ -37,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="头像" />
+                        android:text="@string/personal_info_avatar_label"/>
 
                     <com.hx.template.widget.CircleImageView
                         android:id="@+id/avatar"
@@ -45,14 +46,16 @@
                         android:layout_height="80dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:clickable="true"
                         android:src="@drawable/default_avatar"
-                        android:transitionName="avatar" />
+                        android:transitionName="avatar"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/nickname_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:paddingLeft="@dimen/base_padding_size"
                     android:paddingRight="@dimen/base_padding_size">
@@ -62,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="昵称" />
+                        android:text="@string/personal_info_nickname_label"/>
 
                     <TextView
                         android:id="@+id/nickname"
@@ -70,13 +73,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:transitionName="nickname" />
+                        android:transitionName="nickname"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/username_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:paddingLeft="@dimen/base_padding_size"
                     android:paddingRight="@dimen/base_padding_size">
@@ -86,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="账号" />
+                        android:text="@string/personal_info_username_label"/>
 
                     <TextView
                         android:id="@+id/username"
@@ -94,13 +98,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:transitionName="username" />
+                        android:transitionName="username"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/mobile_phone_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:paddingLeft="@dimen/base_padding_size"
                     android:paddingRight="@dimen/base_padding_size">
@@ -110,20 +115,21 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="手机号码" />
+                        android:text="@string/personal_info_mibile_label"/>
 
                     <TextView
                         android:id="@+id/mobile_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/email_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:paddingLeft="@dimen/base_padding_size"
                     android:paddingRight="@dimen/base_padding_size">
@@ -133,20 +139,21 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="邮箱" />
+                        android:text="@string/personal_info_email_label"/>
 
                     <TextView
                         android:id="@+id/email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/qrcode_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:paddingLeft="@dimen/base_padding_size"
                     android:paddingRight="@dimen/base_padding_size">
@@ -156,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="二维码名片" />
+                        android:text="@string/personal_info_qrcode_label"/>
 
                     <ImageView
                         android:id="@+id/qrcode"
@@ -165,13 +172,14 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/icon_qrcode"
-                        android:transitionName="qrcode" />
+                        android:transitionName="qrcode"/>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/gender_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:clickable="true"
                     android:minHeight="@dimen/base_normal_height"
                     android:paddingLeft="@dimen/base_padding_size"
                     android:paddingRight="@dimen/base_padding_size">
@@ -181,14 +189,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="性别" />
+                        android:text="@string/personal_info_gender_label"/>
 
                     <TextView
                         android:id="@+id/gender"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
             </LinearLayout>

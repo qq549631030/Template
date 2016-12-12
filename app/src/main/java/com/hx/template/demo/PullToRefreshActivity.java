@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 public class PullToRefreshActivity extends BaseActivity {
     private static final String TAG = "PullToRefreshActivity";
-    @Bind(R.id.listView)
+
     ListView listView;
-    @Bind(R.id.pullToRefreshView)
+
     PullToRefreshView pullToRefreshView;
     ArrayAdapter adapter;
     List<String> datas = new ArrayList<String>();
@@ -76,7 +76,9 @@ public class PullToRefreshActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pull_to_refresh);
-        ButterKnife.bind(this);
+        listView = (ListView) findViewById(R.id.listView);
+        pullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
+
         pullToRefreshView.setOnHeaderRefreshListener(headerRefreshListener);
         pullToRefreshView.setOnFooterRefreshListener(footerRefreshListener);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

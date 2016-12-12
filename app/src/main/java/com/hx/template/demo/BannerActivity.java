@@ -2,45 +2,40 @@ package com.hx.template.demo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.SparseArray;
-import android.util.SparseBooleanArray;
-import android.util.SparseIntArray;
-import android.util.SparseLongArray;
 import android.view.View;
 import android.widget.Button;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.R;
 import com.hx.template.adapter.NetworkImageHolderView;
+import com.hx.template.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class BannerActivity extends BaseActivity {
+public class BannerActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "BannerActivity";
-    @Bind(R.id.banner)
+
     ConvenientBanner banner;
-    @Bind(R.id.fab)
+
     FloatingActionButton fab;
 
     List<String> urls = new ArrayList<String>();
-    @Bind(R.id.button)
+
     Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_banner);
-        ButterKnife.bind(this);
+        banner = (ConvenientBanner) findViewById(R.id.banner);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -94,7 +89,7 @@ public class BannerActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick({R.id.button})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button:

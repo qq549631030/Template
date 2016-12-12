@@ -23,11 +23,8 @@ import com.soundcloud.android.crop.Crop;
 import java.io.File;
 import java.io.IOException;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class CropperDemoActivity extends BaseActivity {
+public class CropperDemoActivity extends BaseActivity implements View.OnClickListener {
 
     private static final int REQUEST_GALLERY = 1;
     private static final int REQUEST_CAMERA = 2;
@@ -38,7 +35,7 @@ public class CropperDemoActivity extends BaseActivity {
     private static final int ITEM2 = Menu.FIRST + 1;
     private static final int ITEM3 = Menu.FIRST + 2;
 
-    @Bind(R.id.image)
+
     CircleImageView image;
 
 
@@ -50,7 +47,8 @@ public class CropperDemoActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cropper_demo);
-        ButterKnife.bind(this);
+        image = (CircleImageView) findViewById(R.id.image);
+        image.setOnClickListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -120,7 +118,7 @@ public class CropperDemoActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @OnClick({R.id.image})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image:
@@ -166,6 +164,7 @@ public class CropperDemoActivity extends BaseActivity {
         } catch (Exception e) {
         }
     }
+
     // 启动android-crop剪辑器
     private void doCropPhoto2(Uri inputUri) {
         initCropFile();

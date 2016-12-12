@@ -148,6 +148,7 @@
 
         <TextView
             android:id="@+id/to_login"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已有账号 , 去登录!"

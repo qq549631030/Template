@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.hx.mvp.view.ViewState;
 import com.hx.template.R;
@@ -26,11 +27,7 @@ import com.hx.template.mvp.presenter.LoginPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-
-
-import butterknife.OnClick;
-
-public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract.View> implements LoginContract.View {
+public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract.View> implements LoginContract.View, View.OnClickListener {
 
 
     EditText username;
@@ -43,6 +40,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
         setContentView(R.layout.activity_login);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
+
+        findViewById(R.id.login).setOnClickListener(this);
+        findViewById(R.id.forget_password).setOnClickListener(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,7 +91,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.forget_password, R.id.login})
+    @Override
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;

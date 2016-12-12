@@ -10,6 +10,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hx.mvp.presenter.Presenter;
@@ -40,55 +41,71 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.List;
 
-
-
-import butterknife.OnClick;
 import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
 
-public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter, PersonalInfoContract.View> implements PersonalInfoContract.View {
+public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter, PersonalInfoContract.View> implements PersonalInfoContract.View, View.OnClickListener {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
     private static final int REQUEST_CODE_CROP_IMAGE = 102;
 
-
     Toolbar toolbar;
 
-    CircleImageView avatar;
-
-    TextView nickname;
-
-    TextView username;
-
-    TextView mobilePhone;
-
-    TextView email;
-
-    TextView gender;
-
-    ImageView qrcode;
-
     private Handler handler = new Handler();
+    private CircleImageView avatar;
+    private RelativeLayout avatarLayout;
+    private TextView nickname;
+    private RelativeLayout nicknameLayout;
+    private TextView username;
+    private RelativeLayout usernameLayout;
+    private TextView mobilePhone;
+    private RelativeLayout mobilePhoneLayout;
+    private TextView email;
+    private RelativeLayout emailLayout;
+    private ImageView qrcode;
+    private RelativeLayout qrcodeLayout;
+    private TextView gender;
+    private RelativeLayout genderLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_info);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        avatar = (CircleImageView) findViewById(R.id.avatar);
-        nickname = (TextView) findViewById(R.id.nickname);
-        username = (TextView) findViewById(R.id.username);
-        mobilePhone = (TextView) findViewById(R.id.mobile_phone);
-        email = (TextView) findViewById(R.id.email);
-        gender = (TextView) findViewById(R.id.gender);
-        qrcode = (ImageView) findViewById(R.id.qrcode);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("个人信息");
+        initView();
+        setTitle(getString(R.string.personal_info_title));
         EventBus.getDefault().register(this);
         refreshViews();
+    }
+
+    private void initView() {
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        avatar = (CircleImageView) findViewById(R.id.avatar);
+        avatarLayout = (RelativeLayout) findViewById(R.id.avatar_layout);
+        nickname = (TextView) findViewById(R.id.nickname);
+        nicknameLayout = (RelativeLayout) findViewById(R.id.nickname_layout);
+        username = (TextView) findViewById(R.id.username);
+        usernameLayout = (RelativeLayout) findViewById(R.id.username_layout);
+        mobilePhone = (TextView) findViewById(R.id.mobile_phone);
+        mobilePhoneLayout = (RelativeLayout) findViewById(R.id.mobile_phone_layout);
+        email = (TextView) findViewById(R.id.email);
+        emailLayout = (RelativeLayout) findViewById(R.id.email_layout);
+        qrcode = (ImageView) findViewById(R.id.qrcode);
+        qrcodeLayout = (RelativeLayout) findViewById(R.id.qrcode_layout);
+        gender = (TextView) findViewById(R.id.gender);
+        genderLayout = (RelativeLayout) findViewById(R.id.gender_layout);
+
+        avatar.setOnClickListener(this);
+        avatarLayout.setOnClickListener(this);
+        nicknameLayout.setOnClickListener(this);
+        usernameLayout.setOnClickListener(this);
+        mobilePhoneLayout.setOnClickListener(this);
+        emailLayout.setOnClickListener(this);
+        qrcodeLayout.setOnClickListener(this);
+        genderLayout.setOnClickListener(this);
     }
 
     @Override
@@ -128,7 +145,6 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
         }
     }
 
-    @OnClick({R.id.avatar, R.id.avatar_layout, R.id.nickname_layout, R.id.username_layout, R.id.qrcode_layout, R.id.gender_layout})
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
@@ -153,8 +169,6 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
             case R.id.qrcode_layout:
                 startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP),
                         ActivityOptionsHelper.makeSceneTransitionAnimationBundle(PersonalInfoActivity.this, true, new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")));
-                break;
-            case R.id.gender_layout:
                 break;
         }
     }
@@ -231,4 +245,6 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
     public void avatarUpdateFail(String errorCode, String errorMsg) {
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
+
+
 }

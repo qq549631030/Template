@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.hx.mvp.presenter.Presenter;
 import com.hx.mvp.presenter.PresenterFactory;
@@ -25,11 +27,7 @@ import com.hx.template.mvp.presenter.RegisterPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
-
-
-import butterknife.OnClick;
-
-public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View {
+public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View, View.OnClickListener {
 
 
     EditText username;
@@ -37,19 +35,18 @@ public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, Registe
     EditText password;
 
     EditText confirmPassword;
+    private Button register;
+    private TextView toLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
-        confirmPassword = (EditText) findViewById(R.id.confirm_password);
-
+        initView();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("注册");
+        getSupportActionBar().setTitle(R.string.register_title);
     }
 
     @Override
@@ -62,7 +59,7 @@ public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, Registe
         });
     }
 
-    @OnClick({R.id.register, R.id.to_login})
+    @Override
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
@@ -128,5 +125,15 @@ public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, Registe
     @Override
     public void registerFail(String errorCode, String errorMsg) {
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
+    }
+
+    private void initView() {
+        register = (Button) findViewById(R.id.register);
+        toLogin = (TextView) findViewById(R.id.to_login);
+        username = (EditText) findViewById(R.id.username);
+        password = (EditText) findViewById(R.id.password);
+        confirmPassword = (EditText) findViewById(R.id.confirm_password);
+        register.setOnClickListener(this);
+        toLogin.setOnClickListener(this);
     }
 }

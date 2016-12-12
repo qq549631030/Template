@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 
 import com.hx.mvp.presenter.Presenter;
@@ -18,10 +19,7 @@ import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 
-
-import butterknife.OnClick;
-
-public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, ModifyPwdContract.View> implements ModifyPwdContract.View {
+public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, ModifyPwdContract.View> implements ModifyPwdContract.View, View.OnClickListener {
 
 
     Toolbar toolbar;
@@ -41,9 +39,10 @@ public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, Modif
         newPwd = (EditText) findViewById(R.id.new_pwd);
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
 
+        findViewById(R.id.confirm).setOnClickListener(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("修改密码");
+        setTitle(getString(R.string.modify_pwd_title));
     }
 
     @Override
@@ -56,10 +55,15 @@ public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, Modif
         });
     }
 
-    @OnClick(R.id.confirm)
-    public void onClick() {
-        if (checkInput()) {
-            presenter.modifyPwd();
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.confirm:
+                if (checkInput()) {
+                    presenter.modifyPwd();
+                }
+                break;
         }
     }
 
@@ -118,4 +122,5 @@ public class ModifyPwdActivity extends BaseMvpActivity<ModifyPwdPresenter, Modif
     public void modifyFail(String errorCode, String errorMsg) {
         ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
     }
+
 }

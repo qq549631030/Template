@@ -7,7 +7,6 @@ import android.os.SystemClock;
 import android.view.View;
 
 import com.hx.template.R;
-import com.hx.template.base.BaseActivity;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.global.HXLog;
 import com.hx.template.mvp.contract.SelectImageView;
@@ -15,10 +14,8 @@ import com.hx.template.mvp.presenter.SelectImagePresenter;
 
 import java.io.File;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class SelectImageActivity extends BaseMvpActivity implements SelectImageView {
+public class SelectImageActivity extends BaseMvpActivity implements SelectImageView, View.OnClickListener {
 
     SelectImagePresenter presenter;
 
@@ -26,7 +23,8 @@ public class SelectImageActivity extends BaseMvpActivity implements SelectImageV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_image);
-        ButterKnife.bind(this);
+        findViewById(R.id.button1).setOnClickListener(this);
+        findViewById(R.id.button2).setOnClickListener(this);
         presenter = new SelectImagePresenter();
         presenter.attachView(this);
     }
@@ -65,7 +63,7 @@ public class SelectImageActivity extends BaseMvpActivity implements SelectImageV
         }
     }
 
-    @OnClick({R.id.button1, R.id.button2})
+    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button1:

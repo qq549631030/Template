@@ -44,7 +44,7 @@ public class QrcodeCardActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("二维码名片");
+        setTitle(getString(R.string.qrcode_card_title));
         refreshViews();
     }
 

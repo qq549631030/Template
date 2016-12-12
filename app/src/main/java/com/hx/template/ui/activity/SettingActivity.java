@@ -10,12 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hx.template.R;
@@ -36,29 +37,24 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 
+public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
 
-import butterknife.OnClick;
-
-public class SettingActivity extends BaseActivity {
-
-
-    TextView cacheSize;
-
-    Toolbar toolbar;
-
-    TextView bindPhone;
-
-    TextView bindEmail;
+    private Toolbar toolbar;
+    private TextView cacheSize;
+    private RelativeLayout cleanCacheLayout;
+    private TextView modifyPwd;
+    private TextView bindPhone;
+    private RelativeLayout bindPhoneLayout;
+    private TextView bindEmail;
+    private RelativeLayout bindEmailLayout;
+    private Button logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        cacheSize = (TextView) findViewById(R.id.cache_size);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        bindPhone = (TextView) findViewById(R.id.bind_phone);
-        bindEmail = (TextView) findViewById(R.id.bind_email);
+        initView();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,7 +74,6 @@ public class SettingActivity extends BaseActivity {
         refreshViews();
     }
 
-    @OnClick({R.id.clean_cache_layout, R.id.bind_phone_layout, R.id.bind_email_layout, R.id.logout, R.id.modify_pwd})
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
@@ -171,4 +166,21 @@ public class SettingActivity extends BaseActivity {
         }
     }
 
+    private void initView() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        cacheSize = (TextView) findViewById(R.id.cache_size);
+        cleanCacheLayout = (RelativeLayout) findViewById(R.id.clean_cache_layout);
+        modifyPwd = (TextView) findViewById(R.id.modify_pwd);
+        bindPhone = (TextView) findViewById(R.id.bind_phone);
+        bindPhoneLayout = (RelativeLayout) findViewById(R.id.bind_phone_layout);
+        bindEmail = (TextView) findViewById(R.id.bind_email);
+        bindEmailLayout = (RelativeLayout) findViewById(R.id.bind_email_layout);
+        logout = (Button) findViewById(R.id.logout);
+
+        cleanCacheLayout.setOnClickListener(this);
+        modifyPwd.setOnClickListener(this);
+        bindPhoneLayout.setOnClickListener(this);
+        bindEmailLayout.setOnClickListener(this);
+        logout.setOnClickListener(this);
+    }
 }

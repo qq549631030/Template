@@ -21,26 +21,29 @@ import com.hx.template.utils.ImageUtils;
 
 import java.util.Hashtable;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 public class CreateQrcodeActivity extends BaseActivity {
 
     private static final int QR_WIDTH = 300;
     private static final int QR_HEIGHT = 300;
 
-    @Bind(R.id.editText)
+
     EditText editText;
-    @Bind(R.id.image)
+
     ImageView image;
-    @Bind(R.id.fab)
+
     FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_qrcode);
-        ButterKnife.bind(this);
+        editText = (EditText) findViewById(R.id.editText);
+        image = (ImageView) findViewById(R.id.image);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

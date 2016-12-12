@@ -9,8 +9,6 @@ import com.hx.template.entity.User;
 import com.hx.template.ui.fragment.BindPhoneFragment;
 import com.hx.template.ui.fragment.VerifyPhoneFragment;
 
-import butterknife.Bind;
-
 public class BindPhoneActivity extends BaseStepActivity {
     Toolbar toolbar;
 

@@ -1,9 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.hx.template.ui.fragment.ResetPwdByPhoneFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.hx.template.ui.fragment.ResetPwdByPhoneFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="手机号码 :" />
+                android:text="手机号码 :"/>
 
             <EditText
                 android:id="@+id/phone"
@@ -36,7 +36,7 @@
                 android:hint="请输入绑定的手机号码"
                 android:inputType="phone"
                 android:paddingLeft="10dp"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="验证码：" />
+                android:text="验证码："/>
 
             <EditText
                 android:id="@+id/vcode"
@@ -61,7 +61,7 @@
                 android:gravity="center_vertical"
                 android:hint="请输入验证码"
                 android:inputType="textPassword"
-                android:textAppearance="?android:attr/textAppearance" />
+                android:textAppearance="?android:attr/textAppearance"/>
 
             <TextView
                 android:id="@+id/getvcode"
@@ -69,9 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:background="@drawable/round_rect_solid_blue_corner_small"
+                android:clickable="true"
                 android:padding="8dp"
                 android:text="获取验证码"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
         <LinearLayout
@@ -83,7 +84,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="新密码 :" />
+                android:text="新密码 :"/>
 
             <EditText
                 android:id="@+id/password"
@@ -106,7 +107,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="确认密码 :" />
+                android:text="确认密码 :"/>
 
             <EditText
                 android:id="@+id/confirm_password"
@@ -130,7 +131,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginTop="12dp"
-        android:text="确定" />
+        android:text="确定"/>
 
     <TextView
         android:id="@+id/reset_by_email"
@@ -139,7 +140,8 @@
         android:layout_gravity="right"
         android:layout_marginRight="12dp"
         android:layout_marginTop="12dp"
+        android:clickable="true"
         android:text="使用绑定邮箱重置密码"
         android:textColor="@color/base_color_c1"
-        android:textSize="14sp" />
+        android:textSize="14sp"/>
 </LinearLayout>
