@@ -24,8 +24,6 @@ import com.hx.template.utils.ToastUtils;
 
 
 
-import butterknife.OnClick;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -105,7 +103,6 @@ public class VerifyPhoneFragment extends BaseStepFragment<VerifyPhonePresenter, 
     }
 
 
-    @OnClick({R.id.getvcode, R.id.confirm})
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;

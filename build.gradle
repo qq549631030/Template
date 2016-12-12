@@ -61,5 +61,4 @@ ext {
     rxandroidVersion = '1.2.1'
 
     //jakewharton
-    butterknifeVersion = '7.0.1'
 }

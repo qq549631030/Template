@@ -15,14 +15,10 @@ import android.widget.Button;
 
 import com.hx.template.R;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class ActivityDemoActivity extends Activity {
     private static final String TAG = "ActivityDemoActivity";
-    @Bind(R.id.button)
     Button button;
 
     @Override
@@ -30,7 +26,7 @@ public class ActivityDemoActivity extends Activity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called with: " + "savedInstanceState = [" + savedInstanceState + "]");
         setContentView(R.layout.activity_activity_demo);
-        ButterKnife.bind(this);
+        button = (Button) findViewById(R.id.button);
     }
 
     @Override
@@ -110,7 +106,6 @@ public class ActivityDemoActivity extends Activity {
         Log.d(TAG, "onDetachedFromWindow() called with: " + "");
     }
 
-    @OnClick({R.id.button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button:

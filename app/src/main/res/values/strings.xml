@@ -108,4 +108,29 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_qrcode_card">QrcodeCardActivity</string>
     <string name="title_activity_bind_email">BindEmailActivity</string>
+    <!--全局-->
+    <string name="confirm">确定</string>
+    <string name="bind">绑定</string>
+    <string name="bind_success">绑定成功</string>
+    <!--重置密码-->
+    <string name="reset_pwd_bind_email_input_hint">请输入绑定的邮箱</string>
+    <string name="reset_pwd_use_bind_phone">使用绑定手机重置密码</string>
+    <!--绑定邮箱-->
+    <string name="bind_email_title">绑定邮箱</string>
+    <string name="bind_email_email_input_hint">请输入要绑定的邮箱</string>
+    <!--绑定手机-->
+    <string name="bind_phone_title">绑定手机</string>
+    <string name="bind_phone_phone_label">手机号码 :</string>
+    <string name="bind_phone_phone_input_hint">请输入要绑定的手机号码</string>
+    <!--验证码-->
+    <string name="verification_code_label">验证码：</string>
+    <string name="verification_code_input_hint">请输入验证码</string>
+    <string name="verification_code_get_normal">获取验证码</string>
+    <string name="verification_code_get_wait">%1$d秒后可重新获取</string>
+    <string name="verification_code_get_time_out">重新获取</string>
+    <string name="verification_code_get_success">获取验证码成功</string>
+    <!--邮箱绑定状态-->
+    <string name="email_state_title">绑定邮箱</string>
+    <string name="email_state_resend_bind_verfy_email">重新发送验证邮件</string>
+    <string name="email_state_bind_other_email">绑定其它邮箱</string>
 </resources>

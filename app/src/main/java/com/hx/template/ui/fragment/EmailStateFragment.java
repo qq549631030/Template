@@ -21,14 +21,10 @@ import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 
-
-import butterknife.OnClick;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, EmailStateContract.View> implements EmailStateContract.View {
-
+public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, EmailStateContract.View> implements EmailStateContract.View, View.OnClickListener {
 
 
     TextView emailState;
@@ -42,7 +38,7 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
 
     @Override
     protected String getFragmentTitle() {
-        return "绑定邮箱";
+        return getString(R.string.email_state_title);
     }
 
     @Override
@@ -54,10 +50,12 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_email_state, container, false);
-        rebind = (Button) view.findViewById(R.id.rebind);
         resend = (Button) view.findViewById(R.id.resend);
+        rebind = (Button) view.findViewById(R.id.rebind);
         emailState = (TextView) view.findViewById(R.id.email_state);
 
+        resend.setOnClickListener(this);
+        rebind.setOnClickListener(this);
         return view;
     }
 
@@ -91,7 +89,7 @@ public class EmailStateFragment extends BaseStepFragment<EmailStatePresenter, Em
         }
     }
 
-    @OnClick({R.id.resend, R.id.rebind})
+    @Override
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;

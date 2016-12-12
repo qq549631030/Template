@@ -24,14 +24,10 @@ import com.hx.template.utils.ToastUtils;
 import org.greenrobot.eventbus.EventBus;
 
 
-
-import butterknife.OnClick;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, BindPhoneContract.View> implements BindPhoneContract.View {
-
 
 
     EditText phone;
@@ -59,14 +55,14 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
             @Override
             public void onTick(long millisUntilFinished) {
                 if (getvcode != null) {
-                    getvcode.setText((millisUntilFinished / 1000) + "秒");
+                    getvcode.setText(String.format(getString(R.string.verification_code_get_wait), millisUntilFinished / 1000));
                 }
             }
 
             @Override
             public void onFinish() {
                 if (getvcode != null) {
-                    getvcode.setText("重新发送");
+                    getvcode.setText(R.string.verification_code_get_time_out);
                     getvcode.setEnabled(true);
                 }
             }
@@ -89,10 +85,9 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
 
     @Override
     protected String getFragmentTitle() {
-        return "绑定手机";
+        return getString(R.string.bind_phone_title);
     }
 
-    @OnClick({R.id.getvcode, R.id.bind})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.getvcode:
@@ -112,7 +107,7 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
      */
     @Override
     public void bindSuccess() {
-        ToastUtils.showToast(getContext(), "绑定成功");
+        ToastUtils.showToast(getContext(), getString(R.string.bind_success));
         EventBus.getDefault().post(new UserInfoUpdateEvent());
         finish();
     }
@@ -156,7 +151,7 @@ public class BindPhoneFragment extends BaseStepFragment<BindPhonePresenter, Bind
      */
     @Override
     public void onRequestSuccess(Object... data) {
-        ToastUtils.showToast(getContext(), "验证码获取成功");
+        ToastUtils.showToast(getContext(), getString(R.string.verification_code_get_success));
         getvcode.setEnabled(false);
         countDownTimer.start();
     }

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.hx.template.R;
 import com.hx.template.base.BaseStepFragment;
@@ -17,16 +19,14 @@ import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 
-
-import butterknife.OnClick;
-
 /**
  * 邮箱重置密码
  */
-public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPresenter, ResetPwdByEmailContract.View> implements ResetPwdByEmailContract.View {
-
+public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPresenter, ResetPwdByEmailContract.View> implements ResetPwdByEmailContract.View, View.OnClickListener {
 
     EditText email;
+    private Button confirm;
+    private TextView resetByPhone;
 
     public ResetPwdByEmailFragment() {
     }
@@ -52,6 +52,10 @@ public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPre
         View view = inflater.inflate(R.layout.fragment_reset_pwd_by_email, container, false);
         email = (EditText) view.findViewById(R.id.email);
 
+        confirm = (Button) view.findViewById(R.id.confirm);
+        confirm.setOnClickListener(this);
+        resetByPhone = (TextView) view.findViewById(R.id.reset_by_phone);
+        resetByPhone.setOnClickListener(this);
         return view;
     }
 
@@ -61,7 +65,7 @@ public class ResetPwdByEmailFragment extends BaseStepFragment<ResetPwdByEmailPre
 
     }
 
-    @OnClick({R.id.confirm, R.id.reset_by_phone})
+    @Override
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;

@@ -208,7 +208,6 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile 'org.greenrobot:eventbus:3.0.0'
-    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
 //    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'

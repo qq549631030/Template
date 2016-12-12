@@ -22,14 +22,10 @@ import com.hx.template.utils.ToastUtils;
 import org.greenrobot.eventbus.EventBus;
 
 
-
-import butterknife.OnClick;
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, BindEmailContract.View> implements BindEmailContract.View {
-
+public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, BindEmailContract.View> implements BindEmailContract.View, View.OnClickListener {
 
 
     EditText email;
@@ -39,7 +35,7 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
 
     @Override
     protected String getFragmentTitle() {
-        return "绑定邮箱";
+        return getString(R.string.bind_email_title);
     }
 
     @Override
@@ -53,6 +49,7 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
         View view = inflater.inflate(R.layout.fragment_bind_email, container, false);
         email = (EditText) view.findViewById(R.id.email);
 
+        view.findViewById(R.id.bind).setOnClickListener(this);
         return view;
     }
 
@@ -62,7 +59,7 @@ public class BindEmailFragment extends BaseStepFragment<BindEmailPresenter, Bind
 
     }
 
-    @OnClick(R.id.bind)
+    @Override
     public void onClick(View view) {
         if (!FastClickUtils.isTimeToProcess(view.getId())) {
             return;
