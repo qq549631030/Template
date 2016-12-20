@@ -1,11 +1,6 @@
 package com.hx.template.entity;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONObject;
-
-import java.lang.reflect.Type;
 
 /**
  * Created by huangx on 2016/8/23.

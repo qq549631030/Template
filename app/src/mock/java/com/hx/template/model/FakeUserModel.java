@@ -2,6 +2,7 @@ package com.hx.template.model;
 
 import android.os.Handler;
 
+import com.hx.mvp.Callback;
 import com.hx.template.entity.BbUser;
 import com.hx.template.entity.User;
 import com.hx.template.global.GsonUtils;
@@ -48,7 +49,7 @@ public class FakeUserModel implements UserModel {
     public void register(String username, String password, Callback callback) {
         for (User user : userList) {
             if (user.getUsername().equals(username)) {
-                callback.onFailure(TaskManager.TASK_ID_REGISTER, "1001", "用户名已存在");
+                callback.onFailure("1001", "用户名已存在");
             }
         }
         User user = new User();
@@ -56,7 +57,7 @@ public class FakeUserModel implements UserModel {
         user.setUsername(username);
         user.setPassword(password);
         userList.add(user);
-        callback.onSuccess(TaskManager.TASK_ID_REGISTER, user);
+        callback.onSuccess(user);
     }
 
     /**
@@ -74,11 +75,11 @@ public class FakeUserModel implements UserModel {
                 for (User user : userList) {
                     if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                         currentUser = user;
-                        callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
+                        callback.onSuccess(user);
                         return;
                     }
                 }
-                callback.onFailure(TaskManager.TASK_ID_LOGIN, "1002", "用户名或密码错误");
+                callback.onFailure("1002", "用户名或密码错误");
             }
         }, 2000);
 
@@ -99,14 +100,14 @@ public class FakeUserModel implements UserModel {
                 public void run() {
                     if (currentUser.getPassword().equals(oldPwd)) {
                         currentUser.setPassword(newPwd);
-                        callback.onSuccess(TaskManager.TASK_ID_MODIFY_PWD);
+                        callback.onSuccess();
                     } else {
-                        callback.onFailure(TaskManager.TASK_ID_MODIFY_PWD, "1004", "原密码不正确");
+                        callback.onFailure("1004", "原密码不正确");
                     }
                 }
             }, 2000);
         } else {
-            callback.onFailure(TaskManager.TASK_ID_MODIFY_PWD, "1003", "用户未登录");
+            callback.onFailure("1003", "用户未登录");
         }
     }
 
@@ -125,18 +126,18 @@ public class FakeUserModel implements UserModel {
                 for (User user : userList) {
                     if ("username".equals(fieldName)) {
                         if (user.getUsername().equals(fieldValue)) {
-                            callback.onSuccess(TaskManager.TASK_ID_GET_USER_INFO, user);
+                            callback.onSuccess(user);
                             return;
                         }
-                    }else if ("userId".equals(fieldName)){
+                    } else if ("userId".equals(fieldName)) {
                         if (user.getObjectId().equals(fieldValue)) {
-                            callback.onSuccess(TaskManager.TASK_ID_GET_USER_INFO, user);
+                            callback.onSuccess(user);
                             return;
                         }
                     }
 
                 }
-                callback.onFailure(TaskManager.TASK_ID_GET_USER_INFO, "1005", "用户不存在");
+                callback.onFailure("1005", "用户不存在");
             }
         }, 2000);
     }
@@ -169,11 +170,11 @@ public class FakeUserModel implements UserModel {
                         currentUser.setValue(key, values.get(key));
                     }
                     User.setCurrent(GsonUtils.toJsonObj(currentUser));
-                    callback.onSuccess(TaskManager.TASK_ID_UPDATE_USER_INFO);
+                    callback.onSuccess();
                 }
             }, 2000);
         } else {
-            callback.onFailure(TaskManager.TASK_ID_UPDATE_USER_INFO, "1003", "用户未登录");
+            callback.onFailure("1003", "用户未登录");
         }
     }
 
@@ -192,11 +193,11 @@ public class FakeUserModel implements UserModel {
                     currentUser.setEmail(email);
                     currentUser.setEmailVerified(Boolean.FALSE);
                     User.setCurrent(GsonUtils.toJsonObj(currentUser));
-                    callback.onSuccess(TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY);
+                    callback.onSuccess();
                 }
             }, 2000);
         } else {
-            callback.onFailure(TaskManager.TASK_ID_REQUEST_EMAIL_VERIFY, "1003", "用户未登录");
+            callback.onFailure("1003", "用户未登录");
         }
     }
 
@@ -215,9 +216,9 @@ public class FakeUserModel implements UserModel {
                 if ("666666".equals(code)) {
                     currentUser.setPassword(pwd);
                     User.setCurrent(GsonUtils.toJsonObj(currentUser));
-                    callback.onSuccess(TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE);
+                    callback.onSuccess();
                 } else {
-                    callback.onFailure(TaskManager.TASK_ID_RESET_PASSWORD_BY_SMS_CODE, "1011", "验证码错误");
+                    callback.onFailure("1011", "验证码错误");
                 }
             }
         }, 2000);
@@ -234,7 +235,7 @@ public class FakeUserModel implements UserModel {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                callback.onSuccess(TaskManager.TASK_ID_RESET_PASSWORD_BY_EMAIL);
+                callback.onSuccess();
             }
         }, 2000);
     }

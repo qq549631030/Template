@@ -6,9 +6,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.hx.imageloader.ImageLoaderManager;
 import com.hx.template.R;
-import com.hx.template.imageloader.ImageLoaderManager;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by Sai on 15/8/4.

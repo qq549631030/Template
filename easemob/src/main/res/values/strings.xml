@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">EaseMob</string>
+    <string name="at_your_in_group">%s @ you in group chat</string>
+</resources>

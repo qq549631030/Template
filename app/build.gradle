@@ -66,6 +66,9 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        ndk {
+            abiFilters "armeabi-v7a", "x86"
+        }
     }
 
 //    splits {
@@ -102,7 +105,7 @@ android {
         }
         debug {
             // 混淆代码开启
-            minifyEnabled true
+            minifyEnabled false
             // 混淆配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -188,10 +191,13 @@ dependencies {
     //常用工具工程
     compile project(':commonutils')
     compile project(':swipetoloadlayout')
+    compile project(':imageloader')
     //bmob
     compile project(':bmobsdk')
 //    compile 'cn.bmob.android:bmob-sdk:3.5.3'
     compile project(':mvp')
+
+    compile project(':easemob')
 
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
@@ -205,8 +211,6 @@ dependencies {
     compile "com.squareup.okio:okio:$rootProject.okioVersion"
     compile 'com.android.volley:volley:1.0.0'
     compile "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.okhttpVersion"
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.j256.ormlite:ormlite-android:4.48'

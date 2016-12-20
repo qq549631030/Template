@@ -12,10 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.hx.imageloader.ImageLoaderManager;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.Constant;
 import com.hx.template.R;
-import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.utils.ToastUtils;
 import com.hx.template.widget.CircleImageView;
 import com.soundcloud.android.crop.Crop;

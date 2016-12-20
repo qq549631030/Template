@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hx.imageloader.ImageLoaderManager;
 import com.hx.template.R;
 import com.hx.template.base.BaseFragment;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.ui.activity.PersonalInfoActivity;
 import com.hx.template.ui.activity.SettingActivity;
 import com.hx.template.utils.ActivityOptionsHelper;

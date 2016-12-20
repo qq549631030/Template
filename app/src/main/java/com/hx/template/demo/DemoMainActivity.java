@@ -11,11 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.hx.imageloader.ImageLoaderManager;
+import com.hx.imageloader.ImageLoadingListener;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.global.HXLog;
-import com.hx.template.imageloader.ImageLoaderManager;
-import com.hx.template.imageloader.ImageLoadingListener;
 import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.qrcode.utils.ImageScanUtil;
 import com.hx.template.utils.ImageUtils;

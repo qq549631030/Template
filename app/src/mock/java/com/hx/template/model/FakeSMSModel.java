@@ -2,6 +2,7 @@ package com.hx.template.model;
 
 import android.os.Handler;
 
+import com.hx.mvp.Callback;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.TaskManager;
 
@@ -46,9 +47,9 @@ public class FakeSMSModel implements SMSModel {
             @Override
             public void run() {
                 if ("666666".equals(smsCode)) {
-                    callback.onSuccess(TaskManager.TASK_ID_VERIFY_SMS_CODE);
+                    callback.onSuccess();
                 } else {
-                    callback.onFailure(TaskManager.TASK_ID_VERIFY_SMS_CODE, "1012", "验证码错误");
+                    callback.onFailure("1012", "验证码错误");
                 }
             }
         }, 2000);

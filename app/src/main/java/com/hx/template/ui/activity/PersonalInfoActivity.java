@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hx.imageloader.ImageLoaderManager;
 import com.hx.mvp.presenter.Presenter;
 import com.hx.mvp.presenter.PresenterFactory;
 import com.hx.mvp.presenter.PresenterLoader;
@@ -24,7 +25,6 @@ import com.hx.template.entity.User;
 import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.mvp.contract.PersonalInfoContract;
 import com.hx.template.mvp.presenter.PersonalInfoPresenter;
 import com.hx.template.utils.ActivityOptionsHelper;

@@ -5,10 +5,10 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hx.imageloader.ImageLoaderManager;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
-import com.hx.template.imageloader.ImageLoaderManager;
 import com.hx.template.qrcode.utils.QRCodeCreateUtil;
 import com.hx.template.utils.StringUtils;
 
