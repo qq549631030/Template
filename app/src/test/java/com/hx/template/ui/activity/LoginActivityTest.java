@@ -9,7 +9,6 @@ import com.hx.template.R;
 import com.hx.template.TestApplication;
 import com.hx.template.entity.User;
 import com.hx.template.global.FastClickUtils;
-import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.mvp.presenter.LoginPresenter;
 

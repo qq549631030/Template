@@ -151,12 +151,6 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
         }
         switch (view.getId()) {
             case R.id.avatar:
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(new Intent(PersonalInfoActivity.this, LockScreenActivity.class));
-                    }
-                }, 10000);
                 break;
             case R.id.avatar_layout:
                 MultiImageSelector.create().count(1).single().showCamera(true).start(this, REQUEST_CODE_SELECT_IMAGE);

@@ -14,7 +14,6 @@ import com.hx.template.http.HttpReturn;
 import com.hx.template.http.retrofit.ApiService;
 import com.hx.template.http.retrofit.RetrofitUtils;
 import com.hx.template.http.retrofit.mock.MockApiService;
-import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class RetrofitUserModel implements UserModel {
                         if (loginReturn != null) {
                             if (loginReturn.getStatus() == 1) {
                                 User user = loginReturn.getData();
-                                callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
+                                callback.onSuccess(user);
                             } else {
                                 ErrorCode code = loginReturn.getCode();
                                 if (code != null) {

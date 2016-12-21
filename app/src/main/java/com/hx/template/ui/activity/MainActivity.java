@@ -18,11 +18,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.hx.easemob.Constant;
 import com.hx.easemob.DefaultSDKHelper;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.ui.fragment.ConversationListFragment;
 import com.hx.template.widget.BadgeView;
 import com.hx.template.widget.MainTabItemView;
 import com.hx.template.qrcode.activity.CaptureActivity;
@@ -30,6 +34,8 @@ import com.hx.template.ui.fragment.FavoriteFragment;
 import com.hx.template.ui.fragment.GroupFragment;
 import com.hx.template.ui.fragment.HomeFragment;
 import com.hx.template.ui.fragment.PersonalCenterFragment;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.easeui.ui.EaseConversationListFragment;
@@ -169,7 +175,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 Fragment fragment1 = mFragmentManager
                         .findFragmentByTag("mainMenuItem1");
                 if (fragment1 == null) {
-                    fragment1 = new EaseConversationListFragment();
+                    fragment1 = new ConversationListFragment();
                 }
                 switchContent(currentFragment, fragment1, "mainMenuItem1");
                 currentIndex = 0;
@@ -180,6 +186,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         .findFragmentByTag("mainMenuItem2");
                 if (fragment2 == null) {
                     fragment2 = new EaseContactListFragment();
+
                 }
                 Map<String, EaseUser> m = DefaultSDKHelper.getInstance().getContactList();
                 if (m instanceof Hashtable<?, ?>) {

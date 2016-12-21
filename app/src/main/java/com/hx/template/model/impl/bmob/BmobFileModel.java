@@ -2,7 +2,6 @@ package com.hx.template.model.impl.bmob;
 
 import com.hx.template.model.FileModel;
 import com.hx.template.model.FileUploadCallback;
-import com.hx.template.model.TaskManager;
 
 import java.io.File;
 import java.util.List;
@@ -27,7 +26,7 @@ public class BmobFileModel implements FileModel {
             @Override
             public void onSuccess(List<BmobFile> list, List<String> list1) {
                 if (list.size() == 1) {
-                    BmobCallBackDeliver.deliverSuccess(callback, TaskManager.TASK_ID_UPLOAD_FILE, list1.get(0));
+                    BmobCallBackDeliver.deliverSuccess(callback, list1.get(0));
                 }
             }
 

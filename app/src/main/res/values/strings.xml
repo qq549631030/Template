@@ -157,4 +157,5 @@
     <string name="register_title">注册</string>
     <string name="reset_pwd_title">重置密码</string>
     <string name="personal_center_title">个人中心</string>
+    <string name="title_activity_chat">ChatActivity</string>
 </resources>

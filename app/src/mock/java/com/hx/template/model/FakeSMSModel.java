@@ -4,7 +4,6 @@ import android.os.Handler;
 
 import com.hx.mvp.Callback;
 import com.hx.template.model.SMSModel;
-import com.hx.template.model.TaskManager;
 
 /**
  * Created by huangxiang on 16/8/13.

@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.hx.easemob.DefaultSDKHelper;
+import com.hx.easemob.db.DemoDBManager;
 import com.hx.mvp.view.ViewState;
 import com.hx.template.CustomApplication;
+import com.hx.template.CustomSDKHelper;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
@@ -27,6 +29,7 @@ import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
+import com.hyphenate.chat.EMClient;
 
 public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract.View> implements LoginContract.View, View.OnClickListener {
 
@@ -101,6 +104,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
                 startActivity(new Intent(LoginActivity.this, ResetPwdActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 break;
             case R.id.login:
+                // After logout，the DemoDB may still be accessed due to async callback, so the DemoDB will be re-opened again.
+                // close it before login to make sure DemoDB not overlap
+                DemoDBManager.getInstance().closeDB();
+                // reset current user name before login
+                CustomSDKHelper.getInstance().setCurrentUserName(getUserName());
                 presenter.login();
                 break;
         }
@@ -132,7 +140,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
      * @param user 用户
      */
     @Override
-    public void loginSuccess(User user) {
+    public void loginSuccess(final User user) {
 
         User.setCurrent(GsonUtils.toJsonObj(user));
 //        Realm realm = Realm.getDefaultInstance();
@@ -142,8 +150,14 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
 //                realm.createObject(User.class);
 //            }
 //        });
-        ((DefaultSDKHelper) DefaultSDKHelper.getInstance()).getUserProfileManager().setCurrentUserNick(user.getNickname());
-        ((DefaultSDKHelper) DefaultSDKHelper.getInstance()).getUserProfileManager().setCurrentUserAvatar(user.getAvatar());
+        ((CustomSDKHelper) CustomSDKHelper.getInstance()).getUserProfileManager().setCurrentUserNick(user.getNickname());
+        ((CustomSDKHelper) CustomSDKHelper.getInstance()).getUserProfileManager().setCurrentUserAvatar(user.getAvatar());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                EMClient.getInstance().updateCurrentUserNick(user.getNickname());
+            }
+        }).start();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -3,7 +3,6 @@ package com.hx.template.model.impl.bmob;
 import com.hx.mvp.Callback;
 import com.hx.template.entity.BbUser;
 import com.hx.template.entity.User;
-import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
 import java.util.ArrayList;

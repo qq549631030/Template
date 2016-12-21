@@ -15,7 +15,6 @@ import com.hx.template.http.HttpParams;
 import com.hx.template.http.HttpParseUtils;
 import com.hx.template.http.HttpReturn;
 import com.hx.template.http.volley.VolleyManager;
-import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 
 import org.json.JSONObject;
@@ -54,7 +53,7 @@ public class VolleyUserModel implements UserModel {
                 if (mReturn != null) {
                     if (mReturn.getStatus() == 1) {
                         User user = mReturn.getData();
-                        callback.onSuccess(TaskManager.TASK_ID_LOGIN, user);
+                        callback.onSuccess(user);
                     } else {
                         ErrorCode code = mReturn.getCode();
                         if (code != null) {
@@ -62,20 +61,20 @@ public class VolleyUserModel implements UserModel {
                         } else {
                             String msg = mReturn.getMsg();
                             if (TextUtils.isEmpty(msg)) {
-                                callback.onFailure( "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                                callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                             } else {
                                 callback.onFailure("-1", msg);
                             }
                         }
                     }
                 } else {
-                    callback.onFailure( "-1", CustomApplication.getInstance().getString(R.string.error_unknow));
+                    callback.onFailure("-1", CustomApplication.getInstance().getString(R.string.error_unknow));
                 }
             }
 
             @Override
             public void onError(String ErrorMsg, int errorCode) {
-                callback.onFailure( Integer.toString(errorCode), ErrorMsg);
+                callback.onFailure(Integer.toString(errorCode), ErrorMsg);
             }
         }, false);
     }
@@ -123,8 +122,8 @@ public class VolleyUserModel implements UserModel {
      * @param callback 回调监听
      */
     @Override
-    public void updateUserInfo(String userId,Map<String, Object> values, Callback callback) {
-        
+    public void updateUserInfo(String userId, Map<String, Object> values, Callback callback) {
+
     }
 
 

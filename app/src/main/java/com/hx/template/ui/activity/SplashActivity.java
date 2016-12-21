@@ -9,6 +9,7 @@ import android.os.Message;
 
 import com.hx.template.Constant;
 import com.hx.template.CustomApplication;
+import com.hx.template.CustomSDKHelper;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
@@ -82,7 +83,7 @@ public class SplashActivity extends BaseActivity {
                 e.printStackTrace();
             }
             User currentUser = User.getCurrentUser(User.class);
-            if (currentUser != null) {
+            if (currentUser != null && CustomSDKHelper.getInstance().isLoggedIn()) {
                 CustomApplication.reloadUserInfo();
                 mHandler.sendEmptyMessageDelayed(GO_TO_HOME, 1500);
             } else {

@@ -32,7 +32,7 @@ public class PersonalInfoPresenter extends BasePresenter<PersonalInfoContract.Vi
             updateAvatarCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<UpdateAvatarCase.ResponseValue>() {
                 @Override
                 public void onSuccess(UpdateAvatarCase.ResponseValue response) {
-                    if (!isViewAttached()) {
+                    if (isViewAttached()) {
                         getMvpView().showLoadingProgress(false);
                         getMvpView().avatarUpdateSuccess();
                     }
@@ -40,7 +40,7 @@ public class PersonalInfoPresenter extends BasePresenter<PersonalInfoContract.Vi
 
                 @Override
                 public void onError(String errorCode, Object... errorData) {
-                    if (!isViewAttached()) {
+                    if (isViewAttached()) {
                         getMvpView().showLoadingProgress(false);
                         getMvpView().avatarUpdateFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
                     }
