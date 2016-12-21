@@ -1,6 +1,7 @@
 package com.hx.template.dagger2;
 
 import com.hx.template.model.FileModel;
+import com.hx.template.model.IMModel;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.SMSModel;
 import com.hx.template.model.UserModel;
@@ -33,5 +34,12 @@ public class ModelModule {
     @Singleton
     public FileModel provideFileModel() {
         return ModelManager.provideFileModel();
+    }
+
+
+    @Provides
+    @Singleton
+    public IMModel provideIMModel() {
+        return ModelManager.provideIMModel();
     }
 }

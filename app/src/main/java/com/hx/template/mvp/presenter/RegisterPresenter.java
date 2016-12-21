@@ -2,6 +2,7 @@ package com.hx.template.mvp.presenter;
 
 import com.hx.mvp.presenter.BasePresenter;
 import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.mvp.usecase.single.im.IMRegisterCase;
 import com.hx.template.mvp.usecase.single.user.RegisterCase;
 import com.hx.template.mvp.contract.RegisterContract;
 
@@ -15,10 +16,12 @@ import cn.huangx.common.utils.StringUtils;
 public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements RegisterContract.MvpPresenter {
 
     private final RegisterCase registerCase;
+    private final IMRegisterCase imRegisterCase;
 
     @Inject
-    public RegisterPresenter(RegisterCase registerCase) {
+    public RegisterPresenter(RegisterCase registerCase, IMRegisterCase imRegisterCase) {
         this.registerCase = registerCase;
+        this.imRegisterCase = imRegisterCase;
     }
 
     /**
@@ -37,8 +40,7 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
                 @Override
                 public void onSuccess(RegisterCase.ResponseValue response) {
                     if (isViewAttached()) {
-                        getMvpView().showLoadingProgress(false);
-                        getMvpView().registerSuccess();
+                        registerIm(getMvpView().getUserName(), getMvpView().getPassword());
                     }
                 }
 
@@ -52,6 +54,32 @@ public class RegisterPresenter extends BasePresenter<RegisterContract.View> impl
             });
             registerCase.run();
         }
+    }
+
+    private void registerIm(String username, String password) {
+        if (!isViewAttached()) {
+            return;
+        }
+        IMRegisterCase.RequestValues requestValues = new IMRegisterCase.RequestValues(username, password);
+        imRegisterCase.setRequestValues(requestValues);
+        imRegisterCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<IMRegisterCase.ResponseValue>() {
+            @Override
+            public void onSuccess(IMRegisterCase.ResponseValue response) {
+                if (isViewAttached()) {
+                    getMvpView().showLoadingProgress(false);
+                    getMvpView().registerSuccess();
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, Object... errorData) {
+                if (isViewAttached()) {
+                    getMvpView().showLoadingProgress(false);
+                    getMvpView().registerFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
+                }
+            }
+        });
+        imRegisterCase.run();
     }
 
     private boolean checkInput() {

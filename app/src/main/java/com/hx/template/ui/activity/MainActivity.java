@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.hx.easemob.DefaultSDKHelper;
 import com.hx.template.R;
 import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
@@ -29,7 +30,13 @@ import com.hx.template.ui.fragment.FavoriteFragment;
 import com.hx.template.ui.fragment.GroupFragment;
 import com.hx.template.ui.fragment.HomeFragment;
 import com.hx.template.ui.fragment.PersonalCenterFragment;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.ui.EaseContactListFragment;
+import com.hyphenate.easeui.ui.EaseConversationListFragment;
 
+
+import java.util.Hashtable;
+import java.util.Map;
 
 import cn.huangx.common.utils.ToastUtils;
 import me.leolin.shortcutbadger.ShortcutBadger;
@@ -81,7 +88,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         switchPage(currentIndex);
         int badgeCount = 1;
-        ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
+//        ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
 
         BadgeView badgeView = new BadgeView(this);
         badgeView.setBadgeCount(badgeCount);
@@ -162,7 +169,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 Fragment fragment1 = mFragmentManager
                         .findFragmentByTag("mainMenuItem1");
                 if (fragment1 == null) {
-                    fragment1 = new HomeFragment();
+                    fragment1 = new EaseConversationListFragment();
                 }
                 switchContent(currentFragment, fragment1, "mainMenuItem1");
                 currentIndex = 0;
@@ -172,8 +179,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 Fragment fragment2 = mFragmentManager
                         .findFragmentByTag("mainMenuItem2");
                 if (fragment2 == null) {
-                    fragment2 = new GroupFragment();
+                    fragment2 = new EaseContactListFragment();
                 }
+                Map<String, EaseUser> m = DefaultSDKHelper.getInstance().getContactList();
+                if (m instanceof Hashtable<?, ?>) {
+                    //noinspection unchecked
+                    m = (Map<String, EaseUser>) ((Hashtable<String, EaseUser>)m).clone();
+                }
+                ((EaseContactListFragment) fragment2).setContactsMap(m);
                 switchContent(currentFragment, fragment2, "mainMenuItem2");
                 currentIndex = 1;
                 break;

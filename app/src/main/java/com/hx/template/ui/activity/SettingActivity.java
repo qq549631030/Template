@@ -19,12 +19,14 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hx.mvp.Callback;
 import com.hx.template.R;
 import com.hx.template.base.BaseActivity;
 import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
 import com.hx.template.global.GlobalActivityManager;
+import com.hx.template.model.IMModel;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.utils.ActivityOptionsHelper;
@@ -103,6 +105,18 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     public void onClick(DialogInterface dialog, int which) {
                         UserModel userModel = ModelManager.provideUserModel();
                         userModel.logout();
+                        IMModel imModel = ModelManager.provideIMModel();
+                        imModel.logout(new Callback() {
+                            @Override
+                            public void onSuccess(Object... data) {
+
+                            }
+
+                            @Override
+                            public void onFailure(String errorCode, Object... errorData) {
+
+                            }
+                        });
                         startActivity(new Intent(SettingActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         GlobalActivityManager.finishAll();
                     }

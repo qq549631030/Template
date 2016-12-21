@@ -14,7 +14,6 @@ import com.hx.easemob.db.UserDao;
 import com.hx.easemob.domain.EmojiconExampleGroupData;
 import com.hx.easemob.domain.InviteMessage;
 import com.hx.easemob.model.UserProfileManager;
-import com.hx.easemob.parse.ParseUserProfileManager;
 import com.hx.easemob.receiver.CallReceiver;
 import com.hx.easemob.utils.PreferenceManager;
 import com.hyphenate.EMContactListener;
@@ -46,11 +45,11 @@ import java.util.UUID;
  * 邮箱：huangx@pycredit.cn
  */
 
-public class DefaultSDKHelper extends HXSDKHelper {
+public abstract class DefaultSDKHelper extends HXSDKHelper {
 
     private UserProfileManager userProManager;
 
-    private DefaultSDKHelper() {
+    public DefaultSDKHelper() {
         super();
     }
 
@@ -290,7 +289,7 @@ public class DefaultSDKHelper extends HXSDKHelper {
         return new DefaultContactListener(getAppContext(), getNotifier());
     }
 
-    protected UserProfileManager getUserProfileManager() {
+    public UserProfileManager getUserProfileManager() {
         if (userProManager == null) {
             userProManager = createUserProfileManager();
         }
@@ -374,9 +373,7 @@ public class DefaultSDKHelper extends HXSDKHelper {
         };
     }
 
-    protected UserProfileManager createUserProfileManager() {
-        return new ParseUserProfileManager();
-    }
+    protected abstract UserProfileManager createUserProfileManager();
 
     @Override
     protected void asyncFetchContactInfosFromAppServer(List<String> usernames) {

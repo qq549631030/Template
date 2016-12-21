@@ -3,7 +3,6 @@ package com.hx.template.presenter.impl;
 import com.hx.mvp.Callback;
 import com.hx.template.CustomRule;
 import com.hx.template.entity.User;
-import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.mvp.contract.LoginContract;
 import com.hx.template.mvp.presenter.LoginPresenter;
@@ -61,11 +60,6 @@ public class LoginPresenterTest {
                 return null;
             }
         }).when(userModel).login(anyString(), anyString(), any(Callback.class));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testUserModelNull() throws Exception {
-        presenter = new LoginPresenter(null);
     }
 
     @Test

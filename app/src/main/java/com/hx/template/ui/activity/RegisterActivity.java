@@ -15,9 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.hx.easemob.DefaultSDKHelper;
 import com.hx.mvp.presenter.Presenter;
 import com.hx.mvp.presenter.PresenterFactory;
 import com.hx.mvp.presenter.PresenterLoader;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
@@ -26,9 +28,10 @@ import com.hx.template.mvp.contract.RegisterContract;
 import com.hx.template.mvp.presenter.RegisterPresenter;
 import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 
 public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, RegisterContract.View> implements RegisterContract.View, View.OnClickListener {
-
 
     EditText username;
 
@@ -111,8 +114,9 @@ public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, Registe
      */
     @Override
     public void registerSuccess() {
-        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+//        startActivity(intent);
+        DefaultSDKHelper.getInstance().setCurrentUserName(getUserName());
         finish();
     }
 
@@ -123,8 +127,13 @@ public class RegisterActivity extends BaseMvpActivity<RegisterPresenter, Registe
      * @param errorMsg  错误信息
      */
     @Override
-    public void registerFail(String errorCode, String errorMsg) {
-        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
+    public void registerFail(String errorCode, final String errorMsg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtils.showToast(CustomApplication.getInstance(), StringUtils.nullStrToEmpty(errorMsg));
+            }
+        });
     }
 
     private void initView() {

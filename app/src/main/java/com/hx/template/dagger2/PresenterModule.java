@@ -2,6 +2,8 @@ package com.hx.template.dagger2;
 
 import com.hx.template.mvp.usecase.complex.BindPhoneCase;
 import com.hx.template.mvp.usecase.complex.UpdateAvatarCase;
+import com.hx.template.mvp.usecase.single.im.IMLoginCase;
+import com.hx.template.mvp.usecase.single.im.IMRegisterCase;
 import com.hx.template.mvp.usecase.single.sms.RequestSMSCodeCase;
 import com.hx.template.mvp.usecase.single.user.LoginCase;
 import com.hx.template.mvp.usecase.single.user.ModifyPwdCase;
@@ -31,13 +33,13 @@ import dagger.Provides;
 public class PresenterModule {
 
     @Provides
-    public LoginPresenter provideLoginPresenter(LoginCase loginCase) {
-        return new LoginPresenter(loginCase);
+    public LoginPresenter provideLoginPresenter(LoginCase loginCase, IMLoginCase imLoginCase) {
+        return new LoginPresenter(loginCase, imLoginCase);
     }
 
     @Provides
-    public RegisterPresenter provideRegisterPresenter(RegisterCase registerCase) {
-        return new RegisterPresenter(registerCase);
+    public RegisterPresenter provideRegisterPresenter(RegisterCase registerCase, IMRegisterCase imRegisterCase) {
+        return new RegisterPresenter(registerCase, imRegisterCase);
     }
 
     @Provides

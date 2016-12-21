@@ -2,6 +2,8 @@ package com.hx.template.mvp.presenter;
 
 import com.hx.mvp.presenter.BasePresenter;
 import com.hx.mvp.usecase.BaseUseCase;
+import com.hx.template.entity.User;
+import com.hx.template.mvp.usecase.single.im.IMLoginCase;
 import com.hx.template.mvp.usecase.single.user.LoginCase;
 import com.hx.template.mvp.contract.LoginContract;
 
@@ -15,12 +17,13 @@ import cn.huangx.common.utils.StringUtils;
 public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.MvpPresenter {
 
     private final LoginCase loginCase;
+    private final IMLoginCase imLoginCase;
 
     @Inject
-    public LoginPresenter(LoginCase loginCase) {
+    public LoginPresenter(LoginCase loginCase, IMLoginCase imLoginCase) {
         this.loginCase = loginCase;
+        this.imLoginCase = imLoginCase;
     }
-
 
     /**
      * 登录
@@ -37,10 +40,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             loginCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<LoginCase.ResponseValue>() {
                 @Override
                 public void onSuccess(LoginCase.ResponseValue response) {
-                    if (isViewAttached()) {
-                        getMvpView().showLoadingProgress(false);
-                        getMvpView().loginSuccess(response.getUser());
-                    }
+                    loginIm(getMvpView().getUserName(), getMvpView().getPassword(), response.getUser());
                 }
 
                 @Override
@@ -53,6 +53,32 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             });
             loginCase.run();
         }
+    }
+
+    private void loginIm(String username, String password, final User user) {
+        if (!isViewAttached()) {
+            return;
+        }
+        IMLoginCase.RequestValues requestValues = new IMLoginCase.RequestValues(username, password);
+        imLoginCase.setRequestValues(requestValues);
+        imLoginCase.setUseCaseCallback(new BaseUseCase.UseCaseCallback<IMLoginCase.ResponseValue>() {
+            @Override
+            public void onSuccess(IMLoginCase.ResponseValue response) {
+                if (isViewAttached()) {
+                    getMvpView().showLoadingProgress(false);
+                    getMvpView().loginSuccess(user);
+                }
+            }
+
+            @Override
+            public void onError(String errorCode, Object... errorData) {
+                if (isViewAttached()) {
+                    getMvpView().showLoadingProgress(false);
+                    getMvpView().loginFail(errorCode, errorData != null && errorData.length > 0 ? errorData[0].toString() : "");
+                }
+            }
+        });
+        imLoginCase.run();
     }
 
     private boolean checkInput() {

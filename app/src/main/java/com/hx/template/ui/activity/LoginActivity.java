@@ -13,9 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.hx.easemob.DefaultSDKHelper;
 import com.hx.mvp.view.ViewState;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
@@ -28,7 +29,6 @@ import com.hx.template.utils.StringUtils;
 import com.hx.template.utils.ToastUtils;
 
 public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract.View> implements LoginContract.View, View.OnClickListener {
-
 
     EditText username;
 
@@ -133,6 +133,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
      */
     @Override
     public void loginSuccess(User user) {
+
         User.setCurrent(GsonUtils.toJsonObj(user));
 //        Realm realm = Realm.getDefaultInstance();
 //        realm.executeTransaction(new Realm.Transaction() {
@@ -141,6 +142,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
 //                realm.createObject(User.class);
 //            }
 //        });
+        ((DefaultSDKHelper) DefaultSDKHelper.getInstance()).getUserProfileManager().setCurrentUserNick(user.getNickname());
+        ((DefaultSDKHelper) DefaultSDKHelper.getInstance()).getUserProfileManager().setCurrentUserAvatar(user.getAvatar());
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
@@ -153,8 +156,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter, LoginContract
      * @param errorMsg  错误信息
      */
     @Override
-    public void loginFail(String errorCode, String errorMsg) {
-        ToastUtils.showToast(this, StringUtils.nullStrToEmpty(errorMsg));
+    public void loginFail(String errorCode, final String errorMsg) {
+        ToastUtils.showToast(CustomApplication.getInstance(), StringUtils.nullStrToEmpty(errorMsg));
     }
-
 }

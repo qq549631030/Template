@@ -4,7 +4,6 @@ import com.hx.mvp.Callback;
 import com.hx.template.CustomAnswer;
 import com.hx.template.CustomRule;
 import com.hx.template.entity.User;
-import com.hx.template.model.TaskManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.mvp.contract.RegisterContract;
 import com.hx.template.mvp.presenter.RegisterPresenter;
@@ -74,11 +73,6 @@ public class RegisterPresenterTest {
                 return result;
             }
         }).when(registerMvpView).showError(anyString());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testUserModelNull() throws Exception {
-        presenter = new RegisterPresenter(null);
     }
 
     @Test

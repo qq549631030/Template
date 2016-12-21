@@ -9,6 +9,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.stetho.Stetho;
+import com.hx.easemob.HXSDKHelper;
 import com.hx.mvp.Callback;
 import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
@@ -21,8 +22,8 @@ import com.hx.template.entity.User;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.GlobalActivityManager;
 import com.hx.template.global.HXLog;
-import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.http.bmob.BmobDataChangeListener;
+import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.utils.SharedPreferencesUtil;
@@ -54,6 +55,7 @@ public class CustomApplication extends Application {
 
     private ActivityLifecycleCallbacks activityLifecycleCallbacks = null;
 
+    private static HXSDKHelper hxsdkHelper = new CustomSDKHelper();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -76,7 +78,7 @@ public class CustomApplication extends Application {
         initDagger2();
         Dexter.initialize(instance);
         BmobManager.init(instance);
-//        HXManager.init(instance);
+        hxsdkHelper.init(instance);
         initActivityManager();
         if (BuildConfig.DEBUG) {
             enabledStrictMode();
@@ -228,7 +230,6 @@ public class CustomApplication extends Application {
         User user = User.getCurrentUser();
         if (user != null) {
             UserModel userModel = ModelManager.provideUserModel();
-
             if (callback != null) {
                 userModel.getUserInfo(user.getObjectId(), "userId", callback);
             } else {

@@ -3,6 +3,7 @@ package com.hx.template.model;
 import com.hx.template.model.impl.bmob.BmobFileModel;
 import com.hx.template.model.impl.bmob.BmobSMSModel;
 import com.hx.template.model.impl.bmob.BmobUserImpl;
+import com.hx.template.model.impl.huanxin.HXIMModel;
 import com.hx.template.model.impl.retrofit.RetrofitUserModel;
 import com.hx.template.model.impl.volley.VolleyUserModel;
 
@@ -15,6 +16,10 @@ public class ModelManager {
     public static final int MODEL_TYPE_BMOB = 3;//Bmob实现
 
     private static final int DEFAULT_MODEL_TYPE = MODEL_TYPE_BMOB;
+
+    public static final int IM_MODEL_TYPE_HUANGXIN = 1;
+
+    public static final int DEFAULT_IM_MODEL_TYPE = IM_MODEL_TYPE_HUANGXIN;
 
     /**
      * 实例化默认UserModel
@@ -97,6 +102,30 @@ public class ModelManager {
                 return new BmobFileModel();
             default:
                 return new BmobFileModel();
+        }
+    }
+
+    /**
+     * 实例化默认IMModel
+     *
+     * @return
+     */
+    public static IMModel provideIMModel() {
+        return provideIMModel(DEFAULT_IM_MODEL_TYPE);
+    }
+
+    /**
+     * 实例化指定实现IMModel
+     *
+     * @param imModelType 实现类型
+     * @return
+     */
+    public static IMModel provideIMModel(int imModelType) {
+        switch (imModelType) {
+            case IM_MODEL_TYPE_HUANGXIN:
+                return new HXIMModel();
+            default:
+                return new HXIMModel();
         }
     }
 }
