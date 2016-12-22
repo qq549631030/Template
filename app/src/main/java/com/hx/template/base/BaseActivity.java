@@ -17,14 +17,12 @@ public class BaseActivity extends AppCompatActivity {
 
     private ConnectivityManager mConnectivityManager;
 
-
     private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GlobalActivityManager.push(this);
-        mProgressDialog = new ProgressDialog(this);
         mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         IntentFilter netFilter = new IntentFilter();
         netFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -94,6 +92,9 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showDefaultLoadingProgress(String msg) {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(this);
+        }
         mProgressDialog.setMessage(msg);
         if (!mProgressDialog.isShowing()) {
             mProgressDialog.show();
@@ -101,7 +102,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void hideDefaultLoadingProgress() {
-        if (mProgressDialog.isShowing()) {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
     }

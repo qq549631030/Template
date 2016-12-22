@@ -264,9 +264,9 @@ public abstract class DefaultSDKHelper extends HXSDKHelper {
 //
 //                    }
 //                }
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                return intent;
+//                return intent;
+
+                return null;
             }
         };
     }

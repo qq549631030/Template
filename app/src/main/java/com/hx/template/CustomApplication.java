@@ -9,6 +9,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.stetho.Stetho;
+import com.hx.easemob.DefaultSDKHelper;
 import com.hx.easemob.HXSDKHelper;
 import com.hx.mvp.Callback;
 import com.hx.template.dagger2.AppComponent;
@@ -30,6 +31,9 @@ import com.hx.template.utils.SharedPreferencesUtil;
 import com.karumi.dexter.Dexter;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -91,6 +95,13 @@ public class CustomApplication extends Application {
                             .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                             .build());
         }
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onTerminate() {
+        EventBus.getDefault().unregister(this);
+        super.onTerminate();
     }
 
     public static CustomApplication getInstance() {
@@ -222,6 +233,15 @@ public class CustomApplication extends Application {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onEvent(UserInfoUpdateEvent event) {
+        User user = User.getCurrentUser();
+        if (user != null) {
+            ((CustomSDKHelper) CustomSDKHelper.getInstance()).getUserProfileManager().setCurrentUserNick(user.getNickname());
+            ((CustomSDKHelper) CustomSDKHelper.getInstance()).getUserProfileManager().setCurrentUserAvatar(user.getAvatar());
+        }
+    }
+
     public static void reloadUserInfo() {
         reloadUserInfo(null);
     }
@@ -239,6 +259,11 @@ public class CustomApplication extends Application {
                         if (data != null && data.length > 0 && data[0] instanceof User) {
                             String userData = GsonUtil.toJson(data[0]);
                             SharedPreferencesUtil.setParam(instance, "bmob_sp", "user", userData);
+                            try {
+                                User.setCurrent(new JSONObject(userData));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             EventBus.getDefault().post(new UserInfoUpdateEvent());
                         }
                     }
@@ -251,4 +276,6 @@ public class CustomApplication extends Application {
             }
         }
     }
+
+
 }

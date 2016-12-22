@@ -31,4 +31,13 @@ public interface IMModel extends BaseModel {
      * 登出
      */
     void logout(Callback callback);
+
+    /**
+     * 添加联系人
+     *
+     * @param username  用户名
+     * @param inviteMsg 申请信息
+     * @param callback  回调监听
+     */
+    void addContact(String username, String inviteMsg, Callback callback);
 }

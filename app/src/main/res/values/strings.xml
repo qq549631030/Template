@@ -158,4 +158,6 @@
     <string name="reset_pwd_title">重置密码</string>
     <string name="personal_center_title">个人中心</string>
     <string name="title_activity_chat">ChatActivity</string>
+    <string name="title_activity_new_friends_msg">NewFriendsMsgActivity</string>
+    <string name="title_activity_add_contact">AddContactActivity</string>
 </resources>

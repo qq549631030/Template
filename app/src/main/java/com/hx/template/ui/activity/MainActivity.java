@@ -8,51 +8,41 @@
 
 package com.hx.template.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.hx.easemob.Constant;
-import com.hx.easemob.DefaultSDKHelper;
-import com.hx.template.CustomApplication;
+import com.allenliu.badgeview.BadgeFactory;
+import com.allenliu.badgeview.BadgeView;
+import com.hx.easemob.db.InviteMessgeDao;
 import com.hx.template.R;
 import com.hx.template.annotation.SaveInstanceAnnotation;
 import com.hx.template.base.BaseActivity;
+import com.hx.template.event.UnReadMsgChangeEvent;
+import com.hx.template.ui.fragment.ContactListFragment;
 import com.hx.template.ui.fragment.ConversationListFragment;
-import com.hx.template.widget.BadgeView;
-import com.hx.template.widget.MainTabItemView;
-import com.hx.template.qrcode.activity.CaptureActivity;
 import com.hx.template.ui.fragment.FavoriteFragment;
-import com.hx.template.ui.fragment.GroupFragment;
 import com.hx.template.ui.fragment.HomeFragment;
 import com.hx.template.ui.fragment.PersonalCenterFragment;
+import com.hx.template.widget.MainTabItemView;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.ui.EaseContactListFragment;
-import com.hyphenate.easeui.ui.EaseConversationListFragment;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Hashtable;
 import java.util.Map;
 
-import cn.huangx.common.utils.ToastUtils;
 import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     public static String PAGE_INDEX = "pageIndex";
-
-    public final static int REQUEST_CODE_SCAN = 1001;
-
 
     Toolbar toolbar;
 
@@ -71,6 +61,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Fragment currentFragment;
     @SaveInstanceAnnotation
     private int currentIndex;
+
+    private BadgeView unReadChat;
+    private BadgeView unReadInvite;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,39 +87,48 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             currentIndex = getIntent().getIntExtra(PAGE_INDEX, 0);
         }
         switchPage(currentIndex);
-        int badgeCount = 1;
-//        ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
-
-        BadgeView badgeView = new BadgeView(this);
-        badgeView.setBadgeCount(badgeCount);
-        badgeView.setTargetView(mainMenuItem1.getImage());
+        EventBus.getDefault().register(this);
+        refreshViews();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.main_menu_scan:
-                startActivityForResult(new Intent(MainActivity.this, CaptureActivity.class), REQUEST_CODE_SCAN);
-                return true;
+    private void refreshViews() {
+        int unreadChatMsgCount = 0;
+        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
+        for (EMConversation emConversation : conversations.values()) {
+            unreadChatMsgCount += emConversation.getUnreadMsgCount();
         }
-        return super.onOptionsItemSelected(item);
+        ShortcutBadger.applyCount(getApplicationContext(), unreadChatMsgCount); //for 1.1.4+
+        if (unReadChat == null) {
+            unReadChat = BadgeFactory.createCircle(this);
+        }
+        if (unreadChatMsgCount > 0) {
+            unReadChat.setBadgeCount(unreadChatMsgCount);
+            unReadChat.bind(mainMenuItem1.getImage());
+        } else {
+            unReadChat.unbind();
+        }
+        int unreadInviteMsgCount = 0;
+        InviteMessgeDao dao = new InviteMessgeDao(this);
+        unreadInviteMsgCount = dao.getUnreadMessagesCount();
+        if (unReadInvite == null) {
+            unReadInvite = BadgeFactory.createDot(this);
+        }
+        if (unreadInviteMsgCount > 0) {
+            unReadInvite.bind(mainMenuItem4.getImage());
+        } else {
+            unReadInvite.unbind();
+        }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK && data != null) {
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                String result = bundle.getString(CaptureActivity.EXTRA_RESULT);
-                ToastUtils.show(getApplicationContext(), result);
-            }
-        }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UnReadMsgChangeEvent event) {
+        refreshViews();
     }
 
     private void initViews() {
@@ -185,15 +188,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 Fragment fragment2 = mFragmentManager
                         .findFragmentByTag("mainMenuItem2");
                 if (fragment2 == null) {
-                    fragment2 = new EaseContactListFragment();
+                    fragment2 = new ContactListFragment();
 
                 }
-                Map<String, EaseUser> m = DefaultSDKHelper.getInstance().getContactList();
-                if (m instanceof Hashtable<?, ?>) {
-                    //noinspection unchecked
-                    m = (Map<String, EaseUser>) ((Hashtable<String, EaseUser>)m).clone();
-                }
-                ((EaseContactListFragment) fragment2).setContactsMap(m);
                 switchContent(currentFragment, fragment2, "mainMenuItem2");
                 currentIndex = 1;
                 break;

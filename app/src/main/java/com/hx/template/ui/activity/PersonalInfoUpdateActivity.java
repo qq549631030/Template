@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.hx.mvp.presenter.Presenter;
 import com.hx.mvp.presenter.PresenterFactory;
 import com.hx.mvp.presenter.PresenterLoader;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
@@ -119,7 +120,7 @@ public class PersonalInfoUpdateActivity extends BaseMvpActivity<PersonalInfoUpda
     @Override
     public void updateSuccess() {
         ToastUtils.showToast(this, "修改成功");
-        EventBus.getDefault().post(new UserInfoUpdateEvent());
+        CustomApplication.reloadUserInfo();
         finish();
     }
 

@@ -17,6 +17,7 @@ import com.hx.imageloader.ImageLoaderManager;
 import com.hx.mvp.presenter.Presenter;
 import com.hx.mvp.presenter.PresenterFactory;
 import com.hx.mvp.presenter.PresenterLoader;
+import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
@@ -226,7 +227,7 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
      */
     @Override
     public void avatarUpdateSuccess() {
-        EventBus.getDefault().post(new UserInfoUpdateEvent());
+        CustomApplication.reloadUserInfo();
     }
 
     /**

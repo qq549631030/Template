@@ -2,9 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/main_menu_scan"
-        android:icon="@drawable/icon_scan"
-        android:title="Main"
-        app:showAsAction="always">
-    </item>
+        android:id="@+id/contact_add"
+        android:icon="@drawable/icon_plus"
+        android:title="Scan"
+        app:showAsAction="always"/>
 </menu>

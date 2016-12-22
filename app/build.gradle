@@ -236,7 +236,8 @@ dependencies {
     compile 'javax.annotation:jsr250-api:1.0'
     apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     compile 'com.canyinghao:canrefresh:1.0.4'
-    compile 'me.leolin:ShortcutBadger:1.1.8@aar'
+    compile 'me.leolin:ShortcutBadger:1.1.11@aar'
+    compile 'com.allenliu.badgeview:library:1.0.6'
     compile 'com.dodola:rocoo:1.1'
 }
 

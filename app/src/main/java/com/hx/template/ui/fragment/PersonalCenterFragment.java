@@ -1,21 +1,28 @@
 package com.hx.template.ui.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hx.easemob.db.InviteMessgeDao;
 import com.hx.imageloader.ImageLoaderManager;
 import com.hx.template.R;
 import com.hx.template.base.BaseFragment;
 import com.hx.template.entity.User;
+import com.hx.template.event.UnReadMsgChangeEvent;
 import com.hx.template.event.UserInfoUpdateEvent;
 import com.hx.template.global.FastClickUtils;
+import com.hx.template.ui.activity.NewFriendsMsgActivity;
 import com.hx.template.ui.activity.PersonalInfoActivity;
 import com.hx.template.ui.activity.SettingActivity;
 import com.hx.template.utils.ActivityOptionsHelper;
@@ -39,10 +46,53 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     private RelativeLayout personal_info_layout;
     private TextView settings;
 
+    private InviteMessgeDao inviteMessgeDao;
+
     @Override
     protected String getFragmentTitle() {
         return getString(R.string.personal_center_title);
     }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        inviteMessgeDao = new InviteMessgeDao(activity);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.message);
+        int unReadCount = inviteMessgeDao.getUnreadMessagesCount();
+        if (unReadCount > 0) {
+            menuItem.setIcon(R.drawable.icon_msg_unread);
+        } else {
+            menuItem.setIcon(R.drawable.icon_msg_read);
+        }
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_personal_center, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.message:
+                Intent intent = new Intent(getContext(), NewFriendsMsgActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +125,13 @@ public class PersonalCenterFragment extends BaseFragment implements View.OnClick
     public void onEvent(UserInfoUpdateEvent event) {
         if (isViewCreated) {
             refreshViews();
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(UnReadMsgChangeEvent event) {
+        if (isViewCreated) {
+            getActivity().invalidateOptionsMenu();
         }
     }
 

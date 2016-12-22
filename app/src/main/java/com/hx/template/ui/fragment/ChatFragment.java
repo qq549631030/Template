@@ -1,18 +1,24 @@
 package com.hx.template.ui.fragment;
 
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 
 import com.hx.easemob.Constant;
 import com.hx.easemob.domain.EmojiconExampleGroupData;
 import com.hx.easemob.domain.RobotUser;
 import com.hx.template.CustomSDKHelper;
+import com.hx.template.event.UnReadMsgChangeEvent;
 import com.hx.template.ui.activity.MainActivity;
 import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.util.EasyUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Map;
 
@@ -60,8 +66,36 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
             }
         });
         ((EaseEmojiconMenu) inputMenu.getEmojiconMenu()).addEmojiconGroup(EmojiconExampleGroupData.getData());
+        if (chatType == EaseConstant.CHATTYPE_GROUP) {
+            inputMenu.getPrimaryMenu().getEditText().addTextChangedListener(new TextWatcher() {
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (count == 1 && "@".equals(String.valueOf(s.charAt(start)))) {
+//                        startActivityForResult(new Intent(getActivity(), PickAtUserActivity.class).
+//                                putExtra("groupId", toChatUsername), REQUEST_CODE_SELECT_AT_USER);
+                    }
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+        }
     }
 
+
+    @Override
+    protected void onConversationInit() {
+        super.onConversationInit();
+        EventBus.getDefault().post(new UnReadMsgChangeEvent());//打开聊天页面后，当前会话的未读消息数置0
+    }
 
     /**
      * set message attribute

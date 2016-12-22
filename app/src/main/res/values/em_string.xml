@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refuse">Refuse</string>
+    <string name="accept_join_group">accept join group:</string>
+    <string name="refuse_join_group">refuse join group:</string>
+    <string name="Has_agreed_to_your_friend_request">Accepted your request</string>
+    <string name="Request_to_add_you_as_a_friend">You got a friend request</string>
+    <string name="Apply_to_the_group_of">Apply to join the group</string>
+    <string name="invite_join_group">Invite to join the group</string>
+    <string name="Has_agreed_to">Accepted</string>
+    <string name="Has_refused_to">Refused</string>
+    <string name="Are_agree_with">Accepting</string>
+    <string name="Are_refuse_with">Refusing</string>
+    <string name="direct_call">Direct</string>
+    <string name="relay_call">Relay</string>
+    <string name="Agree_with_failure">Failed to accept</string>
+    <string name="Refuse_with_failure">Failed to refuse</string>
+    <string name="Is_download_voice_click_later">Downloading the voice message, click later</string>
+    <string name="Send_the_following_pictures">Send the following pictures?</string>
+    <string name="search_new">Search</string>
+</resources>

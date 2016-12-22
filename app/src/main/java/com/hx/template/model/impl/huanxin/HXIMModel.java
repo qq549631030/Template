@@ -132,6 +132,40 @@ public class HXIMModel implements IMModel {
     }
 
     /**
+     * 添加联系人
+     *
+     * @param username  用户名
+     * @param inviteMsg 申请信息
+     * @param callback  回调监听
+     */
+    @Override
+    public void addContact(final String username, final String inviteMsg, final Callback callback) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    EMClient.getInstance().contactManager().addContact(username, inviteMsg);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onSuccess();
+                        }
+                    });
+                } catch (final HyphenateException e) {
+                    e.printStackTrace();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onFailure(String.valueOf(e.getErrorCode()), e.getDescription());
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+
+
+    /**
      * 取消操作
      *
      * @param args
