@@ -5,7 +5,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hx.imageloader.ImageLoaderManager;
+import com.bumptech.glide.Glide;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.R;
@@ -49,9 +49,9 @@ public class EaseChatRowBigExpression extends EaseChatRowText{
             if(emojicon.getBigIcon() != 0){
                 imageView.setImageResource(emojicon.getBigIcon());
             }else if(emojicon.getBigIconPath() != null){
-                ImageLoaderManager.getImageLoader(activity).displayImage(emojicon.getBigIconPath(),imageView,R.drawable.ease_default_expression,R.drawable.ease_default_expression,R.drawable.ease_default_expression);
+                Glide.with(activity).load(emojicon.getBigIcon()).placeholder(R.drawable.ease_default_expression).into(imageView);
             }else{
-                imageView.setImageResource(R.drawable.ease_default_expression);
+                Glide.with(activity).load(emojicon.getBigIconPath()).placeholder(R.drawable.ease_default_expression).into(imageView);
             }
         }
         

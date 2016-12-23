@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.BaseAdapter;
 
 import com.hx.easemob.Constant;
 import com.hx.easemob.domain.EmojiconExampleGroupData;
@@ -11,9 +12,11 @@ import com.hx.easemob.domain.RobotUser;
 import com.hx.template.CustomSDKHelper;
 import com.hx.template.event.UnReadMsgChangeEvent;
 import com.hx.template.ui.activity.MainActivity;
+import com.hx.template.widget.ChatRowApplyStatus;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.ui.EaseChatFragment;
+import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
 import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
 import com.hyphenate.util.EasyUtils;
@@ -177,6 +180,57 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
      */
     @Override
     public EaseCustomChatRowProvider onSetCustomChatRowProvider() {
-        return null;
+        return new CustomChatRowProvider();
+    }
+
+
+    public class CustomChatRowProvider implements EaseCustomChatRowProvider {
+
+        /**
+         * 获取多少种类型的自定义chatrow<br/>
+         * 注意，每一种chatrow至少有两种type：发送type和接收type
+         *
+         * @return
+         */
+        @Override
+        public int getCustomChatRowTypeCount() {
+            return 1;
+        }
+
+        /**
+         * 获取chatrow type，必须大于0, 从1开始有序排列
+         *
+         * @param message
+         * @return
+         */
+        @Override
+        public int getCustomChatRowType(EMMessage message) {
+            if (message.getType() == EMMessage.Type.TXT) {
+                String customType = message.getStringAttribute("customType", "");
+                if ("applyStatus".equals(customType)) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        /**
+         * 根据给定message返回chat row
+         *
+         * @param message
+         * @param position
+         * @param adapter
+         * @return
+         */
+        @Override
+        public EaseChatRow getCustomChatRow(EMMessage message, int position, BaseAdapter adapter) {
+            if (message.getType() == EMMessage.Type.TXT) {
+                String customType = message.getStringAttribute("customType", "");
+                if ("applyStatus".equals(customType)) {
+                    return new ChatRowApplyStatus(getActivity(), message, position, adapter);
+                }
+            }
+            return null;
+        }
     }
 }

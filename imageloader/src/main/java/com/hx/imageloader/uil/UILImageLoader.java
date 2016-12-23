@@ -79,22 +79,30 @@ public class UILImageLoader implements ImageLoader {
         com.nostra13.universalimageloader.core.ImageLoader.getInstance().displayImage(uri, imageView, builder.build(), loadingListener == null ? null : new com.nostra13.universalimageloader.core.listener.ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                loadingListener.onLoadingStarted(imageUri, view);
+                if (loadingListener != null) {
+                    loadingListener.onLoadingStarted(imageUri, view);
+                }
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                loadingListener.onLoadingFailed(imageUri, view, failReason.getType().name(), failReason.getCause().getMessage());
+                if (loadingListener != null) {
+                    loadingListener.onLoadingFailed(imageUri, view, failReason.getType().name(), failReason.getCause().getMessage());
+                }
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                loadingListener.onLoadingComplete(imageUri, view, loadedImage);
+                if (loadingListener != null) {
+                    loadingListener.onLoadingComplete(imageUri, view, loadedImage);
+                }
             }
 
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
-                loadingListener.onLoadingCancelled(imageUri, view);
+                if (loadingListener != null) {
+                    loadingListener.onLoadingCancelled(imageUri, view);
+                }
             }
         });
     }
