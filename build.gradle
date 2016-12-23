@@ -61,4 +61,7 @@ ext {
     rxandroidVersion = '1.2.1'
 
     //jakewharton
+
+    //bumptech
+    glideVersion = '3.7.0'
 }

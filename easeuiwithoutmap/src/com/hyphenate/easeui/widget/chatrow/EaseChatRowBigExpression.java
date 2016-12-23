@@ -47,11 +47,11 @@ public class EaseChatRowBigExpression extends EaseChatRowText{
         }
         if(emojicon != null){
             if(emojicon.getBigIcon() != 0){
-                imageView.setImageResource(emojicon.getBigIcon());
-            }else if(emojicon.getBigIconPath() != null){
                 Glide.with(activity).load(emojicon.getBigIcon()).placeholder(R.drawable.ease_default_expression).into(imageView);
-            }else{
+            }else if(emojicon.getBigIconPath() != null){
                 Glide.with(activity).load(emojicon.getBigIconPath()).placeholder(R.drawable.ease_default_expression).into(imageView);
+            }else{
+                imageView.setImageResource(R.drawable.ease_default_expression);
             }
         }
         
