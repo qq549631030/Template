@@ -6,6 +6,7 @@ import android.os.Process;
 import android.util.Log;
 
 import com.hx.mvp.Callback;
+import com.hx.template.CustomSDKHelper;
 import com.hx.template.model.IMModel;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -102,7 +103,7 @@ public class HXIMModel implements IMModel {
      */
     @Override
     public void logout(final Callback callback) {
-        EMClient.getInstance().logout(true, new EMCallBack() {
+        CustomSDKHelper.getInstance().logout(true, new EMCallBack() {
 
             @Override
             public void onSuccess() {

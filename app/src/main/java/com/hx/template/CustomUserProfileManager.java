@@ -29,7 +29,10 @@ public class CustomUserProfileManager extends UserProfileManager {
                     List<User> userList = (List<User>) data[0];
                     List<EaseUser> easeUserList = new ArrayList<EaseUser>();
                     for (User user : userList) {
-                        easeUserList.add(new EaseUser(user.getUsername()));
+                        EaseUser easeUser = new EaseUser(user.getUsername());
+                        easeUser.setNick(user.getNickname());
+                        easeUser.setAvatar(user.getAvatar());
+                        easeUserList.add(easeUser);
                     }
                 }
             }
