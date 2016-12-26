@@ -88,6 +88,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
         switchPage(currentIndex);
         EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         refreshViews();
     }
 
@@ -99,10 +104,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void refreshViews() {
         int unreadChatMsgCount = 0;
-        Map<String, EMConversation> conversations = EMClient.getInstance().chatManager().getAllConversations();
-        for (EMConversation emConversation : conversations.values()) {
-            unreadChatMsgCount += emConversation.getUnreadMsgCount();
-        }
+        unreadChatMsgCount = EMClient.getInstance().chatManager().getUnreadMsgsCount();
         ShortcutBadger.applyCount(getApplicationContext(), unreadChatMsgCount); //for 1.1.4+
         if (unReadChat == null) {
             unReadChat = BadgeFactory.createCircle(this);

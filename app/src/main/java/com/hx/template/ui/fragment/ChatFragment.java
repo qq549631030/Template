@@ -15,6 +15,7 @@ import com.hx.template.ui.activity.MainActivity;
 import com.hx.template.widget.ChatRowApplyStatus;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.ui.EaseChatFragment;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
 import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
@@ -23,6 +24,7 @@ import com.hyphenate.util.EasyUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -93,11 +95,41 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragment.E
         }
     }
 
+    @Override
+    protected void registerExtendMenuItem() {
+        itemStrings = new int[]{ com.hyphenate.easeui.R.string.attach_take_pic, com.hyphenate.easeui.R.string.attach_picture};
+        itemdrawables =new int[] { com.hyphenate.easeui.R.drawable.ease_chat_takepic_selector, com.hyphenate.easeui.R.drawable.ease_chat_image_selector};
+        super.registerExtendMenuItem();
+    }
 
     @Override
     protected void onConversationInit() {
         super.onConversationInit();
         EventBus.getDefault().post(new UnReadMsgChangeEvent());//打开聊天页面后，当前会话的未读消息数置0
+    }
+
+
+    @Override
+    public void onMessageReceived(List<EMMessage> messages) {
+        for (EMMessage message : messages) {
+            String username = null;
+            // group message
+            if (message.getChatType() == EMMessage.ChatType.GroupChat || message.getChatType() == EMMessage.ChatType.ChatRoom) {
+                username = message.getTo();
+            } else {
+                // single chat message
+                username = message.getFrom();
+            }
+
+            // if the message is for current conversation
+            if (username.equals(toChatUsername) || message.getTo().equals(toChatUsername)) {
+                messageList.refreshSelectLast();
+                EventBus.getDefault().post(new UnReadMsgChangeEvent());//在聊天页面收到新消息，当前会话的未读消息数置0
+                EaseUI.getInstance().getNotifier().vibrateAndPlayTone(message);
+            } else {
+                EaseUI.getInstance().getNotifier().onNewMsg(message);
+            }
+        }
     }
 
     /**

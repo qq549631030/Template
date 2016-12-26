@@ -1,6 +1,7 @@
 package com.hx.template.ui.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 
 import com.hx.template.CustomSDKHelper;
 import com.hx.template.R;
+import com.hx.template.ui.activity.ChatActivity;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 
@@ -44,6 +46,21 @@ public class ContactListFragment extends EaseContactListFragment {
     protected void initView() {
         super.initView();
         hideTitleBar();
+    }
+
+    @Override
+    protected void setUpView() {
+        setContactListItemClickListener(new EaseContactListItemClickListener() {
+            @Override
+            public void onListItemClicked(EaseUser user) {
+                if (user != null) {
+                    String username = user.getUsername();
+                    // demo中直接进入聊天页面，实际一般是进入用户详情页
+                    startActivity(new Intent(getActivity(), ChatActivity.class).putExtra("userId", username));
+                }
+            }
+        });
+        super.setUpView();
     }
 
     @Override
