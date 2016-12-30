@@ -7,10 +7,14 @@ import android.util.Log;
 
 import com.hx.mvp.Callback;
 import com.hx.template.CustomSDKHelper;
+import com.hx.template.event.IMLoginStatusChangeEvent;
+import com.hx.template.global.HXLog;
 import com.hx.template.model.IMModel;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * 功能说明：环信IMModel
@@ -69,7 +73,8 @@ public class HXIMModel implements IMModel {
             public void onSuccess() {
                 EMClient.getInstance().groupManager().loadAllGroups();
                 EMClient.getInstance().chatManager().loadAllConversations();
-                Log.d("main", "登录聊天服务器成功！");
+                EventBus.getDefault().post(new IMLoginStatusChangeEvent());
+                HXLog.d("登录聊天服务器成功！");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -85,7 +90,7 @@ public class HXIMModel implements IMModel {
 
             @Override
             public void onError(final int code, final String message) {
-                Log.d("main", "登录聊天服务器失败！");
+                HXLog.d("登录聊天服务器失败！");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
