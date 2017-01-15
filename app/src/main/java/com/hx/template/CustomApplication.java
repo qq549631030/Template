@@ -9,9 +9,11 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 
 import com.facebook.stetho.Stetho;
+import com.github.anrwatchdog.ANRWatchDog;
 import com.hx.easemob.DefaultSDKHelper;
 import com.hx.easemob.HXSDKHelper;
 import com.hx.mvp.Callback;
+import com.hx.template.acra.MainReportSenderFactory;
 import com.hx.template.dagger2.AppComponent;
 import com.hx.template.dagger2.AppModule;
 import com.hx.template.dagger2.ComponentHolder;
@@ -28,8 +30,10 @@ import com.hx.template.http.bmob.BmobManager;
 import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.utils.SharedPreferencesUtil;
-import com.karumi.dexter.Dexter;
 
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -47,6 +51,11 @@ import static android.os.Build.VERSION_CODES.GINGERBREAD;
 /**
  * Created by huangxiang on 15/10/14.
  */
+@ReportsCrashes(
+        reportSenderFactoryClasses = MainReportSenderFactory.class,
+        mode = ReportingInteractionMode.TOAST,
+        resToastText = R.string.acra_toast_string
+)
 public class CustomApplication extends Application {
 
     private static final String SET_COOKIE_KEY = "Set-Cookie";
@@ -68,6 +77,8 @@ public class CustomApplication extends Application {
 //            RocooFix.init(this);
 //            RocooFix.initPathFromAssets(this, "patch.jar");
             MultiDex.install(this);
+            ACRA.DEV_LOGGING = true;
+            ACRA.init(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -76,26 +87,30 @@ public class CustomApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //初始化加密ormlite数据库
+        int pid = android.os.Process.myPid();
+        HXLog.d("CustomApplication onCreate pid = " + pid);
+        if (!ACRA.isACRASenderServiceProcess()) {
+            //初始化加密ormlite数据库
 //        SQLiteDatabase.loadLibs(this);
-        instance = this;
-        initDagger2();
-        Dexter.initialize(instance);
-        BmobManager.init(instance);
-        hxsdkHelper.init(instance);
-        initActivityManager();
-        if (BuildConfig.DEBUG) {
+            instance = this;
+            initDagger2();
+            BmobManager.init(instance);
+            hxsdkHelper.init(instance);
+            initActivityManager();
+            if (BuildConfig.DEBUG) {
             enabledStrictMode();
+            }
+            //Stetho
+            if (BuildConfig.DEBUG && Constant.STETHO_DEBUG) {
+                Stetho.initialize(
+                        Stetho.newInitializerBuilder(this)
+                                .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                                .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                                .build());
+            }
+            new ANRWatchDog().setIgnoreDebugger(true).start();
+            EventBus.getDefault().register(this);
         }
-        //Stetho
-        if (BuildConfig.DEBUG && Constant.STETHO_DEBUG) {
-            Stetho.initialize(
-                    Stetho.newInitializerBuilder(this)
-                            .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                            .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                            .build());
-        }
-        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -111,7 +126,7 @@ public class CustomApplication extends Application {
     private void enabledStrictMode() {
         if (SDK_INT >= GINGERBREAD) {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder() //
-                    .detectAll() //
+                    .detectNetwork() //
                     .penaltyLog() //
                     .penaltyDeath() //
                     .build());

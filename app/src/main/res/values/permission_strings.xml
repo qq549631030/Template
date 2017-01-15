@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!---->
+    <string name="rationale_ask_again">没有相应的权限，应用将无法正常工作，请到应用设置里面打开相应权限</string>
+    <string name="title_settings_dialog">权限申请</string>
+    <string name="setting">设置</string>
+    <string name="cancel">取消</string>
+</resources>

@@ -1,5 +1,6 @@
 package com.hx.template.ui.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,7 +22,6 @@ import com.hx.template.CustomApplication;
 import com.hx.template.R;
 import com.hx.template.base.BaseMvpActivity;
 import com.hx.template.dagger2.ComponentHolder;
-import com.hx.template.demo.LockScreenActivity;
 import com.hx.template.entity.User;
 import com.hx.template.entity.enums.Gender;
 import com.hx.template.event.UserInfoUpdateEvent;
@@ -45,11 +45,15 @@ import java.util.List;
 import id.zelory.compressor.Compressor;
 import me.nereo.multi_image_selector.MultiImageSelector;
 import me.nereo.multi_image_selector.MultiImageSelectorActivity;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter, PersonalInfoContract.View> implements PersonalInfoContract.View, View.OnClickListener {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
     private static final int REQUEST_CODE_CROP_IMAGE = 102;
+
+    private static final int RC_CAMERA_AND_STORAGE = 201;
 
     Toolbar toolbar;
 
@@ -68,6 +72,16 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
     private RelativeLayout qrcodeLayout;
     private TextView gender;
     private RelativeLayout genderLayout;
+
+    @Override
+    public Loader<PersonalInfoPresenter> onCreateLoader(int id, Bundle args) {
+        return new PresenterLoader<>(this, new PresenterFactory() {
+            @Override
+            public Presenter create() {
+                return ComponentHolder.getAppComponent().personalInfoPresenter();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,16 +124,6 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
     }
 
     @Override
-    public Loader<PersonalInfoPresenter> onCreateLoader(int id, Bundle args) {
-        return new PresenterLoader<>(this, new PresenterFactory() {
-            @Override
-            public Presenter create() {
-                return ComponentHolder.getAppComponent().personalInfoPresenter();
-            }
-        });
-    }
-
-    @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
@@ -154,7 +158,7 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
             case R.id.avatar:
                 break;
             case R.id.avatar_layout:
-                MultiImageSelector.create().count(1).single().showCamera(true).start(this, REQUEST_CODE_SELECT_IMAGE);
+                selectImage();
                 break;
             case R.id.nickname_layout:
                 startActivity(new Intent(PersonalInfoActivity.this, PersonalInfoUpdateActivity.class).putExtra(User.INFO_TYPE, User.INFO_TYPE_NICKNAME).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -165,6 +169,17 @@ public class PersonalInfoActivity extends BaseMvpActivity<PersonalInfoPresenter,
                 startActivity(new Intent(PersonalInfoActivity.this, QrcodeCardActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP),
                         ActivityOptionsHelper.makeSceneTransitionAnimationBundle(PersonalInfoActivity.this, true, new Pair(avatar, "avatar"), new Pair(nickname, "nickname"), new Pair(qrcode, "qrcode")));
                 break;
+        }
+    }
+
+    @AfterPermissionGranted(RC_CAMERA_AND_STORAGE)
+    public void selectImage() {
+        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            MultiImageSelector.create().count(1).single().showCamera(true).start(this, REQUEST_CODE_SELECT_IMAGE);
+        } else {
+            EasyPermissions.requestPermissions(this, "要更换头像必须要读SDK权限、打开摄像头权限",
+                    RC_CAMERA_AND_STORAGE, perms);
         }
     }
 
