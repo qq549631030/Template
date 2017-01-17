@@ -3,6 +3,7 @@ package com.hx.template.model.impl.bmob;
 import com.hx.mvp.Callback;
 import com.hx.template.entity.BbUser;
 import com.hx.template.entity.User;
+import com.hx.template.global.HXLog;
 import com.hx.template.model.UserModel;
 
 import java.util.ArrayList;
@@ -80,9 +81,9 @@ public class BmobUserImpl implements UserModel {
         query.findObjects(new FindListener<BbUser>() {
             @Override
             public void done(List<BbUser> list, BmobException e) {
-                List<User> userList = new ArrayList<User>();
                 if (list != null && list.size() > 0) {
                     BbUser bbUser = list.get(0);
+                    HXLog.d("getUserInfo : "+bbUser.toString());
                     BmobCallBackDeliver.handleResult(callback, e, bbUser.toUser());
                 } else {
                     BmobCallBackDeliver.handleResult(callback, new BmobException(-1, "not found"));

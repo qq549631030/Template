@@ -31,6 +31,8 @@ import com.hx.template.model.ModelManager;
 import com.hx.template.model.UserModel;
 import com.hx.template.utils.SharedPreferencesUtil;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
@@ -91,14 +93,14 @@ public class CustomApplication extends Application {
         HXLog.d("CustomApplication onCreate pid = " + pid);
         if (!ACRA.isACRASenderServiceProcess()) {
             //初始化加密ormlite数据库
-//        SQLiteDatabase.loadLibs(this);
+            SQLiteDatabase.loadLibs(this);
             instance = this;
             initDagger2();
             BmobManager.init(instance);
             hxsdkHelper.init(instance);
             initActivityManager();
             if (BuildConfig.DEBUG) {
-            enabledStrictMode();
+                enabledStrictMode();
             }
             //Stetho
             if (BuildConfig.DEBUG && Constant.STETHO_DEBUG) {

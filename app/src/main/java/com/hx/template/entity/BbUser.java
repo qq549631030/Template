@@ -56,4 +56,13 @@ public class BbUser extends BmobUser {
         }.getType();
         return gson.fromJson(current.toString(), type);
     }
+
+    @Override
+    public String toString() {
+        return "BbUser{" +
+                "nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", gender='" + gender + '\'' +
+                '}';
+    }
 }
