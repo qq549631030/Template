@@ -45,6 +45,16 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.hx.template.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
         <!--环信相关设置 开始-->
         <!-- 设置环信应用的AppKey -->
         <meta-data

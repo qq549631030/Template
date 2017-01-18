@@ -242,6 +242,8 @@ dependencies {
     compile 'ch.acra:acra:4.9.0'
 
     compile 'pub.devrel:easypermissions:0.2.1'
+
+    compile 'com.orhanobut:hawk:2.0.1'
 }
 
 rocoo_fix {
