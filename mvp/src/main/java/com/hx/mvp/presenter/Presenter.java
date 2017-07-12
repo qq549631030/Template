@@ -6,7 +6,7 @@ import com.hx.mvp.view.BaseMvpView;
 /**
  * 功能说明：MVP中的Presenter
  * 作者：huangx on 2016/12/2 16:02
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public interface Presenter<V extends BaseMvpView> extends Cancelable {

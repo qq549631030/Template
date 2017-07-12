@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 功能说明：
  * 作者：huangx on 2016/11/26 10:28
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class GetUserListInfoCase extends BaseUseCase<GetUserListInfoCase.RequestValues, GetUserListInfoCase.ResponseValue> {

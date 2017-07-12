@@ -6,7 +6,7 @@ import com.hx.mvp.view.BaseMvpView;
 /**
  * 功能说明：
  * 作者：huangx on 2016/12/22 17:10
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public interface AddContactContract {

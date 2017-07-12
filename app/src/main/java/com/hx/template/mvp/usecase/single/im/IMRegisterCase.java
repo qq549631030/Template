@@ -11,7 +11,7 @@ import javax.inject.Inject;
 /**
  * 功能说明：
  * 作者：huangx on 2016/12/20 14:59
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class IMRegisterCase extends BaseUseCase<IMRegisterCase.RequestValues, IMRegisterCase.ResponseValue> {

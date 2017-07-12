@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 /**
  * 功能说明：com.hx.template.base
  * 作者：huangx on 2016/9/7 8:33
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 public class BaseCanRefreshListFragment extends BaseRefreshListFragment implements CanRefreshLayout.OnRefreshListener, CanRefreshLayout.OnLoadMoreListener {
 

@@ -13,7 +13,7 @@ import com.hx.template.R;
 /**
  * 功能说明：com.hx.template.base
  * 作者：huangx on 2016/9/7 9:19
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 public abstract class BaseRefreshListFragment extends BaseListFragment {
 

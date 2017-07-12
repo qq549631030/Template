@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 功能说明：SD卡工具类
  * 作者：huangx on 2017/1/18 14:44
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class StorageUtils {

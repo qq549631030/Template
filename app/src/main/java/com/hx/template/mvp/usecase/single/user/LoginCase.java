@@ -12,7 +12,7 @@ import javax.inject.Inject;
 /**
  * 功能说明：登录用例
  * 作者：huangx on 2016/8/26 17:14
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 public class LoginCase extends BaseUseCase<LoginCase.RequestValues, LoginCase.ResponseValue> {
     private final UserModel userModel;

@@ -37,7 +37,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 /**
  * 功能说明：com.hx.template.ui.activity
  * 作者：huangx on 2016/8/25 15:38
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(RobolectricTestRunner.class)

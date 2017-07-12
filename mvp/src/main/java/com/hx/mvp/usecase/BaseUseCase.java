@@ -5,7 +5,7 @@ import com.hx.mvp.Cancelable;
 /**
  * 功能说明：用例
  * 作者：huangx on 2016/12/2 15:34
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public abstract class BaseUseCase<Q, P> implements Cancelable {

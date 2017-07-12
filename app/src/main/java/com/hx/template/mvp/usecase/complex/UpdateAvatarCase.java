@@ -15,7 +15,7 @@ import javax.inject.Inject;
 /**
  * 功能说明：com.hx.template.domain.usercase.complex
  * 作者：huangx on 2016/8/30 11:18
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 public class UpdateAvatarCase extends BaseUseCase<UpdateAvatarCase.RequestValues, UpdateAvatarCase.ResponseValue> {
     private final FileModel fileModel;

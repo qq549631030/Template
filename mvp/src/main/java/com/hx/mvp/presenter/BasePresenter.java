@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 /**
  * 功能说明：
  * 作者：huangx on 2016/12/2 16:05
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public abstract class BasePresenter<V extends BaseMvpView> implements Presenter<V> {

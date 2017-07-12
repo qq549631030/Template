@@ -27,7 +27,7 @@ import dagger.Provides;
 /**
  * 功能说明：com.hx.template.dagger2
  * 作者：huangx on 2016/8/30 14:21
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 @Module
 public class PresenterModule {

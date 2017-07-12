@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * 功能说明：
  * 作者：huangx on 2016/12/22 14:17
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class ContactListFragment extends EaseContactListFragment {

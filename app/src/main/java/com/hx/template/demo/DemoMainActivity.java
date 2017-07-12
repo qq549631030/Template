@@ -44,7 +44,7 @@ public class DemoMainActivity extends BaseActivity {
             public void onClick(View view) {
 //                Intent intent = new Intent(DemoMainActivity.this, SelectImageActivity.class);
 //                startActivity(intent);
-                ImageLoaderManager.getImageLoader(DemoMainActivity.this).loadImageAsync("https://dn-pycredit-pub.qbox.me/logo-rzyl.png", new ImageLoadingListener<Bitmap>() {
+                ImageLoaderManager.getImageLoader(DemoMainActivity.this).loadImageAsync("http://b.hiphotos.baidu.com/image/h%3D200/sign=239b2b62d3ca7bcb627bc02f8e086b3f/7dd98d1001e9390170aa9f9f7fec54e737d196e2.jpg", new ImageLoadingListener<Bitmap>() {
                     @Override
                     public void onLoadingStarted(String imageUri, View view) {
 

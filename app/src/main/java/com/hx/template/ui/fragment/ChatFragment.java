@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * 功能说明：
  * 作者：huangx on 2016/12/21 19:58
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class ChatFragment extends EaseChatFragment implements EaseChatFragment.EaseChatFragmentHelper {

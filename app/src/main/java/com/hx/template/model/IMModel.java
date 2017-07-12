@@ -5,7 +5,7 @@ import com.hx.mvp.Callback;
 /**
  * 功能说明：IM相关Model
  * 作者：huangx on 2016/12/20 14:43
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public interface IMModel extends BaseModel {

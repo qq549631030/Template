@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 /**
  * 功能说明：环信IMModel
  * 作者：huangx on 2016/12/20 14:46
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class HXIMModel implements IMModel {

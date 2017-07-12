@@ -3,7 +3,7 @@ package com.hx.mvp;
 /**
  * 功能说明：通用回调接口
  * 作者：huangx on 2016/12/2 14:57
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public interface Callback {

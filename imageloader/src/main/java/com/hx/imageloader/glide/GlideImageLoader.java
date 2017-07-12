@@ -16,7 +16,7 @@ import com.hx.imageloader.ImageLoadingListener;
 /**
  * 功能说明：
  * 作者：huangx on 2016/12/23 16:39
- * 邮箱：huangx@pycredit.cn
+ * 邮箱：549631030@qq.com
  */
 
 public class GlideImageLoader implements ImageLoader {
